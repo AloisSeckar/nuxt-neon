@@ -7,9 +7,13 @@ describe('ssr', async () => {
     rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
   })
 
-  it('renders the index page', async () => {
+  it('renders page with Neon demo', async () => {
     // Get response to a server-rendered page with `$fetch`.
     const html = await $fetch('/')
-    expect(html).toContain('<div>basic</div>')
+    // check contents
+    expect(html).toContain('<h1>Nuxt-Neon TEST</h1>')
+    expect(html).toContain('"id"')
+    expect(html).toContain('"name"')
+    expect(html).toContain('"value"')
   })
 })
