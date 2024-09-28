@@ -12,6 +12,6 @@
 </template>
 
 <script setup lang="ts">
-const neon = useNeon()
-const { data, status, error } = await useAsyncData(() => neon.sql`SELECT * FROM playing_with_neon`)
+const { neonClient } = useNeon()
+const { data, status, error } = await useAsyncData(() => neonClient`SELECT * FROM playing_with_neon`)
 </script>

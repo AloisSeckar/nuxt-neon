@@ -4,6 +4,8 @@
 </template>
 
 <script setup lang="ts">
-const neon = useNeon()
-const { data } = await useAsyncData(() => neon.sql`SELECT * FROM playing_with_neon`)
+import { useAsyncData, useNeon } from '#imports'
+
+const { neonClient } = useNeon()
+const { data } = await useAsyncData(() => neonClient`SELECT * FROM playing_with_neon`)
 </script>

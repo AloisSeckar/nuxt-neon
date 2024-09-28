@@ -7,9 +7,9 @@ export function useNeon() {
   const neonUser = useRuntimeConfig().public.neonUser
   const neonDB = useRuntimeConfig().public.neonDB
 
-  const sql = neon(`postgresql://${neonUser}:${neonPass}@${neonHost}.neon.tech/${neonDB}?sslmode=require`)
+  const neonClient = neon(`postgresql://${neonUser}:${neonPass}@${neonHost}.neon.tech/${neonDB}?sslmode=require`)
 
   return {
-    sql,
+    neonClient,
   }
 }
