@@ -19,6 +19,9 @@
   <div class="info">
     Neon status: {{ dbStatus.status }}
   </div>
+  <div class="info">
+    Connection: {{ connectionOpen }}
+  </div>
   <div v-if="status === 'pending'">
     Fetching data...
   </div>
@@ -31,8 +34,11 @@
 </template>
 
 <script setup lang="ts">
-const { neonClient, neonStatus } = useNeon()
+const { neonClient, neonStatus, isOk } = useNeon()
+// health checks
 const dbStatus = await neonStatus()
+const connectionOpen = await isOk()
+// get sample data
 const { data, status, error } = await useAsyncData(() => neonClient`SELECT * FROM playing_with_neon`)
 </script>
 

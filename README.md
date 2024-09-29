@@ -9,9 +9,6 @@ A simple [Nuxt module](https://nuxt.com/modules) alowing smooth integration with
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
 
-<!-- ## Features -->
-<!-- Highlight some of the features your module provide here -->
-
 ## How to use?
 
 Install the module to your Nuxt application with one command:
@@ -32,7 +29,7 @@ Nuxt-Neon will construct a PostgreSQL connection string based on given values:
 `postgresql://${NUXT_PUBLIC_NEON_USER}:${NUXT_PUBLIC_NEON_PASS}@${NUXT_PUBLIC_NEON_HOST}.neon.tech/${NUXT_PUBLIC_NEON_DB}`
 ```
 
-It will use it to initialize the [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) object and expose it via `useNeon` composable:
+It will be used to initialize the [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) object exposed via `useNeon` composable:
 
 ```ts
 const { neonClient } = useNeon()
@@ -41,11 +38,13 @@ const { neonClient } = useNeon()
 Provided Neon client object is capable of making direct SQL queries to connected database.
 
 You can use either tagged template syntax:
+
 ```ts
 neonClient`SELECT * FROM playing_with_neon`
 ```
 
 Or the traditional function syntax:
+
 ```ts
 neonClient('SELECT * FROM playing_with_neon')
 ```
@@ -54,22 +53,30 @@ That's it! Your Nuxt app is now connected to a Neon database instance ✨
 
 ### Health check
 
-The `useNeon` composable provides also a simple async probe function `neonStatus` to test the liveness of the connection:
+Current status of the connection can be quickly checked by calling async function `isOk` provided by `useNeon` composable: 
+
+```ts
+const { isOk } = useNeon()
+```
+
+The return value `true/false` is based on more complex probe function `neonStatus` which is also available:
 
 ```ts
 const { neonStatus } = useNeon()
 ```
 
+The test is performed by firing a `SELECT 1=1` query to the current `neonClient`.
+
 The function takes two optional parameters:
 - `anonymous: boolean = true` - if set to `false`, it will disclose username and password [**WARNING**: may expose sensitive data! Use with caution]
 - `debug: boolean = false` - if set to `true`, if will append the root cause returned by Neon driver [**WARNING**: may expose sensitive data! Use with caution]
 
-The function returns a `NeonStatusResult` promise:
+Value returned is a `NeonStatusResult` promise:
 - `connectionString: string` - connection string that was used to initialize current `neonClient` (USER and PASS are anonymized, if `anonymous = true`)
 - `status: 'OK' | 'ERR'` - `OK` if connection works, `ERR` if error occured
 - `debug?: string` - Neon driver error, if `status = 'ERR'` and `debug = true`
 
-## Options
+## Module options
 
 Nuxt-Neon can be configured by overriding the default options values using key `neon` inside `nuxt.config.ts`.
 
@@ -82,6 +89,7 @@ Existing options:
   - `none` (sslmode is **not** inclued in the connection string)
 
 Example:
+
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({

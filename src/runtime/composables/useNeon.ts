@@ -28,9 +28,14 @@ export function useNeon() {
     }
   }
 
+  const isOk = async () => {
+    return (await neonStatus()).status === 'OK'
+  }
+
   return {
     neonClient,
     neonStatus,
+    isOk,
   }
 }
 
