@@ -2,11 +2,14 @@ import { defineNuxtModule, addImports, addPlugin, createResolver } from '@nuxt/k
 
 // Module options TypeScript interface definition
 
+export type SSLModeOption = 'require' | 'verify-ca' | 'verify-full' | 'none'
+
 export interface ModuleOptions {
   neonHost: string
   neonUser: string
   neonPass: string
   neonDB: string
+  sslMode: SSLModeOption
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -21,6 +24,7 @@ export default defineNuxtModule<ModuleOptions>({
     neonUser: '',
     neonPass: '',
     neonDB: '',
+    sslMode: 'require',
   },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
@@ -29,6 +33,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.neonUser = options.neonUser
     nuxt.options.runtimeConfig.public.neonPass = options.neonPass
     nuxt.options.runtimeConfig.public.neonDB = options.neonDB
+    nuxt.options.runtimeConfig.public.sslMode = options.sslMode
 
     addImports({
       name: 'useNeon',

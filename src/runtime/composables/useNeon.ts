@@ -2,14 +2,25 @@ import { neon } from '@neondatabase/serverless'
 import { useRuntimeConfig } from '#app'
 
 export function useNeon() {
+  const neonClient = neon(buildNeonConnectionString())
+
+  return {
+    neonClient,
+  }
+}
+
+function buildNeonConnectionString() {
   const neonHost = useRuntimeConfig().public.neonHost
   const neonPass = useRuntimeConfig().public.neonPass
   const neonUser = useRuntimeConfig().public.neonUser
   const neonDB = useRuntimeConfig().public.neonDB
 
-  const neonClient = neon(`postgresql://${neonUser}:${neonPass}@${neonHost}.neon.tech/${neonDB}?sslmode=require`)
+  let connectionString = `postgresql://${neonUser}:${neonPass}@${neonHost}.neon.tech/${neonDB}`
 
-  return {
-    neonClient,
+  const sslMode = useRuntimeConfig().public.sslMode
+  if (sslMode !== 'none') {
+    connectionString += `?sslmode=${sslMode}`
   }
+
+  return connectionString
 }

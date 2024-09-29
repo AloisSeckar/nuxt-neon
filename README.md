@@ -29,7 +29,7 @@ Provide connection details to your Neon DB instance through a set of Nuxt [runti
 Nuxt-Neon will construct a PostgreSQL connection string based on given values:
 
 ```ts
-`postgresql://${NUXT_PUBLIC_NEON_USER}:${NUXT_PUBLIC_NEON_PASS}@${NUXT_PUBLIC_NEON_HOST}.neon.tech/${NUXT_PUBLIC_NEON_DB}?sslmode=require`
+`postgresql://${NUXT_PUBLIC_NEON_USER}:${NUXT_PUBLIC_NEON_PASS}@${NUXT_PUBLIC_NEON_HOST}.neon.tech/${NUXT_PUBLIC_NEON_DB}`
 ```
 
 It will use it to initialize the [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) object and expose it via `useNeon` composable:
@@ -51,6 +51,29 @@ neonClient('SELECT * FROM playing_with_neon')
 ```
 
 That's it! Your Nuxt app is now connected to a Neon database instance ✨
+
+## Options
+
+Nuxt-Neon can be configured by overriding the default options values using key `neon` inside `nuxt.config.ts`.
+
+Existing options:
+
+- `sslMode` - allows setting [secure connection mode](https://neon.tech/docs/connect/connect-securely) when constructing the DB connection string by adding `sslmode` parameter to URL. Values can be:
+  - `require` (default)
+  - `verify-ca`
+  - `verify-full`
+  - `none` (sslmode is **not** inclued in the connection string)
+
+Example:
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  neon: {
+    sslMode: 'verify-full',
+  },
+  // other configuration
+})
+```
 
 ## See also
 
