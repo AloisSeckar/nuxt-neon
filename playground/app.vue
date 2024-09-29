@@ -17,7 +17,7 @@
   </ul>
   <h2>Test</h2>
   <div class="info">
-    {{ dbStatus }}
+    Neon status: {{ dbStatus.status }}
   </div>
   <div v-if="status === 'pending'">
     Fetching data...

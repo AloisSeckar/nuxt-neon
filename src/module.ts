@@ -1,8 +1,7 @@
 import { defineNuxtModule, addImports, addPlugin, createResolver } from '@nuxt/kit'
+import type { SSLModeOption } from './runtime/utils/neonTypes'
 
 // Module options TypeScript interface definition
-
-export type SSLModeOption = 'require' | 'verify-ca' | 'verify-full' | 'none'
 
 export interface ModuleOptions {
   neonHost: string

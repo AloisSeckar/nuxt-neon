@@ -1,15 +1,31 @@
 import { neon } from '@neondatabase/serverless'
+import type { NeonStatusResult } from '../utils/neonTypes'
 import { useRuntimeConfig } from '#app'
 
 export function useNeon() {
   const neonConnectionString = buildNeonConnectionString()
   const neonClient = neon(neonConnectionString)
 
-  const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<string> => {
-    const anonConnectionString = buildNeonConnectionString(anonymous)
-    return await Promise.resolve(neonClient`SELECT 1=1`)
-      .then(() => `connection to ${anonConnectionString} - OK`)
-      .catch(error => `connection to ${anonConnectionString} - ERR${debug ? ` - ${error}` : ''}`)
+  const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusResult> => {
+    const connectionString = buildNeonConnectionString(anonymous)
+
+    let success = false
+    let debugInfo = undefined
+    await Promise.resolve(neonClient`SELECT 1=1`)
+      .then(() => {
+        success = true
+      })
+      .catch((error) => {
+        if (debug) {
+          debugInfo = error as string
+        }
+      })
+
+    return {
+      connectionString,
+      status: success ? 'OK' : 'ERR',
+      debugInfo,
+    }
   }
 
   return {

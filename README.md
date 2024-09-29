@@ -54,18 +54,20 @@ That's it! Your Nuxt app is now connected to a Neon database instance ✨
 
 ### Health check
 
-The `useNeon` composable provides also a simple probe function `neonStatus` to test the liveness of the connection:
+The `useNeon` composable provides also a simple async probe function `neonStatus` to test the liveness of the connection:
 
 ```ts
 const { neonStatus } = useNeon()
-
-// const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<string>
-const dbStatus = await neonStatus()
-
-// `dbStatus` contains connection string that was used + OK if connection works or ERR the query cannot be made
-// - setting `anonymous = false` will disclose username and password [WARNING: may expose sensitive data! Use with caution]
-// - setting `debug = true` will append the root cause returned by Neon driver [WARNING: may expose sensitive data! Use with caution]
 ```
+
+The function takes two optional parameters:
+- `anonymous: boolean = true` - if set to `false`, it will disclose username and password [**WARNING**: may expose sensitive data! Use with caution]
+- `debug: boolean = false` - if set to `true`, if will append the root cause returned by Neon driver [**WARNING**: may expose sensitive data! Use with caution]
+
+The function returns a `NeonStatusResult` promise:
+- `connectionString: string` - connection string that was used to initialize current `neonClient` (USER and PASS are anonymized, if `anonymous = true`)
+- `status: 'OK' | 'ERR'` - `OK` if connection works, `ERR` if error occured
+- `debug?: string` - Neon driver error, if `status = 'ERR'` and `debug = true`
 
 ## Options
 
