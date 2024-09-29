@@ -16,6 +16,9 @@
     <li><pre>NUXT_PUBLIC_NEON_DB</pre></li>
   </ul>
   <h2>Test</h2>
+  <div class="info">
+    {{ dbStatus }}
+  </div>
   <div v-if="status === 'pending'">
     Fetching data...
   </div>
@@ -23,12 +26,13 @@
     <strong>Neon data:</strong><br>{{ data }}
   </div>
   <div v-if="error">
-    <strong>Error:</strong><br>{{ error }}
+    <strong>Failed to fetch data</strong>
   </div>
 </template>
 
 <script setup lang="ts">
-const { neonClient } = useNeon()
+const { neonClient, neonStatus } = useNeon()
+const dbStatus = await neonStatus()
 const { data, status, error } = await useAsyncData(() => neonClient`SELECT * FROM playing_with_neon`)
 </script>
 
