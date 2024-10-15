@@ -31,6 +31,8 @@
   <div v-if="error">
     <strong>Failed to fetch data</strong>
   </div>
+  <h3>SQL Wrappers test</h3>
+  <TestInsert />
 </template>
 
 <script setup lang="ts">

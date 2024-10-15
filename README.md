@@ -76,6 +76,32 @@ Value returned is a `NeonStatusResult` promise:
 - `status: 'OK' | 'ERR'` - `OK` if connection works, `ERR` if error occured
 - `debug?: string` - Neon driver error, if `status = 'ERR'` and `debug = true`
 
+### SQL Wrappers
+
+For convenience, this module builds wrappers for basic SQL functions around native `neonClient`.
+
+#### `insert()`
+
+```ts
+// async function insert(neon: NeonQueryFunction<false, false>, columns: string[], from: string[], where?: string[], order?: string, limit?: number)
+const { insert } = useNeon()
+```
+
+You can call `insert` function with following parameters:
+- **neon** - Neon Serverless Client instance obtained from `useNeon()`
+- **columns** - array of columns you want to retrieve
+  - you can also use special `*` for "all columns"
+  - you can use SQL functions (e.g. `count(*)`) 
+  - if you need aliases, you have to provide them together with the column name (e.g. `t.column`)
+- **from** - array of tables to select from
+  - more tables are joined with `JOIN` keyword
+  - if you need aliases, you have to provide them together with the table name (e.g. `table t`)
+- **where** - _optional_ array of select conditions
+  - more clauses are joined with `AND` keyword
+- **order** - _optional_ criteria for ordering results
+  - you can include direction (e.g `t.column DESC`)
+- **limit** - _optional_ limit, if more results expected
+
 ## Module options
 
 Nuxt-Neon can be configured by overriding the default options values using key `neon` inside `nuxt.config.ts`.
