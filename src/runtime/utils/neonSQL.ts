@@ -62,3 +62,17 @@ export async function update(neon: NeonQueryFunction<false, false>, table: strin
 
   return await neon(sqlString)
 }
+
+export async function del(neon: NeonQueryFunction<false, false>, table: string, where?: string[]) {
+  let sqlString = 'DELETE FROM '
+  sqlString += table
+
+  if (where) {
+    sqlString += ' WHERE '
+    sqlString += where.join(' AND ')
+  }
+
+  console.log(sqlString)
+
+  return await neon(sqlString)
+}

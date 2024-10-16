@@ -35,6 +35,7 @@
   <TestInsert />
   <TestSelect />
   <TestUpdate />
+  <TestDelete />
 </template>
 
 <script setup lang="ts">
