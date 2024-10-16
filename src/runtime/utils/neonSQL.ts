@@ -24,3 +24,23 @@ export async function insert(neon: NeonQueryFunction<false, false>, columns: str
 
   return await neon(sqlString)
 }
+
+export async function update(neon: NeonQueryFunction<false, false>, table: string, values: Record<string, string>, where?: string[]) {
+  let sqlString = 'UPDATE '
+  sqlString += table
+
+  sqlString += ' SET '
+  Object.entries(values).forEach(([key, value]) => {
+    sqlString += `${key} = '${value}',`
+  })
+  sqlString = sqlString.slice(0, -1) // remove last comma
+
+  if (where) {
+    sqlString += ' WHERE '
+    sqlString += where.join(' AND ')
+  }
+
+  console.log(sqlString)
+
+  return await neon(sqlString)
+}
