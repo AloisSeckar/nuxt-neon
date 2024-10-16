@@ -17,7 +17,7 @@ async function doSelect() {
     neonClient,
     ['name', 'value'],
     ['playing_with_neon'],
-    ['name LIKE \'c%\''],
+    ['name LIKE \'test%\''],
     'name DESC',
     2,
   )

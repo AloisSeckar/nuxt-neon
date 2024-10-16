@@ -44,8 +44,7 @@ export async function insert(neon: NeonQueryFunction<false, false>, table: strin
 }
 
 export async function update(neon: NeonQueryFunction<false, false>, table: string, values: Record<string, string>, where?: string[]) {
-  let sqlString = 'UPDATE '
-  sqlString += table
+  let sqlString = `UPDATE ${table}`
 
   sqlString += ' SET '
   Object.entries(values).forEach(([key, value]) => {
@@ -64,8 +63,7 @@ export async function update(neon: NeonQueryFunction<false, false>, table: strin
 }
 
 export async function del(neon: NeonQueryFunction<false, false>, table: string, where?: string[]) {
-  let sqlString = 'DELETE FROM '
-  sqlString += table
+  let sqlString = `DELETE FROM ${table}`
 
   if (where) {
     sqlString += ' WHERE '

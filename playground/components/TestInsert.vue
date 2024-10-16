@@ -16,7 +16,7 @@ async function doInsert() {
   result.value = await insert(
     neonClient,
     'playing_with_neon',
-    ['test-insert', '0'],
+    ['test', '0'],
     ['name', 'value'],
   )
 }
