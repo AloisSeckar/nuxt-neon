@@ -1,4 +1,5 @@
 import type { NeonQueryFunction } from '@neondatabase/serverless'
+import { sanitizeSQLArray, sanitizeSQLString } from './sanitizeSQL'
 
 export async function select(neon: NeonQueryFunction<false, false>, columns: string[], from: string[], where?: string[], order?: string, limit?: number) {
   let sqlString = 'SELECT '
@@ -34,9 +35,9 @@ export async function insert(neon: NeonQueryFunction<false, false>, table: strin
     sqlString += ') '
   }
 
-  sqlString += ' VALUES (\''
-  sqlString += values.join('\', \'')
-  sqlString += '\')'
+  sqlString += ' VALUES ('
+  sqlString += sanitizeSQLArray(values).join(', ')
+  sqlString += ')'
 
   console.log(sqlString)
 
@@ -48,7 +49,7 @@ export async function update(neon: NeonQueryFunction<false, false>, table: strin
 
   sqlString += ' SET '
   Object.entries(values).forEach(([key, value]) => {
-    sqlString += `${key} = '${value}',`
+    sqlString += `${key} = ${sanitizeSQLString(value)},`
   })
   sqlString = sqlString.slice(0, -1) // remove last comma
 

@@ -30,7 +30,8 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "0.9.5",
-    "@nuxt/kit": "3.13.2"
+    "@nuxt/kit": "3.13.2",
+    "sqlstring": "2.3.3"
   },
   "devDependencies": {
     "@nuxt/devtools": "1.5.0",
