@@ -1,6 +1,6 @@
 import { neon } from '@neondatabase/serverless'
 import type { NeonStatusResult } from '../utils/neonTypes'
-import { insert, update } from '../utils/neonSQL'
+import { select, insert, update } from '../utils/neonSQL'
 import { useRuntimeConfig } from '#app'
 
 export function useNeon() {
@@ -39,6 +39,7 @@ export function useNeon() {
     neonStatus,
     isOk,
     // SQL function wrappers
+    select,
     insert,
     update,
   }

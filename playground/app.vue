@@ -33,6 +33,7 @@
   </div>
   <h3>SQL Wrappers test</h3>
   <TestInsert />
+  <TestSelect />
   <TestUpdate />
 </template>
 

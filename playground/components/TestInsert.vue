@@ -1,28 +1,25 @@
 <template>
   <h3>insert()</h3>
-  <div v-if="status === 'pending'">
-    Fetching data...
-  </div>
-  <div v-if="data">
-    <strong>Neon data:</strong><br>{{ data }}
-  </div>
-  <div v-if="error">
-    <strong>Failed to fetch data</strong>
+  <button @click="doInsert">
+    Execute insert
+  </button>
+  <div>
+    Result: {{ result }}
   </div>
 </template>
 
 <script setup lang="ts">
 const { neonClient, insert } = useNeon()
-const { data, status, error } = await useAsyncData(() => {
-  return insert(
+
+const result = ref({})
+async function doInsert() {
+  result.value = await insert(
     neonClient,
+    'playing_with_neon',
+    ['test-insert', '0'],
     ['name', 'value'],
-    ['playing_with_neon'],
-    ['name LIKE \'c%\''],
-    'name DESC',
-    2,
   )
-})
+}
 </script>
 
 <style>
