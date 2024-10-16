@@ -78,29 +78,70 @@ Value returned is a `NeonStatusResult` promise:
 
 ### SQL Wrappers
 
-For convenience, this module builds wrappers for basic SQL functions around native `neonClient`.
+For convenience, this module builds wrappers for basic SQL data functions around native `neonClient`.
 
-#### `insert()`
+#### `select()`
 
 ```ts
-// async function insert(neon: NeonQueryFunction<false, false>, columns: string[], from: string[], where?: string[], order?: string, limit?: number)
-const { insert } = useNeon()
+// async function select(neon: NeonQueryFunction<false, false>, columns: string[], from: string[], where?: string[], order?: string, limit?: number)
+const { select } = useNeon()
 ```
 
-You can call `insert` function with following parameters:
+You can perform `SELECT` operation via this function with following parameters:
 - **neon** - Neon Serverless Client instance obtained from `useNeon()`
 - **columns** - array of columns you want to retrieve
   - you can also use special `*` for "all columns"
   - you can use SQL functions (e.g. `count(*)`) 
   - if you need aliases, you have to provide them together with the column name (e.g. `t.column`)
 - **from** - array of tables to select from
-  - more tables are joined with `JOIN` keyword
+  - more tables are internally joined with `JOIN`
   - if you need aliases, you have to provide them together with the table name (e.g. `table t`)
 - **where** - _optional_ array of select conditions
-  - more clauses are joined with `AND` keyword
+  - more clauses are internally joined with `AND`
 - **order** - _optional_ criteria for ordering results
   - you can include direction (e.g `t.column DESC`)
 - **limit** - _optional_ limit, if more results expected
+
+#### `insert()`
+
+```ts
+// async function insert(neon: NeonQueryFunction<false, false>, table: string, values: string[], columns?: string[])
+const { insert } = useNeon()
+```
+
+You can perform `INSERT` operation via this with following parameters:
+- **neon** - Neon Serverless Client instance obtained from `useNeon()`
+- **table** - DB table to insert into
+- **values** - list of values to be inserted
+- **columns** - _optional_ definition of columns for values 
+  - if used, `columns.length` must match `values.length`
+
+#### `update()`
+
+```ts
+// async function update(neon: NeonQueryFunction<false, false>, table: string, values: Record<string, string>, where?: string[])
+const { update } = useNeon()
+```
+You can perform `UPDATE` operation via this function with following parameters:
+- **neon** - Neon Serverless Client instance obtained from `useNeon()`
+- **table** - DB table to be updated
+- **values** - list of key-value pairs to be updated
+- **where** - _optional_ array of limiting conditions
+  - more clauses are internally joined with `AND`
+
+#### `del()`
+
+Because `delete` is not allowed as identifier in TypeScript, the wrapper for SQL DELETE functon is available as `del()`.
+
+```ts
+// async function del(neon: NeonQueryFunction<false, false>, table: string, where?: string[])
+const { del } = useNeon()
+```
+You can perform `DELETE` operation via this function with following parameters:
+- **neon** - Neon Serverless Client instance obtained from `useNeon()`
+- **table** - DB table to be deleled from
+- **where** - _optional_ array of limiting conditions
+  - more clauses are internally joined with `AND`
 
 ## Module options
 
