@@ -1,8 +1,7 @@
 export default defineNuxtConfig({
-  compatibilityDate: '2024-09-23',
   modules: ['../src/module'],
+  compatibilityDate: '2024-12-02',
   neon: {
     sslMode: 'require',
   },
-  devtools: { enabled: true },
 })
