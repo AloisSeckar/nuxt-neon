@@ -1,3 +1,3 @@
-import SqlString from 'sqlstring'
+import * as SqlString from 'sqlstring'
 
 export default SqlString
