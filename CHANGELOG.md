@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.2.2 (2024-12-05)
+- fix: wrap `sqlstring` CommonJS import for ESM re-use
+
 ## v0.2.1 (2024-12-05)
 - fix: handle `sqlstring` CommonJS import for ESM re-use
 
