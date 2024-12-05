@@ -1,4 +1,4 @@
-import * as SqlString from 'sqlstring'
+import SqlString from './sqlstringWrapper'
 
 export function sanitizeSQLString(sql: string): string {
   return SqlString.escape(sql)
