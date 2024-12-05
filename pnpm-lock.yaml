@@ -17,6 +17,9 @@ importers:
       sqlstring:
         specifier: 2.3.3
         version: 2.3.3
+      vite-plugin-commonjs:
+        specifier: ^0.10.4
+        version: 0.10.4
     devDependencies:
       '@nuxt/devtools':
         specifier: 1.6.1
@@ -4004,6 +4007,12 @@ packages:
         optional: true
       vue-tsc:
         optional: true
+
+  vite-plugin-commonjs@0.10.4:
+    resolution: {integrity: sha512-eWQuvQKCcx0QYB5e5xfxBNjQKyrjEWZIR9UOkOV6JAgxVhtbZvCOF+FNC2ZijBJ3U3Px04ZMMyyMyFBVWIJ5+g==}
+
+  vite-plugin-dynamic-import@1.6.0:
+    resolution: {integrity: sha512-TM0sz70wfzTIo9YCxVFwS8OA9lNREsh+0vMHGSkWDTZ7bgd1Yjs5RV8EgB634l/91IsXJReg0xtmuQqP0mf+rg==}
 
   vite-plugin-inspect@0.8.8:
     resolution: {integrity: sha512-aZlBuXsWUPJFmMK92GIv6lH7LrwG2POu4KJ+aEdcqnu92OAf+rhBnfMDQvxIJPEB7hE2t5EyY/PMgf5aDLT8EA==}
@@ -8607,6 +8616,19 @@ snapshots:
       optionator: 0.9.4
       typescript: 5.7.2
       vue-tsc: 2.1.10(typescript@5.7.2)
+
+  vite-plugin-commonjs@0.10.4:
+    dependencies:
+      acorn: 8.14.0
+      magic-string: 0.30.14
+      vite-plugin-dynamic-import: 1.6.0
+
+  vite-plugin-dynamic-import@1.6.0:
+    dependencies:
+      acorn: 8.14.0
+      es-module-lexer: 1.5.4
+      fast-glob: 3.3.2
+      magic-string: 0.30.14
 
   vite-plugin-inspect@0.8.8(@nuxt/kit@3.14.1592(magicast@0.3.5)(rollup@4.28.0))(rollup@4.28.0)(vite@5.4.11(@types/node@22.10.1)(terser@5.36.0)):
     dependencies:

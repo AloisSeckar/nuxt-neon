@@ -1,4 +1,5 @@
 import { defineNuxtModule, addImports, addPlugin, createResolver } from '@nuxt/kit'
+import commonjs from 'vite-plugin-commonjs'
 import type { SSLModeOption } from './runtime/utils/neonTypes'
 
 // Module options TypeScript interface definition
@@ -38,6 +39,16 @@ export default defineNuxtModule<ModuleOptions>({
       name: 'useNeon',
       as: 'useNeon',
       from: resolver.resolve('runtime/composables/useNeon'),
+    })
+
+    // 'sqlstring' only exists as a CommonJS module
+    // this should allow it being consumed in ESM runtimes
+    nuxt.hook('vite:extendConfig', (config) => {
+      config.plugins = config.plugins || []
+      config.plugins.push(commonjs())
+      config.optimizeDeps = config.optimizeDeps || {}
+      config.optimizeDeps.include = config.optimizeDeps.include || []
+      config.optimizeDeps.include.push('sqlstring')
     })
 
     // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
