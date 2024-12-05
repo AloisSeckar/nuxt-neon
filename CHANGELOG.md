@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.2.4 (2024-12-05)
+- fix: resolve `sqlstring` with `vite-plugin-commonjs`
+
 ## v0.2.3 (2024-12-05)
 - fix: handle `sqlstring` CommonJS import for ESM re-use
 
