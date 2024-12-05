@@ -1,6 +1,6 @@
 {
   "name": "nuxt-neon",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Nuxt framework integration with Neon database",
   "repository": "github:AloisSeckar/nuxt-neon",
   "license": "MIT",
