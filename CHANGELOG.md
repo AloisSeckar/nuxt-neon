@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.5 (2024-12-25)
+- build: bump Nuxt to `3.15.0` + update other deps
+- fix: set internal logging from `info` to `debug`
+
 ## v0.2.4 (2024-12-05)
 - fix: resolve `sqlstring` with `vite-plugin-commonjs`
 
