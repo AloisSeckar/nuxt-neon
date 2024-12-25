@@ -21,7 +21,7 @@ export async function select(neon: NeonQueryFunction<false, false>, columns: str
     sqlString += ` LIMIT ${limit}`
   }
 
-  console.log(sqlString)
+  console.debug(sqlString)
 
   return await neon(sqlString)
 }
@@ -39,7 +39,7 @@ export async function insert(neon: NeonQueryFunction<false, false>, table: strin
   sqlString += sanitizeSQLArray(values).join(', ')
   sqlString += ')'
 
-  console.log(sqlString)
+  console.debug(sqlString)
 
   return await neon(sqlString)
 }
@@ -58,7 +58,7 @@ export async function update(neon: NeonQueryFunction<false, false>, table: strin
     sqlString += where.join(' AND ')
   }
 
-  console.log(sqlString)
+  console.debug(sqlString)
 
   return await neon(sqlString)
 }
@@ -71,7 +71,7 @@ export async function del(neon: NeonQueryFunction<false, false>, table: string, 
     sqlString += where.join(' AND ')
   }
 
-  console.log(sqlString)
+  console.debug(sqlString)
 
   return await neon(sqlString)
 }
