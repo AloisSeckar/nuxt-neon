@@ -5,10 +5,7 @@ export function useNeon() {
   const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusResult> => {
     let error = null
     try {
-      await $fetch('/api/_neon/raw', {
-        method: 'POST',
-        body: { query: 'SELECT 1=1' },
-      })
+      await raw('SELECT 1=1')
     }
     catch (err) {
       error = err as Error
@@ -23,6 +20,26 @@ export function useNeon() {
 
   const isOk = async () => {
     return (await neonStatus()).status === 'OK'
+  }
+
+  const raw = async (query: string) => {
+    let data = null
+    let error = null
+    try {
+      data = await $fetch('/api/_neon/raw', {
+        method: 'POST',
+        body: { query },
+      })
+    }
+    catch (err) {
+      error = err as Error
+    }
+
+    // TODO better handling
+    if (error) {
+      throw new Error(error.message)
+    }
+    return data
   }
 
   const select = async (columns: string[], from: string[], where?: string[], order?: string, limit?: number) => {
@@ -110,6 +127,7 @@ export function useNeon() {
     neonStatus,
     isOk,
     // SQL function wrappers
+    raw,
     select,
     insert,
     update,
