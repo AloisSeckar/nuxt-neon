@@ -9,12 +9,11 @@
 </template>
 
 <script setup lang="ts">
-const { neonClient, insert } = useNeon()
+const { insert } = useNeon()
 
 const result = ref({})
 async function doInsert() {
   result.value = await insert(
-    neonClient,
     'playing_with_neon',
     ['test', '0'],
     ['name', 'value'],

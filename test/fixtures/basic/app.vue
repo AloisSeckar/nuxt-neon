@@ -4,8 +4,10 @@
 </template>
 
 <script setup lang="ts">
-import { useAsyncData, useNeon } from '#imports'
+import { useAsyncData } from '#imports'
 
-const { neonClient } = useNeon()
-const { data } = await useAsyncData(() => neonClient`SELECT * FROM playing_with_neon`)
+const { data } = await useAsyncData('neonTest', () => $fetch('/api/_neon/raw', {
+  method: 'POST',
+  body: { query: 'SELECT * FROM playing_with_neon' },
+}))
 </script>

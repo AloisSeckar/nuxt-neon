@@ -1,31 +1,23 @@
-import { neon } from '@neondatabase/serverless'
 import type { NeonStatusResult } from '../utils/neonTypes'
-import { select, insert, update, del } from '../utils/neonSQL'
-import { useRuntimeConfig } from '#app'
+import { useRuntimeConfig } from '#imports'
 
 export function useNeon() {
-  const neonConnectionString = buildNeonConnectionString()
-  const neonClient = neon(neonConnectionString)
-
   const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusResult> => {
-    const connectionString = buildNeonConnectionString(anonymous)
-
-    let success = false
-    let debugInfo = undefined
-    await Promise.resolve(neonClient`SELECT 1=1`)
-      .then(() => {
-        success = true
+    let error = null
+    try {
+      await $fetch('/api/_neon/raw', {
+        method: 'POST',
+        body: { query: 'SELECT 1=1' },
       })
-      .catch((error) => {
-        if (debug) {
-          debugInfo = error as string
-        }
-      })
+    }
+    catch (err) {
+      error = err as Error
+    }
 
     return {
-      connectionString,
-      status: success ? 'OK' : 'ERR',
-      debugInfo,
+      database: getDBName(anonymous),
+      status: error ? 'ERR' : 'OK',
+      debugInfo: debug ? error?.message : '',
     }
   }
 
@@ -33,8 +25,87 @@ export function useNeon() {
     return (await neonStatus()).status === 'OK'
   }
 
+  const select = async (columns: string[], from: string[], where?: string[], order?: string, limit?: number) => {
+    let data = null
+    let error = null
+    try {
+      data = await $fetch('/api/_neon/select', {
+        method: 'POST',
+        body: { columns, from, where, order, limit },
+      })
+    }
+    catch (err) {
+      error = err as Error
+    }
+
+    // TODO better handling
+    if (error) {
+      throw new Error(error.message)
+    }
+    return data
+  }
+
+  const insert = async (table: string, values: string[], columns?: string[]) => {
+    let data = null
+    let error = null
+    try {
+      data = await $fetch('/api/_neon/insert', {
+        method: 'POST',
+        body: { table, values, columns },
+      })
+    }
+    catch (err) {
+      error = err as Error
+    }
+
+    // TODO better handling
+    if (error) {
+      throw new Error(error.message)
+    }
+    return data
+  }
+
+  const update = async (table: string, values: Record<string, string>, where?: string[]) => {
+    let data = null
+    let error = null
+    try {
+      data = await $fetch('/api/_neon/update', {
+        method: 'POST',
+        body: { table, values, where },
+      })
+    }
+    catch (err) {
+      error = err as Error
+    }
+
+    // TODO better handling
+    if (error) {
+      throw new Error(error.message)
+    }
+    return data
+  }
+
+  const del = async (table: string, where?: string[]) => {
+    let data = null
+    let error = null
+    try {
+      data = await $fetch('/api/_neon/delete', {
+        method: 'POST',
+        body: { table, where },
+      })
+    }
+    catch (err) {
+      error = err as Error
+    }
+
+    // TODO better handling
+    if (error) {
+      throw new Error(error.message)
+    }
+    return data
+  }
+
   return {
-    neonClient,
     // health check probes
     neonStatus,
     isOk,
@@ -46,18 +117,6 @@ export function useNeon() {
   }
 }
 
-function buildNeonConnectionString(anonymous: boolean = false) {
-  const neonHost = useRuntimeConfig().public.neonHost
-  const neonPass = useRuntimeConfig().public.neonPass
-  const neonUser = useRuntimeConfig().public.neonUser
-  const neonDB = useRuntimeConfig().public.neonDB
-
-  let connectionString = `postgresql://${anonymous ? 'USER' : neonUser}:${anonymous ? 'PASS' : neonPass}@${neonHost}.neon.tech/${neonDB}`
-
-  const sslMode = useRuntimeConfig().public.sslMode
-  if (sslMode !== 'none') {
-    connectionString += `?sslmode=${sslMode}`
-  }
-
-  return connectionString
+function getDBName(anonymous: boolean = false) {
+  return anonymous ? '' : useRuntimeConfig().public.neonDB
 }

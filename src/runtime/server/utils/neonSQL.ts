@@ -1,7 +1,7 @@
 import type { NeonQueryFunction } from '@neondatabase/serverless'
 import { sanitizeSQLArray, sanitizeSQLString } from './sanitizeSQL'
 
-export async function select(neon: NeonQueryFunction<false, false>, columns: string[], from: string[], where?: string[], order?: string, limit?: number) {
+export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string[], from: string[], where?: string[], order?: string, limit?: number) {
   let sqlString = 'SELECT '
   sqlString += columns.join(', ')
 
@@ -26,7 +26,7 @@ export async function select(neon: NeonQueryFunction<false, false>, columns: str
   return await neon(sqlString)
 }
 
-export async function insert(neon: NeonQueryFunction<false, false>, table: string, values: string[], columns?: string[]) {
+export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: string, values: string[], columns?: string[]) {
   let sqlString = `INSERT INTO ${table}`
 
   if (columns) {
@@ -44,7 +44,7 @@ export async function insert(neon: NeonQueryFunction<false, false>, table: strin
   return await neon(sqlString)
 }
 
-export async function update(neon: NeonQueryFunction<false, false>, table: string, values: Record<string, string>, where?: string[]) {
+export async function update(neon: NeonQueryFunction<boolean, boolean>, table: string, values: Record<string, string>, where?: string[]) {
   let sqlString = `UPDATE ${table}`
 
   sqlString += ' SET '
@@ -63,7 +63,7 @@ export async function update(neon: NeonQueryFunction<false, false>, table: strin
   return await neon(sqlString)
 }
 
-export async function del(neon: NeonQueryFunction<false, false>, table: string, where?: string[]) {
+export async function del(neon: NeonQueryFunction<boolean, boolean>, table: string, where?: string[]) {
   let sqlString = `DELETE FROM ${table}`
 
   if (where) {

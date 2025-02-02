@@ -1,5 +1,5 @@
-import { defineNuxtPlugin } from '#app'
+import { defineNuxtPlugin } from '#imports'
 
-export default defineNuxtPlugin((_nuxtApp) => {
+export default defineNuxtPlugin((/* nuxtApp */) => {
   console.debug('Here we test connection to Neon')
 })

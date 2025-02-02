@@ -39,12 +39,15 @@
 </template>
 
 <script setup lang="ts">
-const { neonClient, neonStatus, isOk } = useNeon()
+const { neonStatus, isOk } = useNeon()
 // health checks
 const dbStatus = await neonStatus()
 const connectionOpen = await isOk()
 // get sample data
-const { data, status, error } = await useAsyncData(() => neonClient`SELECT * FROM playing_with_neon`)
+const { data, status, error } = await useAsyncData('neonTest', () => $fetch('/api/_neon/raw', {
+  method: 'POST',
+  body: { query: 'SELECT * FROM playing_with_neon' },
+}))
 </script>
 
 <style>

@@ -9,12 +9,11 @@
 </template>
 
 <script setup lang="ts">
-const { neonClient, update } = useNeon()
+const { update } = useNeon()
 
 const result = ref({})
 async function doUpdate() {
   result.value = await update(
-    neonClient,
     'playing_with_neon',
     { value: '1' },
     ['name = \'test\''],

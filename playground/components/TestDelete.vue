@@ -9,12 +9,11 @@
 </template>
 
 <script setup lang="ts">
-const { neonClient, del } = useNeon()
+const { del } = useNeon()
 
 const result = ref({})
 async function doDelete() {
   result.value = await del(
-    neonClient,
     'playing_with_neon',
     ['name = \'test\''],
   )

@@ -9,12 +9,11 @@
 </template>
 
 <script setup lang="ts">
-const { neonClient, select } = useNeon()
+const { select } = useNeon()
 
 const result = ref({})
 async function doSelect() {
   result.value = await select(
-    neonClient,
     ['name', 'value'],
     ['playing_with_neon'],
     ['name LIKE \'test%\''],

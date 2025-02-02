@@ -1,4 +1,4 @@
-import { defineNuxtModule, addImports, addPlugin, createResolver } from '@nuxt/kit'
+import { defineNuxtModule, addImports, addPlugin, addServerHandler, createResolver } from '@nuxt/kit'
 import commonjs from 'vite-plugin-commonjs'
 import type { SSLModeOption } from './runtime/utils/neonTypes'
 
@@ -29,11 +29,32 @@ export default defineNuxtModule<ModuleOptions>({
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    nuxt.options.runtimeConfig.public.neonHost = options.neonHost
-    nuxt.options.runtimeConfig.public.neonUser = options.neonUser
-    nuxt.options.runtimeConfig.public.neonPass = options.neonPass
+    nuxt.options.runtimeConfig.neonHost = options.neonHost
+    nuxt.options.runtimeConfig.neonUser = options.neonUser
+    nuxt.options.runtimeConfig.neonPass = options.neonPass
     nuxt.options.runtimeConfig.public.neonDB = options.neonDB
     nuxt.options.runtimeConfig.public.sslMode = options.sslMode
+
+    addServerHandler({
+      route: '/api/_neon/raw',
+      handler: resolver.resolve('runtime/server/api/neonRaw'),
+    })
+    addServerHandler({
+      route: '/api/_neon/select',
+      handler: resolver.resolve('runtime/server/api/neonSelect'),
+    })
+    addServerHandler({
+      route: '/api/_neon/insert',
+      handler: resolver.resolve('runtime/server/api/neonInsert'),
+    })
+    addServerHandler({
+      route: '/api/_neon/update',
+      handler: resolver.resolve('runtime/server/api/neonUpdate'),
+    })
+    addServerHandler({
+      route: '/api/_neon/delete',
+      handler: resolver.resolve('runtime/server/api/neonDelete'),
+    })
 
     addImports({
       name: 'useNeon',
