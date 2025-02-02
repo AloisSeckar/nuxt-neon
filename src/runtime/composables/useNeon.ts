@@ -126,7 +126,7 @@ export function useNeon() {
     // health check probes
     neonStatus,
     isOk,
-    // SQL function wrappers
+    // SQL wrappers
     raw,
     select,
     insert,

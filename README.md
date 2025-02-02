@@ -18,35 +18,30 @@ npx nuxi module add nuxt-neon
 ```
 
 Provide connection details to your Neon DB instance through a set of Nuxt [runtime config variables](https://nuxt.com/docs/guide/going-further/runtime-config#environment-variables):
-- `NUXT_PUBLIC_NEON_HOST`
-- `NUXT_PUBLIC_NEON_USER`
-- `NUXT_PUBLIC_NEON_PASS`
+- `NUXT_NEON_HOST`
+- `NUXT_NEON_USER`
+- `NUXT_NEON_PASS`
 - `NUXT_PUBLIC_NEON_DB`
 
 Nuxt-Neon will construct a PostgreSQL connection string based on given values:
 
 ```ts
-`postgresql://${NUXT_PUBLIC_NEON_USER}:${NUXT_PUBLIC_NEON_PASS}@${NUXT_PUBLIC_NEON_HOST}.neon.tech/${NUXT_PUBLIC_NEON_DB}`
+`postgresql://${NUXT_NEON_USER}:${NUXT_NEON_PASS}@${NUXT_NEON_HOST}.neon.tech/${NUXT_PUBLIC_NEON_DB}`
 ```
 
-It will be used to initialize the [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) object exposed via `useNeon` composable:
+Settings are used to initialize the [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) object initialized on the Nuxt server.
+
+NOTE: Sensitive connection data are sealed on Nuxt server. The only public property is the database name.
+
+### `useNeon` composable
+
+This module exposes `useNeon()` composable on the client side. Currently two health check probes and five SQL wrappers are available:
 
 ```ts
-const { neonClient } = useNeon()
-```
-
-Provided Neon client object is capable of making direct SQL queries to connected database.
-
-You can use either tagged template syntax:
-
-```ts
-neonClient`SELECT * FROM playing_with_neon`
-```
-
-Or the traditional function syntax:
-
-```ts
-neonClient('SELECT * FROM playing_with_neon')
+// health check probes
+const { isOk, neonStatus } = useNeon()
+// SQL wrappers
+const { raw, select, insert, update, del } = useNeon()
 ```
 
 That's it! Your Nuxt app is now connected to a Neon database instance ✨
@@ -65,25 +60,36 @@ The return value `true/false` is based on more complex probe function `neonStatu
 const { neonStatus } = useNeon()
 ```
 
-The test is performed by firing a `SELECT 1=1` query to the current `neonClient`.
+The test is performed by firing a `SELECT 1=1` query to the current Neon database.
 
 The function takes two optional parameters:
-- `anonymous: boolean = true` - if set to `false`, it will disclose username and password [**WARNING**: may expose sensitive data! Use with caution]
+- `anonymous: boolean = true` - if set to `false`, it will disclose database name
 - `debug: boolean = false` - if set to `true`, if will append the root cause returned by Neon driver [**WARNING**: may expose sensitive data! Use with caution]
 
 Value returned is a `NeonStatusResult` promise:
-- `connectionString: string` - connection string that was used to initialize current `neonClient` (USER and PASS are anonymized, if `anonymous = true`)
+- `database: string` - name of the Neon database (hidden, if `anonymous = true`)
 - `status: 'OK' | 'ERR'` - `OK` if connection works, `ERR` if error occured
 - `debug?: string` - Neon driver error, if `status = 'ERR'` and `debug = true`
 
 ### SQL Wrappers
 
-For convenience, this module builds wrappers for basic SQL data functions around native `neonClient`.
+This module offers SQL wrappers that communicate with Nuxt server-side endpoints connected to the native `neonClient`. Currently 5 of them are available.
+
+#### `raw()`
+
+```ts
+// async function raw(query: string)
+const { raw } = useNeon()
+```
+
+This wrapper allows you to perform **ANY** SQL directly.
+
+**SECURITY WARNING**: the value of `query` cannot be sanitized before being applied to the database, so make sure you **NEVER allow unchecked user input via `raw` handler**. This method is implemented to allow bypassing edge cases that cannot be covered by the following wrappers, that ensure input security more.
 
 #### `select()`
 
 ```ts
-// async function select(neon: NeonQueryFunction<false, false>, columns: string[], from: string[], where?: string[], order?: string, limit?: number)
+// async function select(columns: string[], from: string[], where?: string[], order?: string, limit?: number)
 const { select } = useNeon()
 ```
 
@@ -102,10 +108,12 @@ You can perform `SELECT` operation via this function with following parameters:
   - you can include direction (e.g `t.column DESC`)
 - **limit** - _optional_ limit, if more results expected
 
+Inputs are being sanitized before applied to database.
+
 #### `insert()`
 
 ```ts
-// async function insert(neon: NeonQueryFunction<false, false>, table: string, values: string[], columns?: string[])
+// async function insert(table: string, values: string[], columns?: string[])
 const { insert } = useNeon()
 ```
 
@@ -116,10 +124,12 @@ You can perform `INSERT` operation via this with following parameters:
 - **columns** - _optional_ definition of columns for values 
   - if used, `columns.length` must match `values.length`
 
+Inputs are being sanitized before applied to database.
+
 #### `update()`
 
 ```ts
-// async function update(neon: NeonQueryFunction<false, false>, table: string, values: Record<string, string>, where?: string[])
+// async function update(table: string, values: Record<string, string>, where?: string[])
 const { update } = useNeon()
 ```
 You can perform `UPDATE` operation via this function with following parameters:
@@ -129,12 +139,14 @@ You can perform `UPDATE` operation via this function with following parameters:
 - **where** - _optional_ array of limiting conditions
   - more clauses are internally joined with `AND`
 
+Inputs are being sanitized before applied to database.
+
 #### `del()`
 
-Because `delete` is not allowed as identifier in TypeScript, the wrapper for SQL DELETE functon is available as `del()`.
+**NOTE:** Because `delete` is not allowed as identifier in TypeScript, the wrapper for SQL DELETE function is available here as `del()`.
 
 ```ts
-// async function del(neon: NeonQueryFunction<false, false>, table: string, where?: string[])
+// async function del(table: string, where?: string[])
 const { del } = useNeon()
 ```
 You can perform `DELETE` operation via this function with following parameters:
