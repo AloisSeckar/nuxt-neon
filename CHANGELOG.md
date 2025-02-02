@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.3.0 (2025-02-02)
+- feat: module was re-designed and direct Neon DB communication was hidden behind Nuxt server-side API routes
+- feat: direct access to `neonClient` on server-side was dropped
+- feat: runtime config values for Neon DB connection were properly hidden at Nuxt server-side
+- feat: new `raw` SQL wrapper was added
+- feat: return values from SQL wrappers were made more consistent
+- docs: README.md updated to reflect current changes
+- build: bump Nuxt to `3.15.4` + update other deps
+
 ## v0.2.5 (2024-12-25)
 - build: bump Nuxt to `3.15.0` + update other deps
 - fix: set internal logging from `info` to `debug`
@@ -17,7 +26,7 @@
 - fix: handle `sqlstring` CommonJS import for ESM re-use
 
 ## v0.2.0 (2024-12-05)
-- feat: select, insert, update and delete SQL wrapper
+- feat: `select`, `insert`, `update` and `delete` SQL wrapper
 - build: tech update (2024-12-02)
 
 ## v0.1.2 (2024-09-29)
