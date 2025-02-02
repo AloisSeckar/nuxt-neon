@@ -23,88 +23,23 @@ export function useNeon() {
   }
 
   const raw = async (query: string) => {
-    let data = null
-    let error = null
-    try {
-      data = await $fetch('/api/_neon/raw', {
-        method: 'POST',
-        body: { query },
-      })
-    }
-    catch (err) {
-      error = err as Error
-      throw new Error(error.message)
-    }
-
-    return data
+    return await callNeonBackend('raw', { query }, true)
   }
 
   const select = async (columns: string[], from: string[], where?: string[], order?: string, limit?: number) => {
-    let data = null
-    let error = null
-    try {
-      data = await $fetch('/api/_neon/select', {
-        method: 'POST',
-        body: { columns, from, where, order, limit },
-      })
-    }
-    catch (err) {
-      error = err as Error
-      throw new Error(error.message)
-    }
-
-    return data
+    return await callNeonBackend('select', { columns, from, where, order, limit }, true)
   }
 
   const insert = async (table: string, values: string[], columns?: string[]) => {
-    let error = null
-    try {
-      // neon client only returns [] after successful insert
-      await $fetch('/api/_neon/insert', {
-        method: 'POST',
-        body: { table, values, columns },
-      })
-    }
-    catch (err) {
-      error = err as Error
-      throw new Error(error.message)
-    }
-
-    return 'OK'
+    return await callNeonBackend('insert', { table, values, columns }, false)
   }
 
   const update = async (table: string, values: Record<string, string>, where?: string[]) => {
-    let error = null
-    try {
-      // neon client only returns [] after successful update
-      await $fetch('/api/_neon/update', {
-        method: 'POST',
-        body: { table, values, where },
-      })
-    }
-    catch (err) {
-      error = err as Error
-      throw new Error(error.message)
-    }
-
-    return 'OK'
+    return await callNeonBackend('update', { table, values, where }, false)
   }
 
   const del = async (table: string, where?: string[]) => {
-    let error = null
-    try {
-      // neon client only returns [] after successful delete
-      await $fetch('/api/_neon/delete', {
-        method: 'POST',
-        body: { table, where },
-      })
-    }
-    catch (err) {
-      error = err as Error
-      throw new Error(error.message)
-    }
-
-    return 'OK'
+    return await callNeonBackend('delete', { table, where }, false)
   }
 
   return {
@@ -122,4 +57,22 @@ export function useNeon() {
 
 function getDBName(anonymous: boolean = false) {
   return anonymous ? '' : useRuntimeConfig().public.neonDB
+}
+
+/* eslint-disable  @typescript-eslint/no-explicit-any */ // FetchOptions are typed with "any"
+async function callNeonBackend(method: string, body: Record<string, any>, returnResult: boolean) {
+  let result = null
+  let error = null
+  try {
+    result = await $fetch(`/api/_neon/${method}`, {
+      method: 'POST',
+      body,
+    })
+  }
+  catch (err) {
+    error = err as Error
+    throw new Error(error.message)
+  }
+
+  return returnResult ? result : 'OK'
 }
