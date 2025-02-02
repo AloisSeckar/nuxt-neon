@@ -36,6 +36,7 @@
   <TestSelect />
   <TestUpdate />
   <TestDelete />
+  <TestRaw />
 </template>
 
 <script setup lang="ts">

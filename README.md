@@ -84,6 +84,8 @@ const { raw } = useNeon()
 
 This wrapper allows you to perform **ANY** SQL directly.
 
+Returns the result of the query (Neon client returns `[]` for INSERT, UPDATE and DELETE) or returned erorr message.
+
 **SECURITY WARNING**: the value of `query` cannot be sanitized before being applied to the database, so make sure you **NEVER allow unchecked user input via `raw` handler**. This method is implemented to allow bypassing edge cases that cannot be covered by the following wrappers, that ensure input security more.
 
 #### `select()`
@@ -108,6 +110,8 @@ You can perform `SELECT` operation via this function with following parameters:
   - you can include direction (e.g `t.column DESC`)
 - **limit** - _optional_ limit, if more results expected
 
+Returns the result of the SELECT query (Neon client returns `[]` for empty set) or returned erorr message.
+
 Inputs are being sanitized before applied to database.
 
 #### `insert()`
@@ -123,6 +127,8 @@ You can perform `INSERT` operation via this with following parameters:
 - **values** - list of values to be inserted
 - **columns** - _optional_ definition of columns for values 
   - if used, `columns.length` must match `values.length`
+
+Returns `'OK'` if query was successfully executed or returned erorr message.
 
 Inputs are being sanitized before applied to database.
 
@@ -154,6 +160,10 @@ You can perform `DELETE` operation via this function with following parameters:
 - **table** - DB table to be deleled from
 - **where** - _optional_ array of limiting conditions
   - more clauses are internally joined with `AND`
+
+Returns `'OK'` if query was successfully executed or returned erorr message.
+
+Inputs are being sanitized before applied to database.
 
 ## Module options
 

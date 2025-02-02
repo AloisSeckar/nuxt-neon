@@ -33,12 +33,9 @@ export function useNeon() {
     }
     catch (err) {
       error = err as Error
-    }
-
-    // TODO better handling
-    if (error) {
       throw new Error(error.message)
     }
+
     return data
   }
 
@@ -53,73 +50,61 @@ export function useNeon() {
     }
     catch (err) {
       error = err as Error
-    }
-
-    // TODO better handling
-    if (error) {
       throw new Error(error.message)
     }
+
     return data
   }
 
   const insert = async (table: string, values: string[], columns?: string[]) => {
-    let data = null
     let error = null
     try {
-      data = await $fetch('/api/_neon/insert', {
+      // neon client only returns [] after successful insert
+      await $fetch('/api/_neon/insert', {
         method: 'POST',
         body: { table, values, columns },
       })
     }
     catch (err) {
       error = err as Error
-    }
-
-    // TODO better handling
-    if (error) {
       throw new Error(error.message)
     }
-    return data
+
+    return 'OK'
   }
 
   const update = async (table: string, values: Record<string, string>, where?: string[]) => {
-    let data = null
     let error = null
     try {
-      data = await $fetch('/api/_neon/update', {
+      // neon client only returns [] after successful update
+      await $fetch('/api/_neon/update', {
         method: 'POST',
         body: { table, values, where },
       })
     }
     catch (err) {
       error = err as Error
-    }
-
-    // TODO better handling
-    if (error) {
       throw new Error(error.message)
     }
-    return data
+
+    return 'OK'
   }
 
   const del = async (table: string, where?: string[]) => {
-    let data = null
     let error = null
     try {
-      data = await $fetch('/api/_neon/delete', {
+      // neon client only returns [] after successful delete
+      await $fetch('/api/_neon/delete', {
         method: 'POST',
         body: { table, where },
       })
     }
     catch (err) {
       error = err as Error
-    }
-
-    // TODO better handling
-    if (error) {
       throw new Error(error.message)
     }
-    return data
+
+    return 'OK'
   }
 
   return {
