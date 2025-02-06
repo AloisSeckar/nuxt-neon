@@ -165,6 +165,15 @@ Returns `'OK'` if query was successfully executed or returned erorr message.
 
 Inputs are being sanitized before applied to database.
 
+### Server side
+
+Following server-side util methods are exposed for usage in your server routes:
+- `getNeonClient()` - returns an instance on `neonClient` constructed based on config params (connection-string builder is not exposed)
+- `select()` - server-side variant of SELECT wrapper, requires `neonClient` to be passed as 1st param
+- `insert()` - server-side variant of INSERT wrapper, requires `neonClient` to be passed as 1st param
+- `update()` - server-side variant of UPDATE wrapper, requires `neonClient` to be passed as 1st param
+- `del()` - server-side variant of DELETE wrapper, requires `neonClient` to be passed as 1st param
+
 ## Module options
 
 Nuxt-Neon can be configured by overriding the default options values using key `neon` inside `nuxt.config.ts`.

@@ -1,4 +1,4 @@
-import { defineNuxtModule, addImports, addPlugin, addServerHandler, createResolver } from '@nuxt/kit'
+import { defineNuxtModule, addImports, addPlugin, addServerHandler, addServerImports, createResolver } from '@nuxt/kit'
 import commonjs from 'vite-plugin-commonjs'
 import type { SSLModeOption } from './runtime/utils/neonTypes'
 
@@ -61,6 +61,34 @@ export default defineNuxtModule<ModuleOptions>({
       as: 'useNeon',
       from: resolver.resolve('runtime/composables/useNeon'),
     })
+
+    addServerImports([
+      {
+        name: 'getNeonClient',
+        as: 'getNeonClient',
+        from: resolver.resolve('runtime/server/utils/getNeonClient'),
+      },
+      {
+        name: 'select',
+        as: 'select',
+        from: resolver.resolve('runtime/server/utils/neonSQL'),
+      },
+      {
+        name: 'insert',
+        as: 'insert',
+        from: resolver.resolve('runtime/server/utils/neonSQL'),
+      },
+      {
+        name: 'update',
+        as: 'update',
+        from: resolver.resolve('runtime/server/utils/neonSQL'),
+      },
+      {
+        name: 'del',
+        as: 'del',
+        from: resolver.resolve('runtime/server/utils/neonSQL'),
+      },
+    ])
 
     // 'sqlstring' only exists as a CommonJS module
     // this should allow it being consumed in ESM runtimes
