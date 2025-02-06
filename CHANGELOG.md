@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.1 (2025-02-06)
+- feat: expose server-side utils (`getNeonClient` and SQL wrappers)
+- docs: README.md updated to reflect current changes
+
 ## v0.3.0 (2025-02-02)
 - feat: module was re-designed and direct Neon DB communication was hidden behind Nuxt server-side API routes
 - feat: direct access to `neonClient` on server-side was dropped
