@@ -11,14 +11,14 @@ export function getNeonClient() {
   return neonClient
 }
 
-function buildNeonConnectionString(anonymous: boolean = false) {
+function buildNeonConnectionString() {
   const nuxtConfig = useRuntimeConfig()
   const neonHost = nuxtConfig.neonHost
   const neonPass = nuxtConfig.neonPass
   const neonUser = nuxtConfig.neonUser
   const neonDB = nuxtConfig.public.neonDB
 
-  let connectionString = `postgresql://${anonymous ? 'USER' : neonUser}:${anonymous ? 'PASS' : neonPass}@${neonHost}.neon.tech/${neonDB}`
+  let connectionString = `postgresql://${neonUser}:${neonPass}@${neonHost}.neon.tech/${neonDB}`
 
   const sslMode = nuxtConfig.public.sslMode
   if (sslMode !== 'none') {
