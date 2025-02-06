@@ -96,7 +96,6 @@ const { select } = useNeon()
 ```
 
 You can perform `SELECT` operation via this function with following parameters:
-- **neon** - Neon Serverless Client instance obtained from `useNeon()`
 - **columns** - array of columns you want to retrieve
   - you can also use special `*` for "all columns"
   - you can use SQL functions (e.g. `count(*)`) 
@@ -122,7 +121,6 @@ const { insert } = useNeon()
 ```
 
 You can perform `INSERT` operation via this with following parameters:
-- **neon** - Neon Serverless Client instance obtained from `useNeon()`
 - **table** - DB table to insert into
 - **values** - list of values to be inserted
 - **columns** - _optional_ definition of columns for values 
@@ -139,7 +137,6 @@ Inputs are being sanitized before applied to database.
 const { update } = useNeon()
 ```
 You can perform `UPDATE` operation via this function with following parameters:
-- **neon** - Neon Serverless Client instance obtained from `useNeon()`
 - **table** - DB table to be updated
 - **values** - list of key-value pairs to be updated
 - **where** - _optional_ array of limiting conditions
@@ -156,7 +153,6 @@ Inputs are being sanitized before applied to database.
 const { del } = useNeon()
 ```
 You can perform `DELETE` operation via this function with following parameters:
-- **neon** - Neon Serverless Client instance obtained from `useNeon()`
 - **table** - DB table to be deleled from
 - **where** - _optional_ array of limiting conditions
   - more clauses are internally joined with `AND`
