@@ -5,7 +5,7 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-![nuxt-neon](https://github.com/AloisSeckar/nuxt-neon/blob/main/nuxt-neon.png)
+![nuxt-neon](https://github.com/AloisSeckar/nuxt-neon/blob/master/nuxt-neon.png | width=200)
 
 A simple [Nuxt module](https://nuxt.com/modules) alowing smooth integration with [Neon database](https://neon.tech/).
 
