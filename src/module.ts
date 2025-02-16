@@ -10,6 +10,7 @@ export interface ModuleOptions {
   neonPass: string
   neonDB: string
   sslMode: SSLModeOption
+  rawWarning: boolean
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -25,6 +26,7 @@ export default defineNuxtModule<ModuleOptions>({
     neonPass: '',
     neonDB: '',
     sslMode: 'require',
+    rawWarning: true,
   },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
@@ -34,6 +36,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.neonPass = options.neonPass
     nuxt.options.runtimeConfig.public.neonDB = options.neonDB
     nuxt.options.runtimeConfig.public.sslMode = options.sslMode
+    nuxt.options.runtimeConfig.public.rawWarning = options.rawWarning
 
     addServerHandler({
       route: '/api/_neon/raw',

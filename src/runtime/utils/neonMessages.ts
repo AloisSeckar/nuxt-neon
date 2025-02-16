@@ -1,0 +1,1 @@
+export const NEON_RAW_WARNING = 'nuxt-neon: using `raw()` SQL handler is potentially unsafe! Consider using other methods where inputs are sanitized. Disable this warning using `neon.rawWarning: false` or `NUXT_PUBLIC_RAW_WARNING: false`, if you are confident with your code.'

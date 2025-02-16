@@ -90,6 +90,8 @@ Returns the result of the query (Neon client returns `[]` for INSERT, UPDATE and
 
 **SECURITY WARNING**: the value of `query` cannot be sanitized before being applied to the database, so make sure you **NEVER allow unchecked user input via `raw` handler**. This method is implemented to allow bypassing edge cases that cannot be covered by the following wrappers, that ensure input security more.
 
+Since this method is potentially unsafe, a warning will display by default, if called. If you are 100% sure what you are doing, you can disable the warning by setting `neon.rawWarning: false`
+
 #### `select()`
 
 ```ts
@@ -183,6 +185,9 @@ Existing options:
   - `verify-ca`
   - `verify-full`
   - `none` (sslmode is **not** inclued in the connection string)
+- `rawWarning` - display warning message when using `raw()` SQL wrapper
+  - `true` (default)
+  - `false`
 
 Example:
 
@@ -191,6 +196,7 @@ Example:
 export default defineNuxtConfig({
   neon: {
     sslMode: 'verify-full',
+    rawWarning: false,
   },
   // other configuration
 })

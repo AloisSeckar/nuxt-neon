@@ -1,4 +1,5 @@
 import type { NeonStatusResult } from '../utils/neonTypes'
+import { NEON_RAW_WARNING } from '../utils/neonMessages'
 import { useRuntimeConfig } from '#imports'
 
 export function useNeon() {
@@ -23,6 +24,9 @@ export function useNeon() {
   }
 
   const raw = async (query: string) => {
+    if (useRuntimeConfig().public.rawWarning) {
+      console.warn(NEON_RAW_WARNING)
+    }
     return await callNeonBackend('raw', { query }, true)
   }
 

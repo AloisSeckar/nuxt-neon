@@ -3,5 +3,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-02-02',
   neon: {
     sslMode: 'require',
+    rawWarning: false,
   },
 })
