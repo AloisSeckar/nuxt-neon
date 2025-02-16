@@ -202,6 +202,15 @@ export default defineNuxtConfig({
 })
 ```
 
+### As runtime config
+
+Module options can also be passed as Nuxt runtime config variables in `.env` file, eg.:
+
+```
+NUXT_PUBLIC_SSL_MODE=verify-full
+NUXT_PUBLIC_RAW_WARNING=false
+```
+
 ## See also
 
 - [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) for the full reference of provided features like the `transaction()` function.
