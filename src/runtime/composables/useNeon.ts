@@ -1,4 +1,4 @@
-import type { NeonStatusResult } from '../utils/neonTypes'
+import type { NeonStatusResult, NeonTableQuery, NeonWhereQuery } from '../utils/neonTypes'
 import { NEON_RAW_WARNING } from '../utils/neonMessages'
 import { useRuntimeConfig } from '#imports'
 
@@ -30,7 +30,7 @@ export function useNeon() {
     return await callNeonBackend('raw', { query }, true)
   }
 
-  const select = async (columns: string[], from: string[], where?: string[], order?: string, limit?: number) => {
+  const select = async (columns: string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery[], order?: string, limit?: number) => {
     return await callNeonBackend('select', { columns, from, where, order, limit }, true)
   }
 
@@ -38,11 +38,11 @@ export function useNeon() {
     return await callNeonBackend('insert', { table, values, columns }, false)
   }
 
-  const update = async (table: string, values: Record<string, string>, where?: string[]) => {
+  const update = async (table: string, values: Record<string, string>, where?: string | NeonWhereQuery[]) => {
     return await callNeonBackend('update', { table, values, where }, false)
   }
 
-  const del = async (table: string, where?: string[]) => {
+  const del = async (table: string, where?: string | NeonWhereQuery[]) => {
     return await callNeonBackend('delete', { table, where }, false)
   }
 

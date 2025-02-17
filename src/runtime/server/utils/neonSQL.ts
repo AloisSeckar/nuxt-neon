@@ -1,17 +1,14 @@
 import type { NeonQueryFunction } from '@neondatabase/serverless'
+import type { NeonTableQuery, NeonWhereQuery } from '../../utils/neonTypes'
 import { sanitizeSQLArray, sanitizeSQLString } from './sanitizeSQL'
 
-export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string[], from: string[], where?: string[], order?: string, limit?: number) {
+export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery[], order?: string, limit?: number) {
   let sqlString = 'SELECT '
   sqlString += columns.join(', ')
 
-  sqlString += ' FROM '
-  sqlString += from.join(' JOIN ')
+  sqlString += getTableClause(from)
 
-  if (where) {
-    sqlString += ' WHERE '
-    sqlString += where.join(' AND ')
-  }
+  sqlString += getWhereClause(where)
 
   if (order) {
     sqlString += ` ORDER BY ${order}`
@@ -44,7 +41,7 @@ export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: s
   return await neon(sqlString)
 }
 
-export async function update(neon: NeonQueryFunction<boolean, boolean>, table: string, values: Record<string, string>, where?: string[]) {
+export async function update(neon: NeonQueryFunction<boolean, boolean>, table: string, values: Record<string, string>, where?: string | NeonWhereQuery[]) {
   let sqlString = `UPDATE ${table}`
 
   sqlString += ' SET '
@@ -53,25 +50,62 @@ export async function update(neon: NeonQueryFunction<boolean, boolean>, table: s
   })
   sqlString = sqlString.slice(0, -1) // remove last comma
 
-  if (where) {
-    sqlString += ' WHERE '
-    sqlString += where.join(' AND ')
-  }
+  sqlString += getWhereClause(where)
 
   console.debug(sqlString)
 
   return await neon(sqlString)
 }
 
-export async function del(neon: NeonQueryFunction<boolean, boolean>, table: string, where?: string[]) {
+export async function del(neon: NeonQueryFunction<boolean, boolean>, table: string, where?: string | NeonWhereQuery[]) {
   let sqlString = `DELETE FROM ${table}`
 
-  if (where) {
-    sqlString += ' WHERE '
-    sqlString += where.join(' AND ')
-  }
+  sqlString += getWhereClause(where)
 
   console.debug(sqlString)
 
   return await neon(sqlString)
+}
+
+function getTableClause(from: string | NeonTableQuery[]): string {
+  let sqlString = ' FROM '
+  if (typeof from === 'string') {
+    sqlString += from
+  }
+  else {
+    let tables = ''
+    from.forEach((t) => {
+      if (tables) {
+        tables += ` JOIN ${t.table} ${t.alias} ON ${t.idColumn1} = ${t.idColumn2}`
+      }
+      else {
+        tables = `${t.table} ${t.alias}`
+      }
+    })
+    sqlString += tables
+  }
+  return sqlString
+}
+
+function getWhereClause(where?: string | NeonWhereQuery[]): string {
+  let sqlString = ''
+  if (where) {
+    sqlString += ' WHERE '
+    if (typeof where === 'string') {
+      sqlString += where
+    }
+    else {
+      let conditions = ''
+      where.forEach((w) => {
+        if (conditions) {
+          conditions += ` ${w.operator} ${w.column} ${w.relation} ${w.value}`
+        }
+        else {
+          conditions = `${w.column} ${w.relation} ${w.value}`
+        }
+      })
+      sqlString += conditions
+    }
+  }
+  return sqlString
 }

@@ -5,3 +5,17 @@ export type NeonStatusResult = {
   status: 'OK' | 'ERR'
   debugInfo?: string
 }
+
+export type NeonTableQuery = {
+  table: string
+  alias: string
+  idColumn1?: string
+  idColumn2?: string
+}
+
+export type NeonWhereQuery = {
+  column: string
+  relation: '=' | '!=' | '>' | '>=' | '<' | '<=' | 'LIKE'
+  value: string
+  operator?: 'AND' | 'OR'
+}

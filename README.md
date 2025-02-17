@@ -95,7 +95,7 @@ Since this method is potentially unsafe, a warning will display by default, if c
 #### `select()`
 
 ```ts
-// async function select(columns: string[], from: string[], where?: string[], order?: string, limit?: number)
+// async function select(columns: string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery[], order?: string, limit?: number)
 const { select } = useNeon()
 ```
 
@@ -103,15 +103,18 @@ You can perform `SELECT` operation via this function with following parameters:
 - **columns** - array of columns you want to retrieve
   - you can also use special `*` for "all columns"
   - you can use SQL functions (e.g. `count(*)`) 
-  - if you need aliases, you have to provide them together with the column name (e.g. `t.column`)
-- **from** - array of tables to select from
-  - more tables are internally joined with `JOIN`
-  - if you need aliases, you have to provide them together with the table name (e.g. `table t`)
-- **where** - _optional_ array of select conditions
-  - more clauses are internally joined with `AND`
+  - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column`)
+- **from** - definition tables to select from
+  - can be either a string with custom value (including more complicated)
+  - or an array of [`NeonFromQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts) type which will be parsed into a chain of `JOIN` clauses
+- **where** - _optional_ definition of filter conditions
+  - can be either a string with custom value (including more complicated)
+  - or an array of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts) type which will be parsed into chain of clauses
+  - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column = 1`)
 - **order** - _optional_ criteria for ordering results
-  - you can include direction (e.g `t.column DESC`)
-- **limit** - _optional_ limit, if more results expected
+  - you can include direction (e.g `column DESC`)
+  - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column DESC`)
+- **limit** - _optional_ limit of results, if more results expected
 
 Returns the result of the SELECT query (Neon client returns `[]` for empty set) or returned erorr message.
 
@@ -126,44 +129,42 @@ const { insert } = useNeon()
 
 You can perform `INSERT` operation via this with following parameters:
 - **table** - DB table to insert into
-- **values** - list of values to be inserted
+- **values** - list of values to be inserted, values are being sanitized before applied to database
 - **columns** - _optional_ definition of columns for values 
   - if used, `columns.length` must match `values.length`
 
 Returns `'OK'` if query was successfully executed or returned erorr message.
 
-Inputs are being sanitized before applied to database.
-
 #### `update()`
 
 ```ts
-// async function update(table: string, values: Record<string, string>, where?: string[])
+// async function update(table: string, values: Record<string, string>, where?: string | NeonWhereQuery[])
 const { update } = useNeon()
 ```
 You can perform `UPDATE` operation via this function with following parameters:
 - **table** - DB table to be updated
-- **values** - list of key-value pairs to be updated
-- **where** - _optional_ array of limiting conditions
-  - more clauses are internally joined with `AND`
+- **values** - list of key-value pairs to be updated, values are being sanitized before applied to database
+- **where** - _optional_ definition of filter conditions
+  - can be either a string with custom value (including more complicated)
+  - or an array of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts) type which will be parsed into chain of clauses
 
-Inputs are being sanitized before applied to database.
+
 
 #### `del()`
 
 **NOTE:** Because `delete` is not allowed as identifier in TypeScript, the wrapper for SQL DELETE function is available here as `del()`.
 
 ```ts
-// async function del(table: string, where?: string[])
+// async function del(table: string, where?: string | NeonWhereQuery[])
 const { del } = useNeon()
 ```
 You can perform `DELETE` operation via this function with following parameters:
 - **table** - DB table to be deleled from
-- **where** - _optional_ array of limiting conditions
-  - more clauses are internally joined with `AND`
+- **where** - _optional_ definition of filter conditions
+  - can be either a string with custom value (including more complicated)
+  - or an array of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts) type which will be parsed into chain of clauses
 
 Returns `'OK'` if query was successfully executed or returned erorr message.
-
-Inputs are being sanitized before applied to database.
 
 ### Server side
 

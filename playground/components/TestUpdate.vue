@@ -16,7 +16,7 @@ async function doUpdate() {
   result.value = await update(
     'playing_with_neon',
     { value: '1' },
-    ['name = \'test\''],
+    [{ column: 'name', relation: '=', value: '\'test\'' }],
   )
 }
 </script>
