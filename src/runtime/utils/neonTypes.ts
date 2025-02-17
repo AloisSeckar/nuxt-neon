@@ -19,3 +19,8 @@ export type NeonWhereQuery = {
   value: string
   operator?: 'AND' | 'OR'
 }
+
+export type NeonOrderQuery = {
+  column: string
+  direction?: 'ASC' | 'DESC'
+}

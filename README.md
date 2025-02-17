@@ -112,13 +112,12 @@ You can perform `SELECT` operation via this function with following parameters:
   - or an array of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column = 1`)
 - **order** - _optional_ criteria for ordering results
-  - you can include direction (e.g `column DESC`)
+  - can be either a string with custom value (including more complicated)
+  - or an array of [`NeonOrderQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column DESC`)
-- **limit** - _optional_ limit of results, if more results expected
+- **limit** - _optional_ limit of results, if more results expected (number)
 
 Returns the result of the SELECT query (Neon client returns `[]` for empty set) or returned erorr message.
-
-Inputs are being sanitized before applied to database.
 
 #### `insert()`
 
@@ -147,8 +146,6 @@ You can perform `UPDATE` operation via this function with following parameters:
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
   - or an array of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts) type which will be parsed into chain of clauses
-
-
 
 #### `del()`
 

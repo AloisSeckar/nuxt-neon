@@ -1,8 +1,8 @@
 import type { NeonQueryFunction } from '@neondatabase/serverless'
-import type { NeonTableQuery, NeonWhereQuery } from '../../utils/neonTypes'
+import type { NeonTableQuery, NeonWhereQuery, NeonOrderQuery } from '../../utils/neonTypes'
 import { sanitizeSQLArray, sanitizeSQLString } from './sanitizeSQL'
 
-export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery[], order?: string, limit?: number) {
+export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery[], order?: string | NeonOrderQuery[], limit?: number) {
   let sqlString = 'SELECT '
   sqlString += columns.join(', ')
 
@@ -10,9 +10,7 @@ export async function select(neon: NeonQueryFunction<boolean, boolean>, columns:
 
   sqlString += getWhereClause(where)
 
-  if (order) {
-    sqlString += ` ORDER BY ${order}`
-  }
+  sqlString += getOrderClause(order)
 
   if (limit) {
     sqlString += ` LIMIT ${limit}`
@@ -105,6 +103,30 @@ function getWhereClause(where?: string | NeonWhereQuery[]): string {
         }
       })
       sqlString += conditions
+    }
+  }
+  return sqlString
+}
+
+function getOrderClause(order?: string | NeonOrderQuery[]): string {
+  let sqlString = ''
+  if (order) {
+    sqlString = ' ORDER BY '
+    if (typeof order === 'string') {
+      sqlString += order
+    }
+    else {
+      let ordering = ''
+      order.forEach((o) => {
+        console.log(o)
+        if (ordering) {
+          ordering += `, ${o.column} ${o.direction || 'ASC'}`
+        }
+        else {
+          ordering = `${o.column} ${o.direction || 'ASC'}`
+        }
+      })
+      sqlString += ordering
     }
   }
   return sqlString

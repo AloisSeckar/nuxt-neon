@@ -17,8 +17,8 @@ async function doSelect() {
     ['p1.name AS nname', 'p2.value'],
     [{ table: 'playing_with_neon', alias: 'p1' }, { table: 'playing_with_neon', alias: 'p2', idColumn1: 'p1.name', idColumn2: 'p2.name' }],
     [{ column: 'p1.name', relation: 'LIKE', value: '\'test%\'' }],
-    'p1.name DESC',
-    2,
+    [{ column: 'p1.name' }, { column: 'p1.value', direction: 'DESC' }],
+    50,
   )
 }
 </script>
