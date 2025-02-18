@@ -74,7 +74,7 @@ function getTableClause(from: string | NeonTableQuery[]): string {
     let tables = ''
     from.forEach((t) => {
       if (tables) {
-        tables += ` JOIN ${t.table} ${t.alias} ON ${t.idColumn1} = ${t.idColumn2}`
+        tables += ` JOIN ${t.table} ${t.alias} ON ${t.joinColumn1} = ${t.joinColumn2}`
       }
       else {
         tables = `${t.table} ${t.alias}`
@@ -96,10 +96,10 @@ function getWhereClause(where?: string | NeonWhereQuery[]): string {
       let conditions = ''
       where.forEach((w) => {
         if (conditions) {
-          conditions += ` ${w.operator} ${w.column} ${w.relation} ${w.value}`
+          conditions += ` ${w.operator} ${w.column} ${w.condition} ${w.value}`
         }
         else {
-          conditions = `${w.column} ${w.relation} ${w.value}`
+          conditions = `${w.column} ${w.condition} ${w.value}`
         }
       })
       sqlString += conditions

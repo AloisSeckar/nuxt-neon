@@ -15,7 +15,7 @@ const result = ref({})
 async function doDelete() {
   result.value = await del(
     'playing_with_neon',
-    [{ column: 'name', relation: '=', value: '\'test\'' }],
+    [{ column: 'name', condition: '=', value: '\'test\'' }],
   )
 }
 </script>

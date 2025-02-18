@@ -30,9 +30,9 @@ export type NeonTableQuery = {
   /** Alias used for table */
   alias: string
   /** Left column (including alias) for JOIN (ignored for 1st table) */
-  idColumn1?: string
+  joinColumn1?: string
   /** Right column (including alias) for JOIN (ignored for 1st table) */
-  idColumn2?: string
+  joinColumn2?: string
 }
 
 /** Object for defining a WHERE clause. */
@@ -40,7 +40,7 @@ export type NeonWhereQuery = {
   /** Column name */
   column: string
   /** Condition type */
-  relation: '=' | '!=' | '>' | '>=' | '<' | '<=' | 'LIKE'
+  condition: '=' | '!=' | '>' | '>=' | '<' | '<=' | 'LIKE'
   /** Value to be used for filtering */
   value: string
   /** Relation with other clauses (ignored for 1st clause) */
