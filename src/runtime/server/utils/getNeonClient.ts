@@ -20,7 +20,7 @@ function buildNeonConnectionString() {
 
   let connectionString = `postgresql://${neonUser}:${neonPass}@${neonHost}.neon.tech/${neonDB}`
 
-  const sslMode = nuxtConfig.public.sslMode
+  const sslMode = nuxtConfig.public.neonSSLMode || nuxtConfig.public.sslMode
   if (sslMode !== 'none') {
     connectionString += `?sslmode=${sslMode}`
   }

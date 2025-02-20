@@ -24,7 +24,8 @@ export function useNeon() {
   }
 
   const raw = async (query: string) => {
-    if (useRuntimeConfig().public.rawWarning) {
+    const config = useRuntimeConfig().public
+    if (config.neonRawWarning || config.rawWarning) {
       console.warn(NEON_RAW_WARNING)
     }
     return await callNeonBackend('raw', { query }, true)

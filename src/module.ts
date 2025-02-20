@@ -9,6 +9,8 @@ export interface ModuleOptions {
   neonUser: string
   neonPass: string
   neonDB: string
+  neonSSLMode: SSLModeOption
+  neonRawWarning: boolean
   sslMode: SSLModeOption
   rawWarning: boolean
 }
@@ -25,6 +27,8 @@ export default defineNuxtModule<ModuleOptions>({
     neonUser: '',
     neonPass: '',
     neonDB: '',
+    neonSSLMode: 'require',
+    neonRawWarning: true,
     sslMode: 'require',
     rawWarning: true,
   },
@@ -35,6 +39,8 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.neonUser = options.neonUser
     nuxt.options.runtimeConfig.neonPass = options.neonPass
     nuxt.options.runtimeConfig.public.neonDB = options.neonDB
+    nuxt.options.runtimeConfig.public.neonSSLMode = options.neonSSLMode
+    nuxt.options.runtimeConfig.public.neonRawWarning = options.neonRawWarning
     nuxt.options.runtimeConfig.public.sslMode = options.sslMode
     nuxt.options.runtimeConfig.public.rawWarning = options.rawWarning
 

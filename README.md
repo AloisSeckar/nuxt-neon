@@ -90,7 +90,7 @@ Returns the result of the query (Neon client returns `[]` for INSERT, UPDATE and
 
 **SECURITY WARNING**: the value of `query` cannot be sanitized before being applied to the database, so make sure you **NEVER allow unchecked user input via `raw` handler**. This method is implemented to allow bypassing edge cases that cannot be covered by the following wrappers, that ensure input security more.
 
-Since this method is potentially unsafe, a warning will display by default, if called. If you are 100% sure what you are doing, you can disable the warning by setting `neon.rawWarning: false`
+Since this method is potentially unsafe, a warning will display by default, if called. If you are 100% sure what you are doing, you can disable the warning by setting `neon.neonRawWarning: false`
 
 #### `select()`
 
@@ -178,12 +178,12 @@ Nuxt-Neon can be configured by overriding the default options values using key `
 
 Existing options:
 
-- `sslMode` - allows setting [secure connection mode](https://neon.tech/docs/connect/connect-securely) when constructing the DB connection string by adding `sslmode` parameter to URL. Values can be:
+- `neonSSLMode` - allows setting [secure connection mode](https://neon.tech/docs/connect/connect-securely) when constructing the DB connection string by adding `sslmode` parameter to URL. Values can be:
   - `require` (default)
   - `verify-ca`
   - `verify-full`
   - `none` (sslmode is **not** inclued in the connection string)
-- `rawWarning` - display warning message when using `raw()` SQL wrapper
+- `neonRawWarning` - display warning message when using `raw()` SQL wrapper
   - `true` (default)
   - `false`
 
@@ -193,8 +193,8 @@ Example:
 // nuxt.config.ts
 export default defineNuxtConfig({
   neon: {
-    sslMode: 'verify-full',
-    rawWarning: false,
+    neonSSLMode: 'verify-full',
+    neonRawWarning: false,
   },
   // other configuration
 })
@@ -205,8 +205,8 @@ export default defineNuxtConfig({
 Module options can also be passed as Nuxt runtime config variables in `.env` file, eg.:
 
 ```
-NUXT_PUBLIC_SSL_MODE=verify-full
-NUXT_PUBLIC_RAW_WARNING=false
+NUXT_PUBLIC_NEON_SSL_MODE=verify-full
+NUXT_PUBLIC_NEON_RAW_WARNING=false
 ```
 
 ## See also
