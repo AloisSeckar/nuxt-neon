@@ -1,5 +1,5 @@
 import type { NeonStatusResult, NeonTableQuery, NeonWhereQuery, NeonOrderQuery } from '../utils/neonTypes'
-import { NEON_RAW_WARNING } from '../utils/neonMessages'
+import { NEON_RAW_WARNING, displayRawWarning } from '../utils/neonWarnings'
 import { useRuntimeConfig } from '#imports'
 
 export function useNeon() {
@@ -24,8 +24,7 @@ export function useNeon() {
   }
 
   const raw = async (query: string) => {
-    const config = useRuntimeConfig().public
-    if (config.neonRawWarning || config.rawWarning) {
+    if (displayRawWarning()) {
       console.warn(NEON_RAW_WARNING)
     }
     return await callNeonBackend('raw', { query }, true)
