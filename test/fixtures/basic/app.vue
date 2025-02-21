@@ -1,6 +1,12 @@
 <template>
   <h1>Nuxt-Neon TEST</h1>
-  <strong>Neon data:</strong><br>{{ data }}
+  <strong>Neon data:</strong>
+  <div
+    v-if="data"
+    id="data"
+  >
+    {{ data }}
+  </div>
 </template>
 
 <script setup lang="ts">
