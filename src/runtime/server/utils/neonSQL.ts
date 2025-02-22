@@ -118,7 +118,6 @@ function getOrderClause(order?: string | NeonOrderQuery[]): string {
     else {
       let ordering = ''
       order.forEach((o) => {
-        console.log(o)
         if (ordering) {
           ordering += `, ${o.column} ${o.direction || 'ASC'}`
         }

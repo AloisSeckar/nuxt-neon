@@ -21,7 +21,6 @@ const { select } = useNeon()
 
 const result = ref([])
 async function doSelect() {
-  console.log('doSelect')
   result.value = await select(
     ['id', 'name', 'value'],
     'playing_with_neon',
@@ -29,7 +28,6 @@ async function doSelect() {
     [{ column: 'name' }, { column: 'value', direction: 'DESC' }],
     50,
   ) as [] // TODO proper typing
-  console.log(result.value)
 }
 </script>
 
