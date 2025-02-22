@@ -1,13 +1,19 @@
 <template>
-  <h1>Nuxt-Neon</h1>
+  <h1>nuxt-neon</h1>
+  <img
+    src="/nuxt-neon.png"
+    title="nuxt-neon module"
+    alt="nuxt-neon module logo"
+    height="100"
+  >
   <div class="info">
-    This is a simple Nuxt module alowing smooth integration with Neon database
+    This is a simple Nuxt module alowing smooth integration with <a href="https://neon.tech/home">Neon database</a>
   </div>
   <div class="info">
-    The module provides `useNeon()` composable exposing methods to send SQL queries to underlaying Neon DB
+    The module provides `useNeon()` composable with methods + bunch of server-side routes to send SQL queries to the underlaying Neon DB using their <a href="https://neon.tech/docs/serverless/serverless-driver">JS/TS driver</a>
   </div>
   <div class="info">
-    The connection string is constructed using four Nuxt runtime variables:
+    The connection string is constructed server-side using four Nuxt runtime variables:
   </div>
   <ul>
     <li><pre>NUXT_NEON_HOST</pre></li>
@@ -15,41 +21,41 @@
     <li><pre>NUXT_NEON_PASS</pre></li>
     <li><pre>NUXT_PUBLIC_NEON_DB</pre></li>
   </ul>
-  <h2>Test</h2>
+  <h2>Features</h2>
+  <h3>Health check probes</h3>
   <div class="info">
-    Neon status: {{ dbStatus.status }}
+    <pre class="neon-code">const { isOk } = useNeon()</pre> <pre class="neon-result">{{ connectionOpen }}</pre>
   </div>
   <div class="info">
-    Connection: {{ connectionOpen }}
+    <pre class="neon-code">const { neonStatus } = useNeon()</pre> <br> <pre class="neon-result">{{ dbStatus }}</pre>
   </div>
-  <div v-if="status === 'pending'">
-    Fetching data...
-  </div>
-  <div v-if="data">
-    <strong>Neon data:</strong><br>{{ data }}
-  </div>
-  <div v-if="error">
-    <strong>Failed to fetch data</strong>
-  </div>
-  <h3>SQL Wrappers test</h3>
-  <TestInsert />
+  <h3>SQL Wrappers</h3>
   <TestSelect />
+  <TestInsert />
   <TestUpdate />
   <TestDelete />
   <TestRaw />
+  <hr>
+  <div class="info">
+    &copy; {{ new Date().getFullYear() }} <a href="http://alois-seckar.cz">Alois Sečkár</a>
+  </div>
 </template>
 
 <script setup lang="ts">
-const { neonStatus, isOk, raw } = useNeon()
-// health checks
-const dbStatus = await neonStatus()
+const { neonStatus, isOk } = useNeon()
+const dbStatus = await neonStatus(false)
 const connectionOpen = await isOk()
-// get sample data
-const { data, status, error } = await useAsyncData('neonTest', () => raw('SELECT * FROM playing_with_neon'))
 </script>
 
 <style>
 .info {
   margin-bottom: 5px;
+}
+.neon-code {
+  display: inline;
+}
+.neon-result {
+  display: inline;
+  font-weight: 600;
 }
 </style>

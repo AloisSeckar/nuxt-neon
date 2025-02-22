@@ -1,7 +1,10 @@
 <template>
-  <h3>select()</h3>
+  <h3>SELECT</h3>
+  <div>
+    <pre>const { select } = useNeon()</pre>
+  </div>
   <button @click="doSelect">
-    Call select
+    Execute select
   </button>
   <div>
     Result: {{ result }}

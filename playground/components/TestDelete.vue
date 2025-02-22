@@ -1,5 +1,8 @@
 <template>
-  <h3>delete()</h3>
+  <h3>DELETE</h3>
+  <div>
+    <pre>const { del } = useNeon()</pre>
+  </div>
   <button @click="doDelete">
     Execute delete
   </button>

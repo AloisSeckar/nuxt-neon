@@ -1,5 +1,8 @@
 <template>
-  <h3>insert()</h3>
+  <h3>INSERT</h3>
+  <div>
+    <pre>const { insert } = useNeon()</pre>
+  </div>
   <button @click="doInsert">
     Execute insert
   </button>

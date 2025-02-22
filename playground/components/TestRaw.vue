@@ -1,10 +1,16 @@
 <template>
-  <h3>raw()</h3>
+  <h3>Raw SQL Queries</h3>
+  <div>
+    <pre>const { raw } = useNeon()</pre>
+  </div>
   <button @click="doRaw">
     Execute raw query
   </button>
   <div>
     Result: {{ result }}
+  </div>
+  <div style="color: orange">
+    <strong>Warning:</strong> This method is potentially unsafe with custom user inputs
   </div>
 </template>
 

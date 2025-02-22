@@ -1,5 +1,8 @@
 <template>
-  <h3>update()</h3>
+  <h3>UPDATE</h3>
+  <div>
+    <pre>const { update } = useNeon()</pre>
+  </div>
   <button @click="doUpdate">
     Execute update
   </button>
