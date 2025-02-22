@@ -26,8 +26,8 @@ async function doSelect() {
 }
 </script>
 
-  <style>
-  .info {
-    margin-bottom: 5px;
-  }
-  </style>
+<style>
+.info {
+  margin-bottom: 5px;
+}
+</style>
