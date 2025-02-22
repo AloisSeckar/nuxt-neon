@@ -1,18 +1,23 @@
 <template>
   <h1>Nuxt-Neon TEST</h1>
-  <strong>Neon data:</strong>
-  <div
-    v-if="data"
-    id="data"
-  >
-    {{ data }}
+  <div id="status">
+    Connection: {{ connection }}
   </div>
+  <TestRaw />
+  <TestSelect />
+  <TestInsert />
+  <TestUpdate />
+  <TestDelete />
 </template>
 
 <script setup lang="ts">
-import { useAsyncData, useNeon } from '#imports'
+import TestDelete from './components/TestDelete.vue'
+import TestInsert from './components/TestInsert.vue'
+import TestRaw from './components/TestRaw.vue'
+import TestSelect from './components/TestSelect.vue'
+import TestUpdate from './components/TestUpdate.vue'
+import { useNeon } from '#imports'
 
-const { raw } = useNeon()
-
-const { data } = await useAsyncData('neonTest', () => raw('SELECT * FROM playing_with_neon'))
+const { isOk } = useNeon()
+const connection = await isOk()
 </script>
