@@ -15,17 +15,18 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { NeonTestData } from '../../types'
 import { useNeon } from '#imports'
 
 const { insert } = useNeon()
 
-const result = ref({})
+const result = ref([] as NeonTestData[])
 async function doInsert() {
   result.value = await insert(
     'playing_with_neon',
     ['test', '0'],
     ['name', 'value'],
-  ) as [] // TODO proper typing
+  ) as NeonTestData[]
 }
 </script>
 

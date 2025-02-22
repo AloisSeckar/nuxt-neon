@@ -15,15 +15,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { NeonTestData } from '../../types'
 import { useNeon } from '#imports'
 
 const { raw } = useNeon()
 
-const result = ref({})
+const result = ref([] as NeonTestData[])
 async function doRaw() {
   result.value = await raw(
     'SELECT id, name, value AS custom_value FROM playing_with_neon',
-  ) as [] // TODO proper typing
+  ) as NeonTestData[]
 }
 </script>
 
