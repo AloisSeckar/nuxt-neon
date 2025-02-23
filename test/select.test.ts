@@ -38,5 +38,12 @@ describe('nuxt-neon SELECT test suite', async () => {
     expect(dataHtml3).toContain('"name": "a87ff679a2"')
     const idsIn3 = (dataHtml3.match(/"id"/g) || []).length
     expect(idsIn3).toBe(9)
+
+    const dataDiv4 = page.locator('#data-4')
+    const dataHtml4 = await dataDiv4.innerHTML()
+    expect(dataHtml4).toContain('"name": "c4ca4238a0"')
+    expect(dataHtml4).toContain('"bool_value": "Text value for true"')
+    const idsIn4 = (dataHtml4.match(/"id"/g) || []).length
+    expect(idsIn4).toBe(3)
   })
 })
