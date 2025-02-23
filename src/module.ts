@@ -5,13 +5,25 @@ import type { SSLModeOption } from './runtime/utils/neonTypes'
 // Module options TypeScript interface definition
 
 export interface ModuleOptions {
+  /** Neon database host server (`neon_hostname`) */
   neonHost: string
+  /** Neon database user (your account) */
   neonUser: string
+  /** Neon database password (your password) */
   neonPass: string
+  /** Neon database name (your database name) */
   neonDB: string
+  /** SSL mode in connection = `sslmode` driver option (`require` by default) */
   neonSSLMode: SSLModeOption
+  /** Display warning when `raw()` wrapper is used (`true` by default) */
   neonRawWarning: boolean
+  /**
+   * @deprecated Will be fully replaced with `neonSSLMode` in `0.5.0`
+   */
   sslMode: SSLModeOption
+  /**
+   * @deprecated Will be fully replaced with `neonRawWarning` in `0.5.0`
+   */
   rawWarning: boolean
 }
 
