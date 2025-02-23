@@ -16,11 +16,19 @@ describe('nuxt-neon basic test suite', async () => {
     const hasText = await page.getByText('Nuxt-Neon TEST').isVisible()
     expect(hasText).toBeTruthy()
 
-    // connection status is ok ("true")
+    // isOk() method returns "true"
+    const connectionDiv = page.locator('#connection')
+    expect(connectionDiv).toBeDefined()
+    const connectionHTML = await connectionDiv.innerHTML()
+    expect(connectionHTML).toContain('true')
+
+    // status() method returns OK status
     const statusDiv = page.locator('#status')
     expect(statusDiv).toBeDefined()
-    const innerHTML = await statusDiv.innerHTML()
-    expect(innerHTML).toContain('true')
+    const statusHTML = await statusDiv.innerHTML()
+    expect(statusHTML).toContain('"database": "elrh-neon"')
+    expect(statusHTML).toContain('"status": "OK"')
+    expect(statusHTML).toContain('"debugInfo": ""')
   })
 
   test('All test components are rendered', async () => {

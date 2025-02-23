@@ -1,7 +1,10 @@
 <template>
   <h1>Nuxt-Neon TEST</h1>
-  <div id="status">
+  <div id="connection">
     Connection: {{ connection }}
+  </div>
+  <div id="status">
+    Status: {{ status }}
   </div>
   <TestRaw />
   <TestSelect />
@@ -18,6 +21,7 @@ import TestSelect from './components/TestSelect.vue'
 import TestUpdate from './components/TestUpdate.vue'
 import { useNeon } from '#imports'
 
-const { isOk } = useNeon()
+const { isOk, neonStatus } = useNeon()
 const connection = await isOk()
+const status = await neonStatus(false)
 </script>
