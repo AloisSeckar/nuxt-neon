@@ -5,7 +5,7 @@ SELECT
   p1.id, p1.name, p1.value, p2.value_int, p2.value_bool, p2.value_text
 FROM
   playing_with_neon p1 JOIN playing_with_neon_2 p2 ON p1.id = p2.id
-        </pre>
+    </pre>
     <div id="data-1">
       Data 1: {{ data1 }}
     </div>

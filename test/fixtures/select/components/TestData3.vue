@@ -7,7 +7,7 @@ FROM
   playing_with_neon p1 JOIN playing_with_neon_2 p2 ON p1.id = p2.id
 WHERE
   p1.value > 0.5 OR p2.value_bool = true
-        </pre>
+    </pre>
     <div id="data-3">
       Data 3: {{ data3 }}
     </div>
