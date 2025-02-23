@@ -4,6 +4,8 @@ import { useRuntimeConfig } from '#imports'
 
 export function useNeon() {
   const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusResult> => {
+    const dbName = useRuntimeConfig().public.neonDB
+
     let error = null
     try {
       await raw('SELECT 1=1')
@@ -13,7 +15,7 @@ export function useNeon() {
     }
 
     return {
-      database: getDBName(anonymous),
+      database: anonymous ? '' : dbName,
       status: error ? 'ERR' : 'OK',
       debugInfo: debug ? error?.message : '',
     }
@@ -57,10 +59,6 @@ export function useNeon() {
     update,
     del,
   }
-}
-
-function getDBName(anonymous: boolean = false) {
-  return anonymous ? '' : useRuntimeConfig().public.neonDB
 }
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */ // FetchOptions are typed with "any"
