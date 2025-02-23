@@ -2,6 +2,11 @@ import type { NeonQueryFunction } from '@neondatabase/serverless'
 import type { NeonTableQuery, NeonWhereQuery, NeonOrderQuery } from '../../utils/neonTypes'
 import { sanitizeSQLArray, sanitizeSQLString } from './sanitizeSQL'
 
+// separate wrapper instead of forcing users to pass 'count(*)' as column name
+export async function count(neon: NeonQueryFunction<boolean, boolean>, from: string | NeonTableQuery[], where?: string | NeonWhereQuery[]) {
+  return await select(neon, ['count(*)'], from, where, undefined, undefined)
+}
+
 export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery[], order?: string | NeonOrderQuery[], limit?: number) {
   let sqlString = 'SELECT '
   sqlString += columns.join(', ')

@@ -49,6 +49,10 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolver.resolve('runtime/server/api/neonRaw'),
     })
     addServerHandler({
+      route: '/api/_neon/count',
+      handler: resolver.resolve('runtime/server/api/neonCount'),
+    })
+    addServerHandler({
       route: '/api/_neon/select',
       handler: resolver.resolve('runtime/server/api/neonSelect'),
     })
@@ -76,6 +80,11 @@ export default defineNuxtModule<ModuleOptions>({
         name: 'getNeonClient',
         as: 'getNeonClient',
         from: resolver.resolve('runtime/server/utils/getNeonClient'),
+      },
+      {
+        name: 'count',
+        as: 'count',
+        from: resolver.resolve('runtime/server/utils/neonSQL'),
       },
       {
         name: 'select',

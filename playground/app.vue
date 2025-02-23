@@ -31,6 +31,7 @@
   </div>
   <h3>SQL Wrappers</h3>
   <TestSelect />
+  <TestCount />
   <TestInsert />
   <TestUpdate />
   <TestDelete />

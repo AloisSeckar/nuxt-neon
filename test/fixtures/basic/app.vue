@@ -8,12 +8,14 @@
   </div>
   <TestRaw />
   <TestSelect />
+  <TestCount />
   <TestInsert />
   <TestUpdate />
   <TestDelete />
 </template>
 
 <script setup lang="ts">
+import TestCount from './components/TestCount.vue'
 import TestDelete from './components/TestDelete.vue'
 import TestInsert from './components/TestInsert.vue'
 import TestRaw from './components/TestRaw.vue'

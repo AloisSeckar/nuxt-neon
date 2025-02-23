@@ -99,7 +99,7 @@ describe('nuxt-neon basic test suite', async () => {
     const page = await createPage()
     await page.goto(url('/'), { waitUntil: 'hydration' })
 
-    // go through SELECT-INSERT-UPDATE-DELETE cycle
+    // go through full SELECT-INSERT-UPDATE-DELETE cycle
 
     // DELETE - extra delete to make sure record didn't hang in there
     // TODO replace with test-specific text key for each test
@@ -116,6 +116,15 @@ describe('nuxt-neon basic test suite', async () => {
     const selectData = page.locator('#select-data')
     let selectHTML = await selectData.innerHTML()
     expect(selectHTML).toContain('[]')
+
+    // COUNT - should return 0 now
+    await page.click('#count-button')
+    await page.waitForResponse(response =>
+      response.url().includes('/api/_neon/count') && response.ok(),
+    )
+    const countData = page.locator('#count-data')
+    let countHTML = await countData.innerHTML()
+    expect(countHTML).toContain('0')
 
     // INSERT - new "test" record should be inserted
     await page.click('#insert-button')
@@ -134,6 +143,14 @@ describe('nuxt-neon basic test suite', async () => {
     selectHTML = await selectData.innerHTML()
     expect(selectHTML).toContain('id')
     expect(selectHTML).toContain('0')
+
+    // COUNT - should return 1 now
+    await page.click('#count-button')
+    await page.waitForResponse(response =>
+      response.url().includes('/api/_neon/count') && response.ok(),
+    )
+    countHTML = await countData.innerHTML()
+    expect(countHTML).toContain('1')
 
     // UPDATE - value should be changed to "1"
     await page.click('#update-button')
@@ -169,5 +186,13 @@ describe('nuxt-neon basic test suite', async () => {
     )
     selectHTML = await selectData.innerHTML()
     expect(selectHTML).toContain('[]')
+
+    // COUNT - should return 0 again
+    await page.click('#count-button')
+    await page.waitForResponse(response =>
+      response.url().includes('/api/_neon/count') && response.ok(),
+    )
+    countHTML = await countData.innerHTML()
+    expect(countHTML).toContain('0')
   })
 })

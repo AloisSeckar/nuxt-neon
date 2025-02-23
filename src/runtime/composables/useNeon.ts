@@ -32,6 +32,10 @@ export function useNeon() {
     return await callNeonBackend('raw', { query }, true)
   }
 
+  const count = async (from: string | NeonTableQuery[], where?: string | NeonWhereQuery[]) => {
+    return await callNeonBackend('count', { from, where }, true)
+  }
+
   const select = async (columns: string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery[], order?: string | NeonOrderQuery[], limit?: number) => {
     return await callNeonBackend('select', { columns, from, where, order, limit }, true)
   }
@@ -54,6 +58,7 @@ export function useNeon() {
     isOk,
     // SQL wrappers
     raw,
+    count,
     select,
     insert,
     update,

@@ -37,18 +37,18 @@ NOTE: Sensitive connection data are sealed on Nuxt server. The only public prope
 
 ### `useNeon` composable
 
-This module exposes `useNeon()` composable on the client side. Currently two health check probes and five SQL wrappers are available:
+This module exposes `useNeon()` composable on the client side. Currently two health check probes and six SQL wrappers are available:
 
 ```ts
 // health check probes
 const { isOk, neonStatus } = useNeon()
 // SQL wrappers
-const { raw, select, insert, update, del } = useNeon()
+const { raw, count, select, insert, update, del } = useNeon()
 ```
 
 That's it! Your Nuxt app is now connected to a Neon database instance ✨
 
-### Health check
+### Health checks
 
 Current status of the connection can be quickly checked by calling async function `isOk` provided by `useNeon` composable: 
 
@@ -66,7 +66,7 @@ The test is performed by firing a `SELECT 1=1` query to the current Neon databas
 
 The function takes two optional parameters:
 - `anonymous: boolean = true` - if set to `false`, it will disclose database name
-- `debug: boolean = false` - if set to `true`, if will append the root cause returned by Neon driver [**WARNING**: may expose sensitive data! Use with caution]
+- `debug: boolean = false` - if set to `true`, if will append the root cause returned by Neon driver when error occured [**WARNING**: may expose sensitive data! Use with caution]
 
 Value returned is a `NeonStatusResult` promise:
 - `database: string` - name of the Neon database (hidden, if `anonymous = true`)
@@ -86,11 +86,28 @@ const { raw } = useNeon()
 
 This wrapper allows you to perform **ANY** SQL directly.
 
-Returns the result of the query (Neon client returns `[]` for INSERT, UPDATE and DELETE) or returned erorr message.
+Returns the result of the query (Neon client returns `[]` for INSERT, UPDATE and DELETE) or DB client's erorr message.
 
 **SECURITY WARNING**: the value of `query` cannot be sanitized before being applied to the database, so make sure you **NEVER allow unchecked user input via `raw` handler**. This method is implemented to allow bypassing edge cases that cannot be covered by the following wrappers, that ensure input security more.
 
 Since this method is potentially unsafe, a warning will display by default, if called. If you are 100% sure what you are doing, you can disable the warning by setting `neon.neonRawWarning: false`
+
+#### `count()`
+
+```ts
+// async function count(from: string | NeonTableQuery[], where?: string | NeonWhereQuery[])
+const { count } = useNeon()
+```
+
+This is a special wrapper to allow `select count(*) from` query:
+- **from** - definition tables to select from
+  - can be either a string with custom value (including more complicated)
+  - or an array of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L26) type which will be parsed into a chain of `JOIN` clauses
+- **where** - _optional_ definition of filter conditions
+  - can be either a string with custom value (including more complicated)
+  - or an array of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L38) type which will be parsed into chain of clauses
+
+It just calls the `select()` wrapper function under the hood, but abstracts users from having to pass `columns = ['count(*)']`.
 
 #### `select()`
 
@@ -167,6 +184,7 @@ Returns `'OK'` if query was successfully executed or returned erorr message.
 
 Following server-side util methods are exposed for usage in your server routes:
 - `getNeonClient()` - returns an instance on `neonClient` constructed based on config params (connection-string builder is not exposed)
+- `count()` - server-side variant of COUNT wrapper, requires `neonClient` to be passed as 1st param
 - `select()` - server-side variant of SELECT wrapper, requires `neonClient` to be passed as 1st param
 - `insert()` - server-side variant of INSERT wrapper, requires `neonClient` to be passed as 1st param
 - `update()` - server-side variant of UPDATE wrapper, requires `neonClient` to be passed as 1st param
