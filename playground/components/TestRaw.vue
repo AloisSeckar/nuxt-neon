@@ -6,6 +6,7 @@
   <button @click="doRaw">
     Execute raw query
   </button>
+  &nbsp;<pre style="display:inline">(SELECT 1=1 AS test)</pre>
   <div>
     Result: {{ result }}
   </div>
@@ -20,7 +21,7 @@ const { raw } = useNeon()
 const result = ref({})
 async function doRaw() {
   result.value = await raw(
-    'SELECT 1=1',
+    'SELECT 1=1 AS test',
   )
 }
 </script>

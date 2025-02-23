@@ -1,11 +1,12 @@
 <template>
-  <h3>COUNT (select count(*) from)</h3>
+  <h3>COUNT</h3>
   <div>
     <pre>const { count } = useNeon()</pre>
   </div>
   <button @click="doCount">
     Execute count
   </button>
+  &nbsp;<pre style="display:inline">(SELECT count(*) FROM playing_with_neon WHERE name LIKE 'test%')</pre>
   <div>
     Result: {{ result }}
   </div>

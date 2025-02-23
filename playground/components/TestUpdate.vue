@@ -6,6 +6,7 @@
   <button @click="doUpdate">
     Execute update
   </button>
+  &nbsp;<pre style="display:inline">(UPDATE playing_with_neon SET value = '1' WHERE name = 'test')</pre>
   <div>
     Result: {{ result }}
   </div>

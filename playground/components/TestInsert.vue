@@ -6,6 +6,7 @@
   <button @click="doInsert">
     Execute insert
   </button>
+  &nbsp;<pre style="display:inline">(INSERT INTO playing_with_neon (name, value) VALUES ('test', '0'))</pre>
   <div>
     Result: {{ result }}
   </div>

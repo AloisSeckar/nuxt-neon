@@ -6,6 +6,7 @@
   <button @click="doDelete">
     Execute delete
   </button>
+  &nbsp;<pre style="display:inline">(DELETE FROM playing_with_neon WHERE name = 'test')</pre>
   <div>
     Result: {{ result }}
   </div>
