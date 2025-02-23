@@ -1,11 +1,22 @@
 # Changelog
 
+## v0.4.0 (2025-02-23)
+- BREAKING CHANGE: syntax for `select`, `insert`, `update`, `delete` SQL wrappers' params changed to improve behavior and security
+- feat: new `count` SQL wrapper added
+- feat: warning when using unsafe `raw` SQL wrapper added
+- feat: `nuxt-neon` module logo created
+- feat: configuration keys prefixed with `neon`
+- feat: playground app updated to recap module features better
+- docs: README.md updated to reflect current changes
+- docs: info about "runtime config" added
+- test: testing via `nuxt-spec` added, 5 test scenarios created
+
 ## v0.3.1 (2025-02-06)
 - feat: expose server-side utils (`getNeonClient` and SQL wrappers)
 - docs: README.md updated to reflect current changes
 
 ## v0.3.0 (2025-02-02)
-- feat: module was re-designed and direct Neon DB communication was hidden behind Nuxt server-side API routes
+- BREAKING CHANGE: module was re-designed and direct Neon DB communication was hidden behind Nuxt server-side API routes
 - feat: direct access to `neonClient` on server-side was dropped
 - feat: runtime config values for Neon DB connection were properly hidden at Nuxt server-side
 - feat: new `raw` SQL wrapper was added
