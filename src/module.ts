@@ -1,4 +1,4 @@
-import { addImports, addPlugin, addServerHandler, addServerImports, addTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImports, addPlugin, addServerHandler, addServerImports, addTypeTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 import commonjs from 'vite-plugin-commonjs'
 import type { SSLModeOption } from './runtime/utils/neonTypes'
 
@@ -121,13 +121,15 @@ export default defineNuxtModule<ModuleOptions>({
     ])
 
     // export types
-    addTemplate({
+    addTypeTemplate({
       src: resolver.resolve('runtime/types/neon.d.ts'),
       filename: 'types/neon.d.ts',
     })
+    /*
     nuxt.hook('prepare:types', async (options) => {
       options.references.push({ path: resolver.resolve(nuxt.options.buildDir, 'types/neon.d.ts') })
     })
+    */
 
     // 'sqlstring' only exists as a CommonJS module
     // this should allow it being consumed in ESM runtimes
