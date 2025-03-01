@@ -1,3 +1,5 @@
+// NOTE: if adding new type also add reference into ../types/neon.d.ts
+
 /**
  * Possible options for Neon driver SSL mode.
  * @see https://neon.tech/docs/connect/connect-securely#connection-modes
