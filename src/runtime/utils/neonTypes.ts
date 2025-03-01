@@ -35,22 +35,31 @@ export type NeonTableQuery = {
   joinColumn2?: string
 }
 
+/** Enum-like type to define operation for column-value pair in WHERE clause */
+export type NeonWhereCondition = '=' | '!=' | '>' | '>=' | '<' | '<=' | 'LIKE'
+
+/** Enum-like type to define logical operator between more WHERE clauses */
+export type NeonWhereOperator = 'AND' | 'OR'
+
 /** Object for defining a WHERE clause. */
 export type NeonWhereQuery = {
   /** Column name */
   column: string
   /** Condition type */
-  condition: '=' | '!=' | '>' | '>=' | '<' | '<=' | 'LIKE'
+  condition: NeonWhereCondition
   /** Value to be used for filtering */
   value: string
   /** Relation with other clauses (ignored for 1st clause) */
-  operator?: 'AND' | 'OR'
+  operator?: NeonWhereOperator
 }
+
+/** Enum-like type to define `ascending` or `descending` sorting */
+export type NeonSortDirection = 'ASC' | 'DESC'
 
 /** Object for defining an ORDER BY clause. */
 export type NeonOrderQuery = {
   /** Column name */
   column: string
   /** Sort direction (`ASC` if not specified) */
-  direction?: 'ASC' | 'DESC'
+  direction?: NeonSortDirection
 }
