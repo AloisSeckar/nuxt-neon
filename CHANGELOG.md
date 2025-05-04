@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.4.1 (2025-05-04)
+- feat: improved typing for WHERE and ORDER queries
+- feat: types should be properly exported
+- build: bump Nuxt to `3.17.1` + update other deps
+
 ## v0.4.0 (2025-02-23)
 - BREAKING CHANGE: syntax for `select`, `insert`, `update`, `delete` SQL wrappers' params changed to improve behavior and security
 - feat: new `count` SQL wrapper added
