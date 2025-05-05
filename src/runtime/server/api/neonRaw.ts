@@ -10,5 +10,5 @@ export default defineEventHandler(async (event) => {
     console.warn(NEON_RAW_WARNING)
   }
 
-  return await neon(body.query)
+  return await neon.query(body.query)
 })

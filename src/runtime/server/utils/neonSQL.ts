@@ -23,7 +23,7 @@ export async function select(neon: NeonQueryFunction<boolean, boolean>, columns:
 
   console.debug(sqlString)
 
-  return await neon(sqlString)
+  return await neon.query(sqlString)
 }
 
 export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: string, values: string[], columns?: string[]) {
@@ -41,7 +41,7 @@ export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: s
 
   console.debug(sqlString)
 
-  return await neon(sqlString)
+  return await neon.query(sqlString)
 }
 
 export async function update(neon: NeonQueryFunction<boolean, boolean>, table: string, values: Record<string, string>, where?: string | NeonWhereQuery[]) {
@@ -57,7 +57,7 @@ export async function update(neon: NeonQueryFunction<boolean, boolean>, table: s
 
   console.debug(sqlString)
 
-  return await neon(sqlString)
+  return await neon.query(sqlString)
 }
 
 export async function del(neon: NeonQueryFunction<boolean, boolean>, table: string, where?: string | NeonWhereQuery[]) {
@@ -67,7 +67,7 @@ export async function del(neon: NeonQueryFunction<boolean, boolean>, table: stri
 
   console.debug(sqlString)
 
-  return await neon(sqlString)
+  return await neon.query(sqlString)
 }
 
 function getTableClause(from: string | NeonTableQuery[]): string {
