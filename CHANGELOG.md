@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.4.2 (2025-05-05)
+- fix: update Neon serverless driver calls to match its `v1.0.0`
+
 ## v0.4.1 (2025-05-04)
 - feat: improved typing for WHERE and ORDER queries
 - feat: types should be properly exported
