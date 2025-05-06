@@ -136,11 +136,11 @@ function getOrderClause(order?: string | NeonOrderQuery[]): string {
   return sqlString
 }
 
-function escapeIfNeeded(value: string): string {
-  if (!value.startsWith('\'')) {
+function escapeIfNeeded(value: unknown) {
+  if (typeof value === 'string' && !value.startsWith('\'')) {
     value = '\'' + value
   }
-  if (!value.endsWith('\'')) {
+  if (typeof value === 'string' && !value.endsWith('\'')) {
     value = value + '\''
   }
   return value
