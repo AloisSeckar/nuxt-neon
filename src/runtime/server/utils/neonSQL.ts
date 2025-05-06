@@ -3,13 +3,19 @@ import type { NeonTableQuery, NeonWhereQuery, NeonOrderQuery } from '../../utils
 import { sanitizeSQLArray, sanitizeSQLString } from './sanitizeSQL'
 
 // separate wrapper instead of forcing users to pass 'count(*)' as column name
-export async function count(neon: NeonQueryFunction<boolean, boolean>, from: string | NeonTableQuery[], where?: string | NeonWhereQuery[]) {
+export async function count(neon: NeonQueryFunction<boolean, boolean>, from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]) {
   return await select(neon, ['count(*)'], from, where, undefined, undefined)
 }
 
-export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery[], order?: string | NeonOrderQuery[], limit?: number) {
+export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string | string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number) {
   let sqlString = 'SELECT '
-  sqlString += columns.join(', ')
+
+  if (Array.isArray(columns)) {
+    sqlString += columns.join(', ')
+  }
+  else {
+    sqlString += columns
+  }
 
   sqlString += getTableClause(from)
 
@@ -44,7 +50,7 @@ export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: s
   return await neon.query(sqlString)
 }
 
-export async function update(neon: NeonQueryFunction<boolean, boolean>, table: string, values: Record<string, string>, where?: string | NeonWhereQuery[]) {
+export async function update(neon: NeonQueryFunction<boolean, boolean>, table: string, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]) {
   let sqlString = `UPDATE ${table}`
 
   sqlString += ' SET '
@@ -60,7 +66,7 @@ export async function update(neon: NeonQueryFunction<boolean, boolean>, table: s
   return await neon.query(sqlString)
 }
 
-export async function del(neon: NeonQueryFunction<boolean, boolean>, table: string, where?: string | NeonWhereQuery[]) {
+export async function del(neon: NeonQueryFunction<boolean, boolean>, table: string, where?: string | NeonWhereQuery | NeonWhereQuery[]) {
   let sqlString = `DELETE FROM ${table}`
 
   sqlString += getWhereClause(where)
@@ -90,14 +96,14 @@ function getTableClause(from: string | NeonTableQuery[]): string {
   return sqlString
 }
 
-function getWhereClause(where?: string | NeonWhereQuery[]): string {
+function getWhereClause(where?: string | NeonWhereQuery | NeonWhereQuery[]): string {
   let sqlString = ''
   if (where) {
     sqlString += ' WHERE '
     if (typeof where === 'string') {
       sqlString += where
     }
-    else {
+    else if (Array.isArray(where)) {
       let conditions = ''
       where.forEach((w) => {
         if (conditions) {
@@ -109,18 +115,21 @@ function getWhereClause(where?: string | NeonWhereQuery[]): string {
       })
       sqlString += conditions
     }
+    else {
+      sqlString += `${where.column} ${where.condition} ${escapeIfNeeded(where.value)}`
+    }
   }
   return sqlString
 }
 
-function getOrderClause(order?: string | NeonOrderQuery[]): string {
+function getOrderClause(order?: string | NeonOrderQuery | NeonOrderQuery[]): string {
   let sqlString = ''
   if (order) {
     sqlString = ' ORDER BY '
     if (typeof order === 'string') {
       sqlString += order
     }
-    else {
+    else if (Array.isArray(order)) {
       let ordering = ''
       order.forEach((o) => {
         if (ordering) {
@@ -131,6 +140,9 @@ function getOrderClause(order?: string | NeonOrderQuery[]): string {
         }
       })
       sqlString += ordering
+    }
+    else {
+      sqlString += `${order.column} ${order.direction || 'ASC'}`
     }
   }
   return sqlString

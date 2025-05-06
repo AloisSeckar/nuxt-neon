@@ -32,11 +32,11 @@ export function useNeon() {
     return await callNeonBackend('raw', { query }, true)
   }
 
-  const count = async (from: string | NeonTableQuery[], where?: string | NeonWhereQuery[]) => {
+  const count = async (from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]) => {
     return await callNeonBackend('count', { from, where }, true)
   }
 
-  const select = async (columns: string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery[], order?: string | NeonOrderQuery[], limit?: number) => {
+  const select = async (columns: string | string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number) => {
     return await callNeonBackend('select', { columns, from, where, order, limit }, true)
   }
 
@@ -44,11 +44,11 @@ export function useNeon() {
     return await callNeonBackend('insert', { table, values, columns }, false)
   }
 
-  const update = async (table: string, values: Record<string, string>, where?: string | NeonWhereQuery[]) => {
+  const update = async (table: string, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]) => {
     return await callNeonBackend('update', { table, values, where }, false)
   }
 
-  const del = async (table: string, where?: string | NeonWhereQuery[]) => {
+  const del = async (table: string, where?: string | NeonWhereQuery | NeonWhereQuery[]) => {
     return await callNeonBackend('delete', { table, where }, false)
   }
 
