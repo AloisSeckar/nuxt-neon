@@ -20,7 +20,7 @@ async function doSelect() {
   result.value = await select(
     ['id', 'name', 'value'],
     'playing_with_neon',
-    [{ column: 'name', condition: 'LIKE', value: '\'test%\'' }],
+    [{ column: 'name', condition: 'LIKE', value: 'test%' }],
     [{ column: 'name' }, { column: 'value', direction: 'DESC' }],
     50,
   )

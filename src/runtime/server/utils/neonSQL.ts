@@ -101,10 +101,10 @@ function getWhereClause(where?: string | NeonWhereQuery[]): string {
       let conditions = ''
       where.forEach((w) => {
         if (conditions) {
-          conditions += ` ${w.operator} ${w.column} ${w.condition} ${w.value}`
+          conditions += ` ${w.operator} ${w.column} ${w.condition} ${escapeIfNeeded(w.value)}`
         }
         else {
-          conditions = `${w.column} ${w.condition} ${w.value}`
+          conditions = `${w.column} ${w.condition} ${escapeIfNeeded(w.value)}`
         }
       })
       sqlString += conditions
@@ -134,4 +134,14 @@ function getOrderClause(order?: string | NeonOrderQuery[]): string {
     }
   }
   return sqlString
+}
+
+function escapeIfNeeded(value: string): string {
+  if (!value.startsWith('\'')) {
+    value = '\'' + value
+  }
+  if (!value.endsWith('\'')) {
+    value = value + '\''
+  }
+  return value
 }

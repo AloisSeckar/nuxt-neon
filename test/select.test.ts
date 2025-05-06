@@ -7,8 +7,8 @@ describe('nuxt-neon SELECT test suite', async () => {
     rootDir: fileURLToPath(new URL('./fixtures/select', import.meta.url)),
   })
 
-  // playing_with_neon p1 JOIN playing_with_neon_2 p2 ON p1.id = p2.id
-  test('Simple JOIN performed correctly', async () => {
+  // various test queries defined in /test/fixtures/select/components/*.vue
+  test('SELECT QUERY SET performed correctly', async () => {
     // render in browser
     const page = await createPage()
     await page.goto(url('/'), { waitUntil: 'hydration' })
@@ -45,5 +45,12 @@ describe('nuxt-neon SELECT test suite', async () => {
     expect(dataHtml4).toContain('"bool_value": "Text value for true"')
     const idsIn4 = (dataHtml4.match(/"id"/g) || []).length
     expect(idsIn4).toBe(3)
+
+    const dataDiv5 = page.locator('#data-5')
+    const dataHtml5 = await dataDiv5.innerHTML()
+    expect(dataHtml5).toContain('"name": "c4ca4238a0"')
+    expect(dataHtml5).toContain('"name": "a87ff679a2"')
+    const idsIn5 = (dataHtml5.match(/"id"/g) || []).length
+    expect(idsIn5).toBe(2)
   })
 })
