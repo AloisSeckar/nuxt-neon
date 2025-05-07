@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.4.3 (2025-05-07)
+- feat: auto-quote values of WHERE clauses
+- feat: allow single value in COLUMN, WHERE and ORDER BY
+- feat: allow server-only NUXT_NEON_DB env variable
+
 ## v0.4.2 (2025-05-05)
 - fix: update Neon serverless driver calls to match its `v1.0.0`
 
