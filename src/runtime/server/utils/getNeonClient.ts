@@ -16,7 +16,7 @@ function buildNeonConnectionString() {
   const neonHost = nuxtConfig.neonHost
   const neonPass = nuxtConfig.neonPass
   const neonUser = nuxtConfig.neonUser
-  const neonDB = nuxtConfig.public.neonDB
+  const neonDB = nuxtConfig.neonDB || nuxtConfig.public.neonDB
 
   let connectionString = `postgresql://${neonUser}:${neonPass}@${neonHost}.neon.tech/${neonDB}`
 

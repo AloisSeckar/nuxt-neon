@@ -19,12 +19,12 @@
     <li><pre>NUXT_NEON_HOST</pre></li>
     <li><pre>NUXT_NEON_USER</pre></li>
     <li><pre>NUXT_NEON_PASS</pre></li>
-    <li><pre>NUXT_PUBLIC_NEON_DB</pre></li>
+    <li><pre class="neon-code">NUXT_NEON_DB</pre> <br> (or <pre class="neon-code">NUXT_PUBLIC_NEON_DB</pre> if you want to expose the DB name)</li>
   </ul>
   <h2>Features</h2>
   <h3>Health check probes</h3>
   <div class="info">
-    <pre class="neon-code">const { isOk } = useNeon()</pre> <pre class="neon-result">{{ connectionOpen }}</pre>
+    <pre class="neon-code">const { isOk } = useNeon()</pre> <br> <pre class="neon-result">{{ connectionOpen }}</pre>
   </div>
   <div class="info">
     <pre class="neon-code">const { neonStatus } = useNeon()</pre> <br> <pre class="neon-result">{{ dbStatus }}</pre>

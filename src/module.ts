@@ -50,6 +50,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.neonHost = options.neonHost
     nuxt.options.runtimeConfig.neonUser = options.neonUser
     nuxt.options.runtimeConfig.neonPass = options.neonPass
+    nuxt.options.runtimeConfig.neonDB = options.neonDB
     nuxt.options.runtimeConfig.public.neonDB = options.neonDB
     nuxt.options.runtimeConfig.public.neonSSLMode = options.neonSSLMode
     nuxt.options.runtimeConfig.public.neonRawWarning = options.neonRawWarning

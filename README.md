@@ -23,17 +23,22 @@ Provide connection details to your Neon DB instance through a set of Nuxt [runti
 - `NUXT_NEON_HOST`
 - `NUXT_NEON_USER`
 - `NUXT_NEON_PASS`
+- `NUXT_NEON_DB`
+
+For database name, you can alternatively set:
 - `NUXT_PUBLIC_NEON_DB`
+
+Note this will allow to disclose your database name on client side, which you might or might not want to do. If both env variables are set, `NUXT_NEON_DB` is always used for the actual connection string, but value of `NUXT_PUBLIC_NEON_DB` becomes available on client side.
 
 Nuxt-Neon will construct a PostgreSQL connection string based on given values:
 
 ```ts
-`postgresql://${NUXT_NEON_USER}:${NUXT_NEON_PASS}@${NUXT_NEON_HOST}.neon.tech/${NUXT_PUBLIC_NEON_DB}`
+`postgresql://${NUXT_NEON_USER}:${NUXT_NEON_PASS}@${NUXT_NEON_HOST}.neon.tech/${NUXT[_PUBLIC]NEON_DB}`
 ```
 
 Settings are used to initialize the [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) object initialized on the Nuxt server.
 
-NOTE: Sensitive connection data are sealed on Nuxt server. The only public property is the database name.
+NOTE: Sensitive connection data are sealed on Nuxt server. The only public property might be the database name (if you pick the public variant).
 
 ### `useNeon` composable
 
