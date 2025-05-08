@@ -21,35 +21,35 @@ export function useNeon() {
     }
   }
 
-  const isOk = async () => {
+  const isOk = async (): Promise<boolean> => {
     return (await neonStatus()).status === 'OK'
   }
 
-  const raw = async (query: string) => {
+  const raw = async <T> (query: string): Promise<T> => {
     if (displayRawWarning()) {
       console.warn(NEON_RAW_WARNING)
     }
-    return await callNeonBackend('raw', { query }, true)
+    return await fetchFromNeonBackend<T>('raw', { query })
   }
 
-  const count = async (from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]) => {
-    return await callNeonBackend('count', { from, where }, true)
+  const count = async (from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number> => {
+    return await fetchFromNeonBackend<number>('count', { from, where })
   }
 
-  const select = async (columns: string | string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number) => {
-    return await callNeonBackend('select', { columns, from, where, order, limit }, true)
+  const select = async <T> (columns: string | string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<T> => {
+    return await fetchFromNeonBackend('select', { columns, from, where, order, limit })
   }
 
-  const insert = async (table: string, values: string[], columns?: string[]) => {
-    return await callNeonBackend('insert', { table, values, columns }, false)
+  const insert = async (table: string, values: string[], columns?: string[]): Promise<string> => {
+    return await callNeonBackend('insert', { table, values, columns })
   }
 
-  const update = async (table: string, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]) => {
-    return await callNeonBackend('update', { table, values, where }, false)
+  const update = async (table: string, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string> => {
+    return await callNeonBackend('update', { table, values, where })
   }
 
-  const del = async (table: string, where?: string | NeonWhereQuery | NeonWhereQuery[]) => {
-    return await callNeonBackend('delete', { table, where }, false)
+  const del = async (table: string, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string> => {
+    return await callNeonBackend('delete', { table, where })
   }
 
   return {
@@ -66,12 +66,20 @@ export function useNeon() {
   }
 }
 
-/* eslint-disable  @typescript-eslint/no-explicit-any */ // FetchOptions are typed with "any"
-async function callNeonBackend(method: string, body: Record<string, any>, returnResult: boolean) {
+// for methods where we don't expect results (INSERT, UPDATE, DELETE)
+// just let the operation happen and return "OK" (if no error is thrown)
+// TODO introduce a custom type for this kind of operations
+async function callNeonBackend(method: string, body: Record<string, unknown>): Promise<string> {
+  await fetchFromNeonBackend<unknown>(method, body)
+  return 'OK'
+}
+
+// this is the actual call for server-side endpoints
+async function fetchFromNeonBackend<T>(method: string, body: Record<string, unknown>): Promise<T> {
   let result = null
   let error = null
   try {
-    result = await $fetch(`/api/_neon/${method}`, {
+    result = await $fetch<T>(`/api/_neon/${method}`, {
       method: 'POST',
       body,
     })
@@ -81,5 +89,5 @@ async function callNeonBackend(method: string, body: Record<string, any>, return
     throw new Error(error.message)
   }
 
-  return returnResult ? result : 'OK'
+  return result
 }
