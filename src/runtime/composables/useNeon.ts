@@ -25,7 +25,7 @@ export function useNeon() {
     return (await neonStatus()).status === 'OK'
   }
 
-  const raw = async <T> (query: string): Promise<T> => {
+  const raw = async <T> (query: string): Promise<Array<T>> => {
     if (displayRawWarning()) {
       console.warn(NEON_RAW_WARNING)
     }
@@ -33,10 +33,10 @@ export function useNeon() {
   }
 
   const count = async (from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number> => {
-    return await fetchFromNeonBackend<number>('count', { from, where })
+    return (await fetchFromNeonBackend<number>('count', { from, where })).at(0) || -1
   }
 
-  const select = async <T> (columns: string | string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<T> => {
+  const select = async <T> (columns: string | string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<Array<T>> => {
     return await fetchFromNeonBackend('select', { columns, from, where, order, limit })
   }
 
@@ -75,11 +75,11 @@ async function callNeonBackend(method: string, body: Record<string, unknown>): P
 }
 
 // this is the actual call for server-side endpoints
-async function fetchFromNeonBackend<T>(method: string, body: Record<string, unknown>): Promise<T> {
+async function fetchFromNeonBackend<T>(method: string, body: Record<string, unknown>): Promise<Array<T>> {
   let result = null
   let error = null
   try {
-    result = await $fetch<T>(`/api/_neon/${method}`, {
+    result = await $fetch<Array<T>>(`/api/_neon/${method}`, {
       method: 'POST',
       body,
     })
