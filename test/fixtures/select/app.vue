@@ -6,6 +6,7 @@
   <TestData4 />
   <TestData5 />
   <TestData6 />
+  <TestData7 />
 </template>
 
 <script setup lang="ts">
@@ -18,4 +19,5 @@ import TestData3 from './components/TestData3.vue'
 import TestData4 from './components/TestData4.vue'
 import TestData5 from './components/TestData5.vue'
 import TestData6 from './components/TestData6.vue'
+import TestData7 from './components/TestData7.vue'
 </script>

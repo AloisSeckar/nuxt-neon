@@ -4,11 +4,11 @@ import type { NeonDriverResult } from './getNeonClient'
 import { sanitizeSQLArray, sanitizeSQLString } from './sanitizeSQL'
 
 // separate wrapper instead of forcing users to pass 'count(*)' as column name
-export async function count(neon: NeonQueryFunction<boolean, boolean>, from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]) {
+export async function count(neon: NeonQueryFunction<boolean, boolean>, from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]) {
   return await select(neon, ['count(*)'], from, where, undefined, undefined)
 }
 
-export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string | string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<NeonDriverResult<false, false>> {
+export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<NeonDriverResult<false, false>> {
   let sqlString = 'SELECT '
 
   if (Array.isArray(columns)) {
@@ -34,7 +34,7 @@ export async function select(neon: NeonQueryFunction<boolean, boolean>, columns:
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: string, values: string[], columns?: string[]): Promise<NeonDriverResult<false, false>> {
+export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: string | NeonTableQuery, values: string[], columns?: string[]): Promise<NeonDriverResult<false, false>> {
   let sqlString = `INSERT INTO ${table}`
 
   if (columns) {
@@ -53,7 +53,7 @@ export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: s
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function update(neon: NeonQueryFunction<boolean, boolean>, table: string, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<NeonDriverResult<false, false>> {
+export async function update(neon: NeonQueryFunction<boolean, boolean>, table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<NeonDriverResult<false, false>> {
   let sqlString = `UPDATE ${table}`
 
   sqlString += ' SET '
@@ -70,7 +70,7 @@ export async function update(neon: NeonQueryFunction<boolean, boolean>, table: s
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function del(neon: NeonQueryFunction<boolean, boolean>, table: string, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<NeonDriverResult<false, false>> {
+export async function del(neon: NeonQueryFunction<boolean, boolean>, table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<NeonDriverResult<false, false>> {
   let sqlString = `DELETE FROM ${table}`
 
   sqlString += getWhereClause(where)
@@ -81,24 +81,35 @@ export async function del(neon: NeonQueryFunction<boolean, boolean>, table: stri
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-function getTableClause(from: string | NeonTableQuery[]): string {
+function getTableClause(from: string | NeonTableQuery | NeonTableQuery[]): string {
   let sqlString = ' FROM '
   if (typeof from === 'string') {
     sqlString += from
   }
-  else {
+  else if (Array.isArray(from)) {
     let tables = ''
     from.forEach((t) => {
       if (tables) {
-        tables += ` JOIN ${t.table} ${t.alias} ON ${t.joinColumn1} = ${t.joinColumn2}`
+        tables += ` JOIN ${tableWithSchema(t)} ${t.alias} ON ${t.joinColumn1} = ${t.joinColumn2}`
       }
       else {
-        tables = `${t.table} ${t.alias}`
+        tables = `${tableWithSchema(t)} ${t.alias}`
       }
     })
     sqlString += tables
   }
+  else {
+    sqlString += tableWithSchema(from)
+  }
   return sqlString
+}
+
+// include schema name if specified
+function tableWithSchema(t: NeonTableQuery): string {
+  if (t.schema) {
+    return `${t.schema}.${t.table}`
+  }
+  return t.table
 }
 
 function getWhereClause(where?: string | NeonWhereQuery | NeonWhereQuery[]): string {

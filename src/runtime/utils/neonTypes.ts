@@ -35,6 +35,8 @@ export type NeonStatusResult = {
 
 /** Object for defining 2+ tables for JOIN in SELECT. */
 export type NeonTableQuery = {
+  /** Schema name */
+  schema?: string
   /** Table name */
   table: string
   /** Alias used for table */

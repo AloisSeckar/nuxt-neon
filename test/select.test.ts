@@ -59,5 +59,12 @@ describe('nuxt-neon SELECT test suite', async () => {
     expect(dataHtml6).toContain('"id": 9')
     const idsIn6 = (dataHtml6.match(/"id"/g) || []).length
     expect(idsIn6).toBe(5)
+
+    const dataDiv7 = page.locator('#data-7')
+    const dataHtml7 = await dataDiv7.innerHTML()
+    expect(dataHtml7).toContain('"name": "neon2-1"')
+    expect(dataHtml7).toContain('"value": 0.74727505')
+    const idsIn7 = (dataHtml7.match(/"id"/g) || []).length
+    expect(idsIn7).toBe(5)
   })
 })

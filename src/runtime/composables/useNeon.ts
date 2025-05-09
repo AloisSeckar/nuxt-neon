@@ -45,7 +45,7 @@ export function useNeon() {
     }
   }
 
-  const count = async (from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number | string> => {
+  const count = async (from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number | string> => {
     const ret = await fetchFromNeonBackend<number>('count', { from, where })
     if (isNeonSuccess(ret)) {
       return (ret as Array<number>).at(0) || -1
@@ -57,7 +57,7 @@ export function useNeon() {
     }
   }
 
-  const select = async <T> (columns: string | string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<Array<T | string>> => {
+  const select = async <T> (columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<Array<T | string>> => {
     const ret = await fetchFromNeonBackend<T>('select', { columns, from, where, order, limit })
     if (isNeonSuccess(ret)) {
       return ret as Array<T>
@@ -69,15 +69,15 @@ export function useNeon() {
     }
   }
 
-  const insert = async (table: string, values: string[], columns?: string[]): Promise<string> => {
+  const insert = async (table: string | NeonTableQuery, values: string[], columns?: string[]): Promise<string> => {
     return await callNeonBackend('insert', { table, values, columns })
   }
 
-  const update = async (table: string, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string> => {
+  const update = async (table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string> => {
     return await callNeonBackend('update', { table, values, where })
   }
 
-  const del = async (table: string, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string> => {
+  const del = async (table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string> => {
     return await callNeonBackend('delete', { table, where })
   }
 

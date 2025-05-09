@@ -102,24 +102,24 @@ Since this method is potentially unsafe, a warning will display by default, if c
 #### `count()`
 
 ```ts
-// async (from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number>
+// async (from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number>
 const { count } = useNeon()
 ```
 
 This is a special wrapper to allow `select count(*) from` query:
-- **from** - definition tables to select from
+- **from** - definition of table(s) to select from
   - can be either a string with custom value (including more complicated)
-  - or an array of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L27) type which will be parsed into a chain of `JOIN` clauses
+  - or an instance (or array) of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/2neonTypes.ts#L37) type which will be parsed into a chain of `JOIN` clauses
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an array of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will be parsed into chain of clauses
+  - oran instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L57) type which will be parsed into chain of clauses
 
 It just calls the `select()` wrapper function under the hood, but abstracts users from having to pass `columns = ['count(*)']`.
 
 #### `select()`
 
 ```ts
-// async <T> (columns: string | string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<Array<T>>
+// async <T> (columns: string | string[], from: string | NeonTableQuery | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<Array<T>>
 const { select } = useNeon()
 ```
 
@@ -128,16 +128,16 @@ You can perform `SELECT` operation via this function with following parameters:
   - you can also use special `*` for "all columns"
   - you can use SQL functions (e.g. `count(*)`) 
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column`)
-- **from** - definition tables to select from
+- **from** - definition of table(s) to select from
   - can be either a string with custom value (including more complicated)
-  - or an array of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L27) type which will be parsed into a chain of `JOIN` clauses
+  - or an instance (or array) of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L37) type which will be parsed into a chain of `JOIN` clauses
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an array of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column = 1`)
 - **order** - _optional_ criteria for ordering results
   - can be either a string with custom value (including more complicated)
-  - or an array of [`NeonOrderQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L60) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonOrderQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L72) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column DESC`)
 - **limit** - _optional_ limit of results, if more results expected (number)
 
@@ -146,7 +146,7 @@ Returns the result of the SELECT query (Neon client returns `[]` for empty set) 
 #### `insert()`
 
 ```ts
-// async (table: string, values: string[], columns?: string[]): Promise<string>
+// async (table: string | NeonTableQuery, values: string[], columns?: string[]): Promise<string>
 const { insert } = useNeon()
 ```
 
@@ -161,7 +161,7 @@ Returns `'OK'` if query was successfully executed or returned erorr message.
 #### `update()`
 
 ```ts
-// async (table: string, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string>
+// async (table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string>
 const { update } = useNeon()
 ```
 You can perform `UPDATE` operation via this function with following parameters:
@@ -169,21 +169,21 @@ You can perform `UPDATE` operation via this function with following parameters:
 - **values** - list of key-value pairs to be updated, values are being sanitized before applied to database
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an array of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L57) type which will be parsed into chain of clauses
 
 #### `del()`
 
 **NOTE:** Because `delete` is not allowed as identifier in TypeScript, the wrapper for SQL DELETE function is available here as `del()`.
 
 ```ts
-// async (table: string, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string>
+// async (table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string>
 const { del } = useNeon()
 ```
 You can perform `DELETE` operation via this function with following parameters:
 - **table** - DB table to be deleled from
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an array of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L57) type which will be parsed into chain of clauses
 
 Returns `'OK'` if query was successfully executed or returned erorr message.
 
