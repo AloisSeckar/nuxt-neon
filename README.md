@@ -58,12 +58,14 @@ That's it! Your Nuxt app is now connected to a Neon database instance ✨
 Current status of the connection can be quickly checked by calling async function `isOk` provided by `useNeon` composable: 
 
 ```ts
+// async (): Promise<boolean>
 const { isOk } = useNeon()
 ```
 
 The return value `true/false` is based on more complex probe function `neonStatus` which is also available:
 
 ```ts
+// async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusResult>
 const { neonStatus } = useNeon()
 ```
 
@@ -85,13 +87,13 @@ This module offers SQL wrappers that communicate with Nuxt server-side endpoints
 #### `raw()`
 
 ```ts
-// async function raw(query: string)
+// async <T> (query: string): Promise<Array<T>>
 const { raw } = useNeon()
 ```
 
 This wrapper allows you to perform **ANY** SQL directly.
 
-Returns the result of the query (Neon client returns `[]` for INSERT, UPDATE and DELETE) or DB client's erorr message.
+Returns the result of the query (Neon client returns `[]` for INSERT, UPDATE and DELETE) or DB client's erorr message. Generic casting can be used for type-hint (`raw<T>()`).
 
 **SECURITY WARNING**: the value of `query` cannot be sanitized before being applied to the database, so make sure you **NEVER allow unchecked user input via `raw` handler**. This method is implemented to allow bypassing edge cases that cannot be covered by the following wrappers, that ensure input security more.
 
@@ -100,7 +102,7 @@ Since this method is potentially unsafe, a warning will display by default, if c
 #### `count()`
 
 ```ts
-// async function count(from: string | NeonTableQuery[], where?: string | NeonWhereQuery[])
+// async (from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number>
 const { count } = useNeon()
 ```
 
@@ -117,7 +119,7 @@ It just calls the `select()` wrapper function under the hood, but abstracts user
 #### `select()`
 
 ```ts
-// async function select(columns: string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery[], order?: string, limit?: number)
+// async <T> (columns: string | string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<Array<T>>
 const { select } = useNeon()
 ```
 
@@ -139,12 +141,12 @@ You can perform `SELECT` operation via this function with following parameters:
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column DESC`)
 - **limit** - _optional_ limit of results, if more results expected (number)
 
-Returns the result of the SELECT query (Neon client returns `[]` for empty set) or returned erorr message.
+Returns the result of the SELECT query (Neon client returns `[]` for empty set) or returned erorr message. Generic casting can be used for type-hint (`select<T>()`).
 
 #### `insert()`
 
 ```ts
-// async function insert(table: string, values: string[], columns?: string[])
+// async (table: string, values: string[], columns?: string[]): Promise<string>
 const { insert } = useNeon()
 ```
 
@@ -159,7 +161,7 @@ Returns `'OK'` if query was successfully executed or returned erorr message.
 #### `update()`
 
 ```ts
-// async function update(table: string, values: Record<string, string>, where?: string | NeonWhereQuery[])
+// async (table: string, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string>
 const { update } = useNeon()
 ```
 You can perform `UPDATE` operation via this function with following parameters:
@@ -174,7 +176,7 @@ You can perform `UPDATE` operation via this function with following parameters:
 **NOTE:** Because `delete` is not allowed as identifier in TypeScript, the wrapper for SQL DELETE function is available here as `del()`.
 
 ```ts
-// async function del(table: string, where?: string | NeonWhereQuery[])
+// async (table: string, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string>
 const { del } = useNeon()
 ```
 You can perform `DELETE` operation via this function with following parameters:
@@ -194,6 +196,8 @@ Following server-side util methods are exposed for usage in your server routes:
 - `insert()` - server-side variant of INSERT wrapper, requires `neonClient` to be passed as 1st param
 - `update()` - server-side variant of UPDATE wrapper, requires `neonClient` to be passed as 1st param
 - `del()` - server-side variant of DELETE wrapper, requires `neonClient` to be passed as 1st param
+
+Server-side wrappers return promise of `NeonDriverResult`, which is a type derived from the underlaying Neon Serverless Driver. As of now, the results are opinionated to [default settings](https://neon.tech/docs/serverless/serverless-driver#neon-function-configuration-options). 
 
 ## Module options
 
