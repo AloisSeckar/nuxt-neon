@@ -1,5 +1,6 @@
 import type { NeonQueryFunction } from '@neondatabase/serverless'
 import type { NeonTableQuery, NeonWhereQuery, NeonOrderQuery } from '../../utils/neonTypes'
+import type { NeonDriverResult } from './getNeonClient'
 import { sanitizeSQLArray, sanitizeSQLString } from './sanitizeSQL'
 
 // separate wrapper instead of forcing users to pass 'count(*)' as column name
@@ -7,7 +8,7 @@ export async function count(neon: NeonQueryFunction<boolean, boolean>, from: str
   return await select(neon, ['count(*)'], from, where, undefined, undefined)
 }
 
-export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string | string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number) {
+export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string | string[], from: string | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<NeonDriverResult<false, false>> {
   let sqlString = 'SELECT '
 
   if (Array.isArray(columns)) {
@@ -29,10 +30,11 @@ export async function select(neon: NeonQueryFunction<boolean, boolean>, columns:
 
   console.debug(sqlString)
 
-  return await neon.query(sqlString)
+  // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
+  return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: string, values: string[], columns?: string[]) {
+export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: string, values: string[], columns?: string[]): Promise<NeonDriverResult<false, false>> {
   let sqlString = `INSERT INTO ${table}`
 
   if (columns) {
@@ -47,10 +49,11 @@ export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: s
 
   console.debug(sqlString)
 
-  return await neon.query(sqlString)
+  // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
+  return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function update(neon: NeonQueryFunction<boolean, boolean>, table: string, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]) {
+export async function update(neon: NeonQueryFunction<boolean, boolean>, table: string, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<NeonDriverResult<false, false>> {
   let sqlString = `UPDATE ${table}`
 
   sqlString += ' SET '
@@ -63,17 +66,19 @@ export async function update(neon: NeonQueryFunction<boolean, boolean>, table: s
 
   console.debug(sqlString)
 
-  return await neon.query(sqlString)
+  // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
+  return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function del(neon: NeonQueryFunction<boolean, boolean>, table: string, where?: string | NeonWhereQuery | NeonWhereQuery[]) {
+export async function del(neon: NeonQueryFunction<boolean, boolean>, table: string, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<NeonDriverResult<false, false>> {
   let sqlString = `DELETE FROM ${table}`
 
   sqlString += getWhereClause(where)
 
   console.debug(sqlString)
 
-  return await neon.query(sqlString)
+  // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
+  return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
 function getTableClause(from: string | NeonTableQuery[]): string {

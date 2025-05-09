@@ -67,11 +67,11 @@ export function useNeon() {
 }
 
 // for methods where we don't expect results (INSERT, UPDATE, DELETE)
-// just let the operation happen and return "OK" (if no error is thrown)
+// backend returns an array with single string containing either 'OK' or error cause
 // TODO introduce a custom type for this kind of operations
 async function callNeonBackend(method: string, body: Record<string, unknown>): Promise<string> {
-  await fetchFromNeonBackend<unknown>(method, body)
-  return 'OK'
+  const ret = await fetchFromNeonBackend<string>(method, body)
+  return ret[0]
 }
 
 // this is the actual call for server-side endpoints
