@@ -4,6 +4,6 @@ export const NEON_RAW_WARNING = 'nuxt-neon: using `raw()` SQL handler is potenti
 
 export function displayRawWarning() {
   const config = useRuntimeConfig().public
-  const warningSurpressed = config.neonRawWarning || config.rawWarning
+  const warningSurpressed = config.neonRawWarning
   return !warningSurpressed
 }

@@ -1,7 +1,7 @@
 import type * as types from '../utils/neonTypes'
 
 declare global {
-  export type SSLModeOption = types.SSLModeOption
+  export type NeonSSLModeOption = types.NeonSSLModeOption
   export type NeonError = types.NeonError
   export type NeonStatusResult = types.NeonStatusResult
   export type NeonTableQuery = types.NeonTableQuery

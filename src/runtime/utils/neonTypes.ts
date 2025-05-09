@@ -4,7 +4,7 @@
  * Possible options for Neon driver SSL mode.
  * @see https://neon.tech/docs/connect/connect-securely#connection-modes
  */
-export type SSLModeOption = 'require' | 'verify-ca' | 'verify-full' | 'none'
+export type NeonSSLModeOption = 'require' | 'verify-ca' | 'verify-full' | 'none'
 
 /** Custom error object to be passed when something goes wrong */
 export type NeonError = {

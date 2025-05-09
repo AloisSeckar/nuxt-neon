@@ -1,6 +1,6 @@
 import { addImports, addPlugin, addServerHandler, addServerImports, addTypeTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
 import commonjs from 'vite-plugin-commonjs'
-import type { SSLModeOption } from './runtime/utils/neonTypes'
+import type { NeonSSLModeOption } from './runtime/utils/neonTypes'
 
 // Module options TypeScript interface definition
 
@@ -14,17 +14,9 @@ export interface ModuleOptions {
   /** Neon database name (your database name) */
   neonDB: string
   /** SSL mode in connection = `sslmode` driver option (`require` by default) */
-  neonSSLMode: SSLModeOption
+  neonSSLMode: NeonSSLModeOption
   /** Display warning when `raw()` wrapper is used (`true` by default) */
   neonRawWarning: boolean
-  /**
-   * @deprecated Will be fully replaced with `neonSSLMode` in `0.5.0`
-   */
-  sslMode: SSLModeOption
-  /**
-   * @deprecated Will be fully replaced with `neonRawWarning` in `0.5.0`
-   */
-  rawWarning: boolean
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -41,8 +33,6 @@ export default defineNuxtModule<ModuleOptions>({
     neonDB: '',
     neonSSLMode: 'require',
     neonRawWarning: true,
-    sslMode: 'require',
-    rawWarning: true,
   },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
@@ -54,8 +44,6 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.neonDB = options.neonDB
     nuxt.options.runtimeConfig.public.neonSSLMode = options.neonSSLMode
     nuxt.options.runtimeConfig.public.neonRawWarning = options.neonRawWarning
-    nuxt.options.runtimeConfig.public.sslMode = options.sslMode
-    nuxt.options.runtimeConfig.public.rawWarning = options.rawWarning
 
     addServerHandler({
       route: '/api/_neon/raw',
