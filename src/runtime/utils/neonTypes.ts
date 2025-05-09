@@ -6,6 +6,12 @@
  */
 export type SSLModeOption = 'require' | 'verify-ca' | 'verify-full' | 'none'
 
+/** Custom error object to be passed when something goes wrong */
+export type NeonError = {
+  source: string
+  message: string
+}
+
 /** Result of `neonStatus` health check. */
 export type NeonStatusResult = {
   /**

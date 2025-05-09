@@ -82,18 +82,39 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolver.resolve('runtime/server/api/neonDelete'),
     })
 
-    addImports({
-      name: 'useNeon',
-      as: 'useNeon',
-      from: resolver.resolve('runtime/composables/useNeon'),
-    })
+    addImports([
+      // main client-side composable exposing SQL client and wrapper methods
+      {
+        name: 'useNeon',
+        as: 'useNeon',
+        from: resolver.resolve('runtime/composables/useNeon'),
+      },
+      // error-handling utilities
+      {
+        name: 'isNeonSuccess',
+        as: 'isNeonSuccess',
+        from: resolver.resolve('runtime/utils/neonErrors'),
+      },
+      {
+        name: 'isNeonError',
+        as: 'isNeonError',
+        from: resolver.resolve('runtime/utils/neonErrors'),
+      },
+      {
+        name: 'formatNeonError',
+        as: 'formatNeonError',
+        from: resolver.resolve('runtime/utils/neonErrors'),
+      },
+    ])
 
     addServerImports([
+      // SQL client instance
       {
         name: 'getNeonClient',
         as: 'getNeonClient',
         from: resolver.resolve('runtime/server/utils/getNeonClient'),
       },
+      // wrapper methods
       {
         name: 'count',
         as: 'count',
@@ -118,6 +139,22 @@ export default defineNuxtModule<ModuleOptions>({
         name: 'del',
         as: 'del',
         from: resolver.resolve('runtime/server/utils/neonSQL'),
+      },
+      // error-handling utilities
+      {
+        name: 'isNeonSuccess',
+        as: 'isNeonSuccess',
+        from: resolver.resolve('runtime/server/utils/neonErrors'),
+      },
+      {
+        name: 'isNeonError',
+        as: 'isNeonError',
+        from: resolver.resolve('runtime/server/utils/neonErrors'),
+      },
+      {
+        name: 'formatNeonError',
+        as: 'formatNeonError',
+        from: resolver.resolve('runtime/server/utils/neonErrors'),
       },
     ])
 

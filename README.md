@@ -199,6 +199,14 @@ Following server-side util methods are exposed for usage in your server routes:
 
 Server-side wrappers return promise of `NeonDriverResult`, which is a type derived from the underlaying Neon Serverless Driver. As of now, the results are opinionated to [default settings](https://neon.tech/docs/serverless/serverless-driver#neon-function-configuration-options). 
 
+### Error handling
+
+When an error is occured and caught within the module, an instance of `NeonError` is returned instead of expected data. 
+
+Utility functions `isNeonSuccess(obj: unknown): boolean` and `isNeonError(obj: unknown): boolean` can be used to verify the results. 
+
+Utility `formatNeonError(err: NeonError): string` can be used to print out error data in a consistent way.
+
 ## Module options
 
 Nuxt-Neon can be configured by overriding the default options values using key `neon` inside `nuxt.config.ts`.
