@@ -7,11 +7,12 @@ export function useNeon() {
   const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusResult> => {
     const dbName = useRuntimeConfig().public.neonDB
 
-    let error = null
+    let error = ''
     try {
-      const ret = await raw<string>('SELECT 1=1')
-      if (ret.at(0)) {
-        error = ret.at(0)
+      const ret = await raw<{ status: boolean }>('SELECT 1=1 as status')
+      const value = ret.at(0)
+      if (typeof value === 'string' && (value as string)?.startsWith('NuxtNeon')) {
+        error = value
       }
     }
     catch (err) {
@@ -21,7 +22,7 @@ export function useNeon() {
     return {
       database: anonymous ? '' : dbName,
       status: error ? 'ERR' : 'OK',
-      debugInfo: debug ? error || 'Unknown error' : '',
+      debugInfo: debug ? error : '',
     }
   }
 

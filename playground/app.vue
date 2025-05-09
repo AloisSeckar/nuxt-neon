@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 const { neonStatus, isOk } = useNeon()
-const dbStatus = await neonStatus(false)
+const dbStatus = await neonStatus(false, true) // consider disclosing in prod (see docs)
 const connectionOpen = await isOk()
 </script>
 
