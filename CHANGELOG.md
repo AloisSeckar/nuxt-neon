@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.0 (2025-05-09)
+- BREAKING CHANGE: changed `insert` wrapper signature to match `update`
+- BREAKING CHANGE: dropped `sslMode` and `rawWarning` config in favor of `neonSSLMode` and `neonRawWarning`
+- feat: re-typed SQL wrappers including supporting genercis
+- feat: allow to pick DB schema in FROM clauses
+- feat: better error handling using custom `NeonError`
+
 ## v0.4.3 (2025-05-07)
 - feat: auto-quote values of WHERE clauses
 - feat: allow single value in COLUMN, WHERE and ORDER BY
