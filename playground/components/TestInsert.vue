@@ -19,8 +19,7 @@ const result = ref({})
 async function doInsert() {
   result.value = await insert(
     'playing_with_neon',
-    ['test', '0'],
-    ['name', 'value'],
+    { name: 'test', value: '0' },
   )
 }
 </script>

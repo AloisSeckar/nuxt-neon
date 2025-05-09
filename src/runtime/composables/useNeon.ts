@@ -69,8 +69,8 @@ export function useNeon() {
     }
   }
 
-  const insert = async (table: string | NeonTableQuery, values: string[], columns?: string[]): Promise<string> => {
-    return await callNeonBackend('insert', { table, values, columns })
+  const insert = async (table: string | NeonTableQuery, values: Record<string, string>): Promise<string> => {
+    return await callNeonBackend('insert', { table, values })
   }
 
   const update = async (table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string> => {

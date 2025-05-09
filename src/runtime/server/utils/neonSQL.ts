@@ -1,7 +1,7 @@
 import type { NeonQueryFunction } from '@neondatabase/serverless'
 import type { NeonTableQuery, NeonWhereQuery, NeonOrderQuery } from '../../utils/neonTypes'
 import type { NeonDriverResult } from './getNeonClient'
-import { sanitizeSQLArray, sanitizeSQLString } from './sanitizeSQL'
+import { sanitizeSQLString } from './sanitizeSQL'
 
 // separate wrapper instead of forcing users to pass 'count(*)' as column name
 export async function count(neon: NeonQueryFunction<boolean, boolean>, from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]) {
@@ -34,20 +34,23 @@ export async function select(neon: NeonQueryFunction<boolean, boolean>, columns:
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: string | NeonTableQuery, values: string[], columns?: string[]): Promise<NeonDriverResult<false, false>> {
+export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: string | NeonTableQuery, values: Record<string, string>): Promise<NeonDriverResult<false, false>> {
   let sqlString = `INSERT INTO ${table}`
 
-  if (columns) {
-    sqlString += ' ('
-    sqlString += columns.join(', ')
-    sqlString += ') '
+  const sqlColumns = [] as string[]
+  const sqlValues = [] as string[]
+  for (const [key, value] of Object.entries(values)) {
+    sqlColumns.push(key)
+    sqlValues.push(sanitizeSQLString(value))
   }
 
-  sqlString += ' VALUES ('
-  sqlString += sanitizeSQLArray(values).join(', ')
-  sqlString += ')'
+  sqlString += ' ('
+  sqlString += sqlColumns.join(', ')
+  sqlString += ') '
 
-  console.debug(sqlString)
+  sqlString += ' VALUES ('
+  sqlString += sqlValues.join(', ')
+  sqlString += ')'
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })

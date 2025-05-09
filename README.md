@@ -146,17 +146,17 @@ Returns the result of the SELECT query (Neon client returns `[]` for empty set) 
 #### `insert()`
 
 ```ts
-// async (table: string | NeonTableQuery, values: string[], columns?: string[]): Promise<string>
+// async (table: string | NeonTableQuery, values: Record<string, string>): Promise<string>
 const { insert } = useNeon()
 ```
 
 You can perform `INSERT` operation via this with following parameters:
 - **table** - DB table to insert into
-- **values** - list of values to be inserted, values are being sanitized before applied to database
-- **columns** - _optional_ definition of columns for values 
-  - if used, `columns.length` must match `values.length`
+- **values** - list of key-value pairs to be updated, values are being sanitized before applied to database
 
 Returns `'OK'` if query was successfully executed or returned erorr message.
+
+Currently, `INSERT` is limited to one row at the time.
 
 #### `update()`
 

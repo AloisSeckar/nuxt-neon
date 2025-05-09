@@ -8,7 +8,7 @@ export default defineEventHandler(async (event): Promise<Array<string> | NeonErr
     const body = await readBody(event)
     const neon = getNeonClient()
 
-    const ret = await insert(neon, body.table, body.values, body.columns)
+    const ret = await insert(neon, body.table, body.values)
 
     // successful INSERT operation returns []
     if (ret.length === 0) {
