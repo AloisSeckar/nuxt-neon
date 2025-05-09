@@ -11,7 +11,7 @@ describe('nuxt-neon error handling features test', async () => {
   const testError: NeonError = {
     name: 'NuxtNeonServerError',
     source: 'TestSuite',
-    code: 500,
+    code: 555,
     message: 'Bound to fail',
   }
   // invalid error objects
@@ -50,6 +50,6 @@ describe('nuxt-neon error handling features test', async () => {
   })
 
   test('formatNeonError method works', () => {
-    expect(formatNeonError(testError)).toBe('Error in TestSuite: Bound to fail')
+    expect(formatNeonError(testError)).toBe('NuxtNeonServerError in TestSuite: Bound to fail (status: 555)')
   })
 })
