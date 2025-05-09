@@ -9,16 +9,27 @@ describe('nuxt-neon error handling features test', async () => {
   }
   // valid error object
   const testError: NeonError = {
+    name: 'NuxtNeonServerError',
     source: 'TestSuite',
+    code: 500,
     message: 'Bound to fail',
   }
   // invalid error objects
   const testNotError1 = {
+    name: 'NuxtNeonServerError',
     source: 'TestSuite',
-    // message missing
+    // code and message missing
   }
   const testNotError2 = {
+    name: 'NuxtNeonServerError',
     source: 1, // wrong data type
+    code: 500,
+    message: 'Bound to fail',
+  }
+  const testNotError3 = {
+    name: 'NuxtNeonTestError', // invalid value
+    source: 'TestSuite',
+    code: 500,
     message: 'Bound to fail',
   }
 
@@ -27,6 +38,7 @@ describe('nuxt-neon error handling features test', async () => {
     expect(isNeonSuccess(testError)).toBe(false)
     expect(isNeonSuccess(testNotError1)).toBe(true)
     expect(isNeonSuccess(testNotError2)).toBe(true)
+    expect(isNeonSuccess(testNotError3)).toBe(true)
   })
 
   test('isNeonError method works', () => {
@@ -34,6 +46,7 @@ describe('nuxt-neon error handling features test', async () => {
     expect(isNeonError(testError)).toBe(true)
     expect(isNeonError(testNotError1)).toBe(false)
     expect(isNeonError(testNotError2)).toBe(false)
+    expect(isNeonError(testNotError3)).toBe(false)
   })
 
   test('formatNeonError method works', () => {

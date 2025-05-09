@@ -19,8 +19,12 @@ export const isNeonError = (obj: unknown): boolean => {
   return (
     obj !== null
     && typeof obj === 'object'
+    && 'name' in obj
+    && (obj['name'] === 'NuxtNeonServerError' || obj['name'] === 'NuxtNeonClientError')
     && 'source' in obj
     && typeof obj['source'] === 'string'
+    && 'code' in obj
+    && typeof obj['code'] === 'number'
     && 'message' in obj
     && typeof obj['message'] === 'string'
   )
@@ -33,5 +37,5 @@ export const isNeonError = (obj: unknown): boolean => {
  * @returns `string` representation of the error
  */
 export const formatNeonError = (err: NeonError): string => {
-  return `Error in ${err.source}: ${err.message}`
+  return `${err.name} in ${err.source}: ${err.message} (status: ${err.code})`
 }

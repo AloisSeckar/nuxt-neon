@@ -1,18 +1,26 @@
 import { getNeonClient } from '../utils/getNeonClient'
+import { getGenericError, parseNeonClientError } from '../utils/neonErrors'
 import { del } from '../utils/neonSQL'
 import { defineEventHandler, readBody } from '#imports'
 
-export default defineEventHandler(async (event): Promise<Array<string>> => {
-  const body = await readBody(event)
-  const neon = getNeonClient()
+export default defineEventHandler(async (event): Promise<Array<string> | NeonError> => {
+  try {
+    const body = await readBody(event)
+    const neon = getNeonClient()
 
-  const ret = await del(neon, body.table, body.where)
+    const ret = await del(neon, body.table, body.where)
 
-  // successful DELETE operation returns []
-  if (ret.length === 0) {
-    return ['OK']
+    // successful DELETE operation returns []
+    if (ret.length === 0) {
+      return ['OK']
+    }
+    else {
+      console.debug(ret)
+      // TODO can we extract more detailed error cause from within the driver response?
+      return getGenericError('/api/_neon/delete', 'DELETE operation failed')
+    }
   }
-  else {
-    return ['ERROR']
+  catch (err) {
+    return parseNeonClientError('/api/_neon/delete', err)
   }
 })

@@ -8,7 +8,9 @@ export type SSLModeOption = 'require' | 'verify-ca' | 'verify-full' | 'none'
 
 /** Custom error object to be passed when something goes wrong */
 export type NeonError = {
+  name: 'NuxtNeonServerError' | 'NuxtNeonClientError'
   source: string
+  code: number
   message: string
 }
 
