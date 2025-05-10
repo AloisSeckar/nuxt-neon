@@ -15,18 +15,17 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { NeonTestData } from '../../types'
 import { useNeon } from '#imports'
 
 const { update } = useNeon()
 
-const result = ref([] as NeonTestData[])
+const result = ref('')
 async function doUpdate() {
   result.value = await update(
     'playing_with_neon',
     { value: '1' },
     [{ column: 'name', condition: '=', value: '\'test\'' }],
-  ) as NeonTestData[]
+  ) as string
 }
 </script>
 

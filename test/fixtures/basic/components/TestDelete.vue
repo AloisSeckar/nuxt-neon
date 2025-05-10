@@ -15,17 +15,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { NeonTestData } from '../../types'
 import { useNeon } from '#imports'
 
 const { del } = useNeon()
 
-const result = ref([] as NeonTestData[])
+const result = ref('')
 async function doDelete() {
   result.value = await del(
     'playing_with_neon',
     [{ column: 'name', condition: '=', value: '\'test\'' }],
-  ) as NeonTestData[]
+  ) as string
 }
 </script>
 
