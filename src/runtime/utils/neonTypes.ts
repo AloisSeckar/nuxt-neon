@@ -40,7 +40,7 @@ export type NeonTableQuery = {
   /** Table name */
   table: string
   /** Alias used for table */
-  alias: string
+  alias?: string
   /** Left column (including alias) for JOIN (ignored for 1st table) */
   joinColumn1?: string
   /** Right column (including alias) for JOIN (ignored for 1st table) */
