@@ -1,6 +1,6 @@
 import type { NeonStatusResult, NeonTableQuery, NeonWhereQuery, NeonOrderQuery } from '../utils/neonTypes'
 import { NEON_RAW_WARNING, displayRawWarning } from '../utils/neonWarnings'
-import { formatNeonError, isNeonSuccess } from '../utils/neonErrors'
+import { formatNeonError, handleNeonError, isNeonSuccess } from '../utils/neonErrors'
 import { useRuntimeConfig } from '#imports'
 
 export function useNeon() {
@@ -10,9 +10,8 @@ export function useNeon() {
     let error = ''
     try {
       const ret = await raw<{ status: boolean }>('SELECT 1=1 as status')
-      const value = ret.at(0)
-      if (typeof value === 'string' && (value as string)?.startsWith('NuxtNeon')) {
-        error = value
+      if (!Array.isArray(ret)) {
+        error = formatNeonError(ret as NeonError)
       }
     }
     catch (err) {
@@ -30,7 +29,7 @@ export function useNeon() {
     return (await neonStatus()).status === 'OK'
   }
 
-  const raw = async <T> (query: string): Promise<Array<T | string>> => {
+  const raw = async <T> (query: string): Promise<Array<T> | NeonError> => {
     if (displayRawWarning()) {
       console.warn(NEON_RAW_WARNING)
     }
@@ -39,45 +38,39 @@ export function useNeon() {
       return ret as Array<T>
     }
     else {
-      const err = formatNeonError(ret as NeonError)
-      console.debug(err)
-      return [err]
+      return handleNeonError(ret)
     }
   }
 
-  const count = async (from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number | string> => {
+  const count = async (from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number | NeonError> => {
     const ret = await fetchFromNeonBackend<number>('count', { from, where })
     if (isNeonSuccess(ret)) {
       return (ret as Array<number>).at(0) || -1
     }
     else {
-      const err = formatNeonError(ret as NeonError)
-      console.debug(err)
-      return err
+      return handleNeonError(ret)
     }
   }
 
-  const select = async <T> (columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<Array<T | string>> => {
+  const select = async <T> (columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<Array<T> | NeonError> => {
     const ret = await fetchFromNeonBackend<T>('select', { columns, from, where, order, limit })
     if (isNeonSuccess(ret)) {
       return ret as Array<T>
     }
     else {
-      const err = formatNeonError(ret as NeonError)
-      console.debug(err)
-      return [err]
+      return handleNeonError(ret)
     }
   }
 
-  const insert = async (table: string | NeonTableQuery, values: Record<string, string>): Promise<string> => {
+  const insert = async (table: string | NeonTableQuery, values: Record<string, string>): Promise<string | NeonError> => {
     return await callNeonBackend('insert', { table, values })
   }
 
-  const update = async (table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string> => {
+  const update = async (table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string | NeonError> => {
     return await callNeonBackend('update', { table, values, where })
   }
 
-  const del = async (table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string> => {
+  const del = async (table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string | NeonError> => {
     return await callNeonBackend('delete', { table, where })
   }
 
@@ -97,13 +90,13 @@ export function useNeon() {
 
 // for methods where we don't expect results (INSERT, UPDATE, DELETE)
 // backend returns an array with single string containing either 'OK' or an error cause
-async function callNeonBackend(method: string, body: Record<string, unknown>): Promise<string> {
+async function callNeonBackend(method: string, body: Record<string, unknown>): Promise<string | NeonError> {
   const ret = await fetchFromNeonBackend<string>(method, body)
   if (isNeonSuccess(ret)) {
     return (ret as Array<string>)[0]
   }
   else {
-    return formatNeonError(ret as NeonError)
+    return handleNeonError(ret)
   }
 }
 

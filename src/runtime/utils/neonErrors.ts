@@ -39,3 +39,10 @@ export const isNeonError = (obj: unknown): boolean => {
 export const formatNeonError = (err: NeonError): string => {
   return `${err.name} in ${err.source}: ${err.message} (status: ${err.code})`
 }
+
+// used 4x in useNeon => introduced to avoid duplication
+export function handleNeonError(obj: unknown) {
+  const err = obj as NeonError
+  console.debug(formatNeonError(err))
+  return err
+}
