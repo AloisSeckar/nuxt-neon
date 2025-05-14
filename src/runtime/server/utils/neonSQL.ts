@@ -11,26 +11,13 @@ export async function count(neon: NeonQueryFunction<boolean, boolean>, from: str
 export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number, group?: string | string[], having?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<NeonDriverResult<false, false>> {
   let sqlString = 'SELECT '
 
-  if (Array.isArray(columns)) {
-    sqlString += columns.join(', ')
-  }
-  else {
-    sqlString += columns
-  }
-
+  sqlString += getColumnsClause(columns)
   sqlString += getTableClause(from)
-
   sqlString += getWhereClause(where)
-
   sqlString += getGroupByClause(group)
-
   sqlString += getHavingClause(having)
-
   sqlString += getOrderClause(order)
-
-  if (limit) {
-    sqlString += ` LIMIT ${limit}`
-  }
+  sqlString += getLimitClause(limit)
 
   console.debug(sqlString)
 
@@ -117,6 +104,17 @@ function tableWithSchema(t: NeonTableQuery): string {
     return `${t.schema}.${t.table}`
   }
   return t.table
+}
+
+function getColumnsClause(columns: string | string[]): string {
+  let sqlString = ''
+  if (Array.isArray(columns)) {
+    sqlString += columns.join(', ')
+  }
+  else {
+    sqlString += columns
+  }
+  return sqlString
 }
 
 function getWhereClause(where?: string | NeonWhereQuery | NeonWhereQuery[]): string {
@@ -207,6 +205,14 @@ function getHavingClause(having?: string | NeonWhereQuery | NeonWhereQuery[]): s
     else {
       sqlString += `${having.column} ${having.condition} ${escapeIfNeeded(having.value)}`
     }
+  }
+  return sqlString
+}
+
+function getLimitClause(limit?: number): string {
+  let sqlString = ''
+  if (limit) {
+    sqlString += ` LIMIT ${limit}`
   }
   return sqlString
 }
