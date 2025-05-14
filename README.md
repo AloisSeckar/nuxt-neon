@@ -87,7 +87,7 @@ This module offers SQL wrappers that communicate with Nuxt server-side endpoints
 #### `raw()`
 
 ```ts
-// async <T> (query: string): Promise<Array<T>>
+// async <T> (query: string): Promise<Array<T> | NeonError>
 const { raw } = useNeon()
 ```
 
@@ -102,7 +102,7 @@ Since this method is potentially unsafe, a warning will display by default, if c
 #### `count()`
 
 ```ts
-// async (from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number>
+// async (from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number | NeonError>
 const { count } = useNeon()
 ```
 
@@ -119,7 +119,7 @@ It just calls the `select()` wrapper function under the hood, but abstracts user
 #### `select()`
 
 ```ts
-// async <T> (columns: string | string[], from: string | NeonTableQuery | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<Array<T>>
+// async <T> (columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number, group?: string | string[], having?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<Array<T> | NeonError>
 const { select } = useNeon()
 ```
 
@@ -140,13 +140,15 @@ You can perform `SELECT` operation via this function with following parameters:
   - or an instance (or array) of [`NeonOrderQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L72) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column DESC`)
 - **limit** - _optional_ limit of results, if more results expected (number)
+- **group** - _optional_ definition for GROUP BY aggregation clause
+- **having** - _optional_ definition for HAVING aggregation critera clause
 
 Returns the result of the SELECT query (Neon client returns `[]` for empty set) or returned erorr message. Generic casting can be used for type-hint (`select<T>()`).
 
 #### `insert()`
 
 ```ts
-// async (table: string | NeonTableQuery, values: Record<string, string>): Promise<string>
+// async (table: string | NeonTableQuery, values: Record<string, string>): Promise<string | NeonError>
 const { insert } = useNeon()
 ```
 
@@ -161,7 +163,7 @@ Currently, `INSERT` is limited to one row at the time.
 #### `update()`
 
 ```ts
-// async (table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string>
+// sync (table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string | NeonError>
 const { update } = useNeon()
 ```
 You can perform `UPDATE` operation via this function with following parameters:
@@ -176,7 +178,7 @@ You can perform `UPDATE` operation via this function with following parameters:
 **NOTE:** Because `delete` is not allowed as identifier in TypeScript, the wrapper for SQL DELETE function is available here as `del()`.
 
 ```ts
-// async (table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string>
+// async (table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string | NeonError>
 const { del } = useNeon()
 ```
 You can perform `DELETE` operation via this function with following parameters:
