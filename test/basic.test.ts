@@ -68,6 +68,14 @@ describe('nuxt-neon basic test suite', async () => {
     const updateButton = page.locator('#update-button')
     expect(updateButton).toBeDefined()
 
+    // TestGroupByHaving component mounted
+    const groupTitle = page.locator('#group')
+    expect(groupTitle).toBeDefined()
+    const groupHtml = await groupTitle.innerHTML()
+    expect(groupHtml).toContain('GROUP BY')
+    const groupButton = page.locator('#group-button')
+    expect(groupButton).toBeDefined()
+
     // TestDelete component mounted
     const deleteTitle = page.locator('#delete')
     expect(deleteTitle).toBeDefined()
@@ -152,6 +160,15 @@ describe('nuxt-neon basic test suite', async () => {
     countHTML = await countData.innerHTML()
     expect(countHTML).toContain('1')
 
+    // GROUP BY - should comntain no data
+    await page.click('#group-button')
+    await page.waitForResponse(response =>
+      response.url().includes('/api/_neon/select') && response.ok(),
+    )
+    const groupData = page.locator('#group-data')
+    let groupHtml = await groupData.innerHTML()
+    expect(groupHtml).toContain('[]')
+
     // UPDATE - value should be changed to "1"
     await page.click('#update-button')
     await page.waitForResponse(response =>
@@ -169,6 +186,15 @@ describe('nuxt-neon basic test suite', async () => {
     selectHTML = await selectData.innerHTML()
     expect(selectHTML).toContain('id')
     expect(selectHTML).toContain('1')
+
+    // GROUP BY - should contain 1 record
+    await page.click('#group-button')
+    await page.waitForResponse(response =>
+      response.url().includes('/api/_neon/select') && response.ok(),
+    )
+    groupHtml = await groupData.innerHTML()
+    expect(groupHtml).toContain('count')
+    expect(groupHtml).toContain('1')
 
     // DELETE - test record should be deleted
     await page.click('#delete-button')

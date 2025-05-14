@@ -11,12 +11,14 @@
   <TestCount />
   <TestInsert />
   <TestUpdate />
+  <TestGroupByHaving />
   <TestDelete />
 </template>
 
 <script setup lang="ts">
 import TestCount from './components/TestCount.vue'
 import TestDelete from './components/TestDelete.vue'
+import TestGroupByHaving from './components/TestGroupByHaving.vue'
 import TestInsert from './components/TestInsert.vue'
 import TestRaw from './components/TestRaw.vue'
 import TestSelect from './components/TestSelect.vue'

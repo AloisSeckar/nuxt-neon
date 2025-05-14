@@ -9,7 +9,7 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
     const body = await readBody(event)
     const neon = getNeonClient()
 
-    const results = await select(neon, body.columns, body.from, body.where, body.order, body.limit)
+    const results = await select(neon, body.columns, body.from, body.where, body.order, body.limit, body.group, body.having)
     return results as Array<T>
   }
   catch (err) {

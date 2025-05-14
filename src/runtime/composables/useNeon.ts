@@ -52,8 +52,8 @@ export function useNeon() {
     }
   }
 
-  const select = async <T> (columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<Array<T> | NeonError> => {
-    const ret = await fetchFromNeonBackend<T>('select', { columns, from, where, order, limit })
+  const select = async <T> (columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number, group?: string | string[], having?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<Array<T> | NeonError> => {
+    const ret = await fetchFromNeonBackend<T>('select', { columns, from, where, order, limit, group, having })
     if (isNeonSuccess(ret)) {
       return ret as Array<T>
     }

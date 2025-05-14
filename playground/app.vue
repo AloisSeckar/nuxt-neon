@@ -34,6 +34,7 @@
   <TestCount />
   <TestInsert />
   <TestUpdate />
+  <TestGroupByHaving />
   <TestDelete />
   <TestRaw />
   <hr>

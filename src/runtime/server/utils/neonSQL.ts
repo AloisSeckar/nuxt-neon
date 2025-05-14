@@ -8,7 +8,7 @@ export async function count(neon: NeonQueryFunction<boolean, boolean>, from: str
   return await select(neon, ['count(*)'], from, where, undefined, undefined)
 }
 
-export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number): Promise<NeonDriverResult<false, false>> {
+export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number, group?: string | string[], having?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<NeonDriverResult<false, false>> {
   let sqlString = 'SELECT '
 
   if (Array.isArray(columns)) {
@@ -21,6 +21,10 @@ export async function select(neon: NeonQueryFunction<boolean, boolean>, columns:
   sqlString += getTableClause(from)
 
   sqlString += getWhereClause(where)
+
+  sqlString += getGroupByClause(group)
+
+  sqlString += getHavingClause(having)
 
   sqlString += getOrderClause(order)
 
@@ -162,6 +166,46 @@ function getOrderClause(order?: string | NeonOrderQuery | NeonOrderQuery[]): str
     }
     else {
       sqlString += `${order.column} ${order.direction || 'ASC'}`
+    }
+  }
+  return sqlString
+}
+
+function getGroupByClause(group?: string | string[]): string {
+  let sqlString = ''
+  if (group) {
+    sqlString = ' GROUP BY '
+    if (Array.isArray(group)) {
+      sqlString += group.join(', ')
+    }
+    else {
+      sqlString += group
+    }
+  }
+  return sqlString
+}
+
+function getHavingClause(having?: string | NeonWhereQuery | NeonWhereQuery[]): string {
+  let sqlString = ''
+  if (having) {
+    sqlString += ' HAVING '
+    if (typeof having === 'string') {
+      sqlString += having
+    }
+    else if (Array.isArray(having)) {
+      let conditions = ''
+      having.forEach((h) => {
+        if (conditions) {
+          conditions += ` ${h.operator} ${h.column} ${h.condition} ${escapeIfNeeded(h.value)}`
+        }
+        else {
+          conditions = `${h.column} ${h.condition} ${escapeIfNeeded(h.value)}`
+        }
+      })
+      sqlString += conditions
+    }
+    else {
+      sqlString += `${having.column} ${having.condition} ${escapeIfNeeded(having.value)}`
     }
   }
   return sqlString
