@@ -4,7 +4,7 @@ import { parseNeonClientError } from '../utils/neonErrors'
 import { NEON_RAW_WARNING, displayRawWarning } from '../../utils/neonWarnings'
 import { defineEventHandler, readBody } from '#imports'
 
-export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>): Promise<Array<T> | NeonError> => {
+export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>): NeonDataType<T> => {
   try {
     const body = await readBody(event)
     const neon = getNeonClient()

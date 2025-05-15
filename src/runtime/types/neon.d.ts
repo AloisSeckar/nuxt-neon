@@ -10,4 +10,9 @@ declare global {
   export type NeonWhereQuery = types.NeonWhereQuery
   export type NeonSortDirection = types.NeonSortDirection
   export type NeonOrderQuery = types.NeonOrderQuery
+
+  export type NeonDataType<T> = types.NeonDataType<T>
+  export type NeonCountType = types.NeonCountType
+  export type NeonEditType = types.NeonEditType
+  export type NeonStatusType = types.NeonStatusType
 }

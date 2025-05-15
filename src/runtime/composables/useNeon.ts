@@ -1,10 +1,9 @@
-import type { NeonStatusResult, NeonTableQuery, NeonWhereQuery, NeonOrderQuery } from '../utils/neonTypes'
 import { NEON_RAW_WARNING, displayRawWarning } from '../utils/neonWarnings'
 import { formatNeonError, handleNeonError, isNeonSuccess } from '../utils/neonErrors'
 import { useRuntimeConfig } from '#imports'
 
 export function useNeon() {
-  const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusResult> => {
+  const neonStatus = async (anonymous: boolean = true, debug: boolean = false): NeonStatusType => {
     const dbName = useRuntimeConfig().public.neonDB
 
     let error = ''
@@ -29,7 +28,7 @@ export function useNeon() {
     return (await neonStatus()).status === 'OK'
   }
 
-  const raw = async <T> (query: string): Promise<Array<T> | NeonError> => {
+  const raw = async <T> (query: string): NeonDataType<T> => {
     if (displayRawWarning()) {
       console.warn(NEON_RAW_WARNING)
     }
@@ -42,7 +41,7 @@ export function useNeon() {
     }
   }
 
-  const count = async (from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number | NeonError> => {
+  const count = async (from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): NeonCountType => {
     const ret = await fetchFromNeonBackend<number>('count', { from, where })
     if (isNeonSuccess(ret)) {
       return (ret as Array<number>).at(0) || -1
@@ -52,7 +51,7 @@ export function useNeon() {
     }
   }
 
-  const select = async <T> (columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number, group?: string | string[], having?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<Array<T> | NeonError> => {
+  const select = async <T> (columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number, group?: string | string[], having?: string | NeonWhereQuery | NeonWhereQuery[]): NeonDataType<T> => {
     const ret = await fetchFromNeonBackend<T>('select', { columns, from, where, order, limit, group, having })
     if (isNeonSuccess(ret)) {
       return ret as Array<T>
@@ -62,15 +61,15 @@ export function useNeon() {
     }
   }
 
-  const insert = async (table: string | NeonTableQuery, values: Record<string, string>): Promise<string | NeonError> => {
+  const insert = async (table: string | NeonTableQuery, values: Record<string, string>): NeonEditType => {
     return await callNeonBackend('insert', { table, values })
   }
 
-  const update = async (table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string | NeonError> => {
+  const update = async (table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): NeonEditType => {
     return await callNeonBackend('update', { table, values, where })
   }
 
-  const del = async (table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string | NeonError> => {
+  const del = async (table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): NeonEditType => {
     return await callNeonBackend('delete', { table, where })
   }
 
@@ -90,7 +89,7 @@ export function useNeon() {
 
 // for methods where we don't expect results (INSERT, UPDATE, DELETE)
 // backend returns an array with single string containing either 'OK' or an error cause
-async function callNeonBackend(method: string, body: Record<string, unknown>): Promise<string | NeonError> {
+async function callNeonBackend(method: string, body: Record<string, unknown>): NeonEditType {
   const ret = await fetchFromNeonBackend<string>(method, body)
   if (isNeonSuccess(ret)) {
     return (ret as Array<string>)[0]
@@ -102,7 +101,7 @@ async function callNeonBackend(method: string, body: Record<string, unknown>): P
 
 // this is the actual call for server-side endpoints
 // backend returns either an array of results or an error object
-async function fetchFromNeonBackend<T>(method: string, body: Record<string, unknown>): Promise<Array<T> | NeonError> {
+async function fetchFromNeonBackend<T>(method: string, body: Record<string, unknown>): NeonDataType<T> {
   try {
     return await $fetch<Array<T> | NeonError>(`/api/_neon/${method}`, {
       method: 'POST',

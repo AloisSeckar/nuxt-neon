@@ -7,12 +7,14 @@ import {
   getLimitClause, getOrderClause, getTableClause, getWhereClause,
 } from './helpers/neonSQLHelpers'
 
+type NeonDriverType = Promise<NeonDriverResult<false, false>>
+
 // separate wrapper instead of forcing users to pass 'count(*)' as column name
-export async function count(neon: NeonQueryFunction<boolean, boolean>, from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]) {
+export async function count(neon: NeonQueryFunction<boolean, boolean>, from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): NeonDriverType {
   return await select(neon, ['count(*)'], from, where, undefined, undefined)
 }
 
-export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number, group?: string | string[], having?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<NeonDriverResult<false, false>> {
+export async function select(neon: NeonQueryFunction<boolean, boolean>, columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number, group?: string | string[], having?: string | NeonWhereQuery | NeonWhereQuery[]): NeonDriverType {
   let sqlString = 'SELECT '
 
   sqlString += getColumnsClause(columns)
@@ -29,7 +31,7 @@ export async function select(neon: NeonQueryFunction<boolean, boolean>, columns:
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: string | NeonTableQuery, values: Record<string, string>): Promise<NeonDriverResult<false, false>> {
+export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: string | NeonTableQuery, values: Record<string, string>): NeonDriverType {
   let sqlString = `INSERT INTO ${table}`
 
   const sqlColumns = [] as string[]
@@ -51,7 +53,7 @@ export async function insert(neon: NeonQueryFunction<boolean, boolean>, table: s
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function update(neon: NeonQueryFunction<boolean, boolean>, table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<NeonDriverResult<false, false>> {
+export async function update(neon: NeonQueryFunction<boolean, boolean>, table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): NeonDriverType {
   let sqlString = `UPDATE ${table}`
 
   sqlString += ' SET '
@@ -68,7 +70,7 @@ export async function update(neon: NeonQueryFunction<boolean, boolean>, table: s
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function del(neon: NeonQueryFunction<boolean, boolean>, table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<NeonDriverResult<false, false>> {
+export async function del(neon: NeonQueryFunction<boolean, boolean>, table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): NeonDriverType {
   let sqlString = `DELETE FROM ${table}`
 
   sqlString += getWhereClause(where)

@@ -3,7 +3,7 @@ import { parseNeonClientError } from '../utils/neonErrors'
 import { count } from '../utils/neonSQL'
 import { defineEventHandler, readBody } from '#imports'
 
-export default defineEventHandler(async (event): Promise<Array<number> | NeonError> => {
+export default defineEventHandler(async (event): NeonDataType<number> => {
   try {
     const body = await readBody(event)
     const neon = getNeonClient()

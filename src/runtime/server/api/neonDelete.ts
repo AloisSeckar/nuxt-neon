@@ -3,7 +3,7 @@ import { getGenericError, parseNeonClientError } from '../utils/neonErrors'
 import { del } from '../utils/neonSQL'
 import { defineEventHandler, readBody } from '#imports'
 
-export default defineEventHandler(async (event): Promise<Array<string> | NeonError> => {
+export default defineEventHandler(async (event): NeonDataType<string> => {
   try {
     const body = await readBody(event)
     const neon = getNeonClient()

@@ -75,3 +75,10 @@ export type NeonOrderQuery = {
   /** Sort direction (`ASC` if not specified) */
   direction?: NeonSortDirection
 }
+
+// consolidated types
+
+export type NeonDataType<T> = Promise<Array<T> | NeonError>
+export type NeonCountType = Promise<number | NeonError>
+export type NeonEditType = Promise<string | NeonError>
+export type NeonStatusType = Promise<NeonStatusResult>
