@@ -9,7 +9,9 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
     const body = await readBody(event)
     const neon = getNeonClient()
 
-    if (displayRawWarning()) {
+    // warning about this method being potentially unsafe
+    // skip warning for a harmless health-check triggered by neonStatus() function
+    if (displayRawWarning() && body.query !== 'SELECT 1=1 as status') {
       console.warn(NEON_RAW_WARNING)
     }
 
