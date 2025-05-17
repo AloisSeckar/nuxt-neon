@@ -4,6 +4,8 @@ declare global {
   export type NeonSSLModeOption = types.NeonSSLModeOption
   export type NeonError = types.NeonError
   export type NeonStatusResult = types.NeonStatusResult
+
+  export type NeonColumnQuery = types.NeonColumnQuery
   export type NeonTableQuery = types.NeonTableQuery
   export type NeonWhereCondition = types.NeonWhereCondition
   export type NeonWhereOperator = types.NeonWhereOperator

@@ -30,7 +30,15 @@ const { select } = useNeon()
 // WHERE
 //   p2.value_bool = true
 const { data: data4 } = await useAsyncData(() => select(
-  ['p1.id', 'p1.name', 'p1.value', 'p2.value_int', 'p2.value_bool', 'p2.value_text', 'p3.bool_value'],
+  [
+    { alias: 'p1', name: 'id' },
+    { alias: 'p1', name: 'name' },
+    { alias: 'p1', name: 'value' },
+    { alias: 'p2', name: 'value_int' },
+    { alias: 'p2', name: 'value_bool' },
+    { alias: 'p2', name: 'value_text' },
+    { alias: 'p3', name: 'bool_value' },
+  ],
   [
     { table: 'playing_with_neon', alias: 'p1' },
     { table: 'playing_with_neon_2', alias: 'p2', joinColumn1: 'p1.id', joinColumn2: 'p2.id' },

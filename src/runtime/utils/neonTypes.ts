@@ -33,6 +33,14 @@ export type NeonStatusResult = {
   debugInfo?: string
 }
 
+/** Object for defining column with a table alias */
+export type NeonColumnQuery = {
+  /** Alias used for table */
+  alias?: string
+  /** Column name */
+  name: string
+}
+
 /** Object for defining 2+ tables for JOIN in SELECT. */
 export type NeonTableQuery = {
   /** Schema name */
@@ -83,7 +91,7 @@ export type NeonCountType = Promise<number | NeonError>
 export type NeonEditType = Promise<string | NeonError>
 export type NeonStatusType = Promise<NeonStatusResult>
 
-export type NeonColumnType = string | string[]
+export type NeonColumnType = string | string[] | NeonColumnQuery | NeonColumnQuery[]
 export type NeonTableType = string | NeonTableQuery
 export type NeonFromType = string | NeonTableQuery | NeonTableQuery[]
 export type NeonWhereType = string | NeonWhereQuery | NeonWhereQuery[]

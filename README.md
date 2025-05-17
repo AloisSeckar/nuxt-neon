@@ -109,35 +109,37 @@ const { count } = useNeon()
 This is a special wrapper to allow `select count(*) from` query:
 - **from** - definition of table(s) to select from
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/2neonTypes.ts#L37) type which will be parsed into a chain of `JOIN` clauses
+  - or an instance (or array) of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will be parsed into a chain of `JOIN` clauses
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - oran instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L57) type which will be parsed into chain of clauses
+  - oran instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
 
 It just calls the `select()` wrapper function under the hood, but abstracts users from having to pass `columns = ['count(*)']`.
 
 #### `select()`
 
 ```ts
-// async <T> (columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number, group?: string | string[], having?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<Array<T> | NeonError>
+// async <T> (columns: string | string[] | NeonColumnQuery | NeonColumnQuery[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number, group?: string | string[] | NeonColumnQuery | NeonColumnQuery[], having?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<Array<T> | NeonError>
 const { select } = useNeon()
 ```
 
 You can perform `SELECT` operation via this function with following parameters:
 - **columns** - array of columns you want to retrieve
-  - you can also use special `*` for "all columns"
-  - you can use SQL functions (e.g. `count(*)`) 
-  - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column`)
+  - can be a string or array of strings
+  - you can use special `*` for "all columns"
+  - you can also use SQL functions (e.g. `count(*)`) 
+  - if you use aliases in `from` part, you can to provide them together with the column name (e.g. `t.column`)
+  - or an instance (or array) of [`NeonColumnQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L37) type which can handle `alias` as well
 - **from** - definition of table(s) to select from
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L37) type which will be parsed into a chain of `JOIN` clauses
+  - or an instance (or array) of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will be parsed into a chain of `JOIN` clauses
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column = 1`)
 - **order** - _optional_ criteria for ordering results
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonOrderQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L72) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonOrderQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L80) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column DESC`)
 - **limit** - _optional_ limit of results, if more results expected (number)
 - **group** - _optional_ definition for GROUP BY aggregation clause
@@ -171,7 +173,7 @@ You can perform `UPDATE` operation via this function with following parameters:
 - **values** - list of key-value pairs to be updated, values are being sanitized before applied to database
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L57) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
 
 #### `del()`
 
@@ -185,7 +187,7 @@ You can perform `DELETE` operation via this function with following parameters:
 - **table** - DB table to be deleled from
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L57) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
 
 Returns `'OK'` if query was successfully executed or returned erorr message.
 

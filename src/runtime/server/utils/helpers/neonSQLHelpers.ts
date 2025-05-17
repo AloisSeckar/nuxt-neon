@@ -32,12 +32,30 @@ function tableWithSchema(t: NeonTableQuery): string {
 export function getColumnsClause(columns: NeonColumnType): string {
   let sqlString = ''
   if (Array.isArray(columns)) {
-    sqlString += columns.join(', ')
+    if (columns[0] && (typeof columns[0] === 'object')) {
+      sqlString += columns.map(c => columnWithAlias(c as NeonColumnQuery)).join(', ')
+    }
+    else {
+      sqlString += columns.join(', ')
+    }
   }
   else {
-    sqlString += columns
+    if (typeof columns === 'object') {
+      sqlString += columnWithAlias(columns)
+    }
+    else {
+      sqlString += columns
+    }
   }
   return sqlString
+}
+
+// include table alias if specified
+function columnWithAlias(c: NeonColumnQuery): string {
+  if (c.alias) {
+    return `${c.alias}.${c.name}`
+  }
+  return c.name
 }
 
 export function getWhereClause(where?: NeonWhereType): string {
@@ -96,12 +114,7 @@ export function getGroupByClause(group?: NeonColumnType): string {
   let sqlString = ''
   if (group) {
     sqlString = ' GROUP BY '
-    if (Array.isArray(group)) {
-      sqlString += group.join(', ')
-    }
-    else {
-      sqlString += group
-    }
+    sqlString += getColumnsClause(group)
   }
   return sqlString
 }
