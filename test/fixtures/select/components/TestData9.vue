@@ -1,0 +1,35 @@
+<template>
+  <div style="margin-bottom: 10px;">
+    <pre>
+SELECT
+  p1.id, p1.name, p1.value
+FROM
+  playing_with_neon p1
+    </pre>
+    <div id="data-9">
+      Data 9: {{ data9 }}
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { useAsyncData, useNeon } from '#imports'
+
+const { select } = useNeon()
+
+// test single NeonTableQuery with an aliis (fix #29)
+// SELECT
+//   p1.id, p1.name, p1.value
+// FROM
+//   playing_with_neon p1
+const { data: data9 } = await useAsyncData(() => select(
+  // columns
+  [
+    { alias: 'p1', name: 'id' },
+    { alias: 'p1', name: 'name' },
+    { alias: 'p1', name: 'value' },
+  ],
+  // single table with an alias
+  { table: 'playing_with_neon', alias: 'p1' },
+))
+</script>

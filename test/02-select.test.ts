@@ -66,5 +66,20 @@ describe('nuxt-neon SELECT test suite', async () => {
     expect(dataHtml7).toContain('"value": 0.74727505')
     const idsIn7 = (dataHtml7.match(/"id"/g) || []).length
     expect(idsIn7).toBe(5)
+
+    const dataDiv8 = page.locator('#data-8')
+    const dataHtml8 = await dataDiv8.innerHTML()
+    expect(dataHtml8).toContain('"name": "neon2-1"')
+    expect(dataHtml8).toContain('"value_int": -2')
+    expect(dataHtml8).toContain('"bool_value": "Text value for true"')
+    const idsIn8 = (dataHtml8.match(/"id"/g) || []).length
+    expect(idsIn8).toBe(3)
+
+    const dataDiv9 = page.locator('#data-9')
+    const dataHtml9 = await dataDiv9.innerHTML()
+    expect(dataHtml9).toContain('"name": "c4ca4238a0"')
+    expect(dataHtml9).toContain('"value": 0.9541963')
+    const idsIn9 = (dataHtml9.match(/"id"/g) || []).length
+    expect(idsIn9).toBe(10)
   })
 })

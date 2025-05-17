@@ -7,25 +7,37 @@ export function getTableClause(from: NeonFromType): string {
     let tables = ''
     from.forEach((t) => {
       if (tables) {
-        const joinCondition = getJoinCondition(t.joinColumn1!, t.joinColumn2!)
-        tables += ` JOIN ${tableWithSchema(t)} ${t.alias} ON ${joinCondition}`
+        if (t.joinColumn1) {
+          const joinCondition = getJoinCondition(t.joinColumn1!, t.joinColumn2!)
+          tables += ` JOIN ${tableWithSchemaAndAlias(t)} ON ${joinCondition}`
+        }
+        else {
+          tables += `, ${tableWithSchemaAndAlias(t)}`
+        }
       }
       else {
-        tables = `${tableWithSchema(t)} ${t.alias}`
+        tables = tableWithSchemaAndAlias(t)
       }
     })
     sqlString += tables
   }
   else {
-    sqlString += tableWithSchema(from)
+    sqlString += tableWithSchemaAndAlias(from)
   }
   return sqlString
 }
 
 // include schema name if specified
-function tableWithSchema(t: NeonTableQuery): string {
+function tableWithSchemaAndAlias(t: NeonTableQuery): string {
   if (t.schema) {
-    return `${t.schema}.${t.table}`
+    return `${t.schema}.${tableWithAlias(t)}`
+  }
+  return tableWithAlias(t)
+}
+
+function tableWithAlias(t: NeonTableQuery): string {
+  if (t.alias) {
+    return `${t.table} ${t.alias}`
   }
   return t.table
 }

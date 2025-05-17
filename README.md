@@ -132,7 +132,8 @@ You can perform `SELECT` operation via this function with following parameters:
   - or an instance (or array) of [`NeonColumnQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L37) type which can handle `alias` as well
 - **from** - definition of table(s) to select from
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will be parsed into a chain of `JOIN` clauses
+  - or an instance (or array) of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will (usually) be parsed into a chain of `JOIN` clauses
+  - the `JOIN` clause is not required and can be substituted with adequate `WHERE` condition(s), however, due to current API limitations, such clause(s) need to be passed in as a raw string (e.g. `p1.id = p2.id`)
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
   - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
