@@ -69,10 +69,10 @@ export function getWhereClause(where?: NeonWhereType): string {
       let conditions = ''
       where.forEach((w) => {
         if (conditions) {
-          conditions += ` ${w.operator} ${w.column} ${w.condition} ${escapeIfNeeded(w.value)}`
+          conditions += ` ${w.operator} ${whereColumnWithAlias(w)} ${w.condition} ${escapeIfNeeded(w.value)}`
         }
         else {
-          conditions = `${w.column} ${w.condition} ${escapeIfNeeded(w.value)}`
+          conditions = `${whereColumnWithAlias(w)} ${w.condition} ${escapeIfNeeded(w.value)}`
         }
       })
       sqlString += conditions
@@ -82,6 +82,14 @@ export function getWhereClause(where?: NeonWhereType): string {
     }
   }
   return sqlString
+}
+
+// include table alias if specified
+function whereColumnWithAlias(w: NeonWhereQuery): string {
+  if (w.alias) {
+    return `${w.alias}.${w.column}`
+  }
+  return w.column
 }
 
 export function getOrderClause(order?: NeonOrderType): string {

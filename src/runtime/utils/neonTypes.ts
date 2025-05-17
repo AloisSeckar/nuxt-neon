@@ -63,6 +63,8 @@ export type NeonWhereOperator = 'AND' | 'OR'
 
 /** Object for defining a WHERE clause. */
 export type NeonWhereQuery = {
+  /** Alias used for table */
+  alias?: string
   /** Column name */
   column: string
   /** Condition type */
