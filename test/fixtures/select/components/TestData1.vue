@@ -25,7 +25,7 @@ const { data: data1 } = await useAsyncData(() => select(
   ['p1.id', 'p1.name', 'p1.value', 'p2.value_int', 'p2.value_bool', 'p2.value_text'],
   [
     { table: 'playing_with_neon', alias: 'p1' },
-    { table: 'playing_with_neon_2', alias: 'p2', joinColumn1: 'p1.id', joinColumn2: 'p2.id' },
+    { table: 'playing_with_neon_2', alias: 'p2', joinColumn1: { alias: 'p1', name: 'id' }, joinColumn2: { alias: 'p2', name: 'id' } },
   ],
 ))
 </script>

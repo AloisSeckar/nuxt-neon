@@ -7,7 +7,8 @@ export function getTableClause(from: NeonFromType): string {
     let tables = ''
     from.forEach((t) => {
       if (tables) {
-        tables += ` JOIN ${tableWithSchema(t)} ${t.alias} ON ${t.joinColumn1} = ${t.joinColumn2}`
+        const joinCondition = getJoinCondition(t.joinColumn1!, t.joinColumn2!)
+        tables += ` JOIN ${tableWithSchema(t)} ${t.alias} ON ${joinCondition}`
       }
       else {
         tables = `${tableWithSchema(t)} ${t.alias}`
@@ -27,6 +28,13 @@ function tableWithSchema(t: NeonTableQuery): string {
     return `${t.schema}.${t.table}`
   }
   return t.table
+}
+
+// handle join condition
+function getJoinCondition(c1: string | NeonColumnQuery, c2: string | NeonColumnQuery) {
+  const left = typeof c1 === 'string' ? c1 : columnWithAlias(c1)
+  const right = typeof c2 === 'string' ? c2 : columnWithAlias(c2)
+  return `${left} = ${right}`
 }
 
 export function getColumnsClause(columns: NeonColumnType): string {

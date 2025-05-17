@@ -50,9 +50,9 @@ export type NeonTableQuery = {
   /** Alias used for table */
   alias?: string
   /** Left column (including alias) for JOIN (ignored for 1st table) */
-  joinColumn1?: string
+  joinColumn1?: string | NeonColumnQuery
   /** Right column (including alias) for JOIN (ignored for 1st table) */
-  joinColumn2?: string
+  joinColumn2?: string | NeonColumnQuery
 }
 
 /** Enum-like type to define operation for column-value pair in WHERE clause */
