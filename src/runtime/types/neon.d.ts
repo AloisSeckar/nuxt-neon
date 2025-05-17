@@ -15,4 +15,12 @@ declare global {
   export type NeonCountType = types.NeonCountType
   export type NeonEditType = types.NeonEditType
   export type NeonStatusType = types.NeonStatusType
+
+  export type NeonColumnType = types.NeonColumnType
+  export type NeonTableType = types.NeonTableType
+  export type NeonFromType = types.NeonFromType
+  export type NeonWhereType = types.NeonWhereType
+  export type NeonOrderType = types.NeonOrderType
+  export type NeonValueType = types.NeonValueType
+  export type NeonBodyType = types.NeonBodyType
 }

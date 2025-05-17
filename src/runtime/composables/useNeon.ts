@@ -41,7 +41,7 @@ export function useNeon() {
     }
   }
 
-  const count = async (from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): NeonCountType => {
+  const count = async (from: NeonFromType, where?: NeonWhereType): NeonCountType => {
     const ret = await fetchFromNeonBackend<number>('count', { from, where })
     if (isNeonSuccess(ret)) {
       return (ret as Array<number>).at(0) || -1
@@ -51,7 +51,7 @@ export function useNeon() {
     }
   }
 
-  const select = async <T> (columns: string | string[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number, group?: string | string[], having?: string | NeonWhereQuery | NeonWhereQuery[]): NeonDataType<T> => {
+  const select = async <T> (columns: NeonColumnType, from: NeonFromType, where?: NeonWhereType, order?: NeonOrderType, limit?: number, group?: NeonColumnType, having?: NeonWhereType): NeonDataType<T> => {
     const ret = await fetchFromNeonBackend<T>('select', { columns, from, where, order, limit, group, having })
     if (isNeonSuccess(ret)) {
       return ret as Array<T>
@@ -61,15 +61,15 @@ export function useNeon() {
     }
   }
 
-  const insert = async (table: string | NeonTableQuery, values: Record<string, string>): NeonEditType => {
+  const insert = async (table: NeonTableType, values: NeonValueType): NeonEditType => {
     return await callNeonBackend('insert', { table, values })
   }
 
-  const update = async (table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): NeonEditType => {
+  const update = async (table: NeonTableType, values: NeonValueType, where?: NeonWhereType): NeonEditType => {
     return await callNeonBackend('update', { table, values, where })
   }
 
-  const del = async (table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): NeonEditType => {
+  const del = async (table: NeonTableType, where?: NeonWhereType): NeonEditType => {
     return await callNeonBackend('delete', { table, where })
   }
 
@@ -89,7 +89,7 @@ export function useNeon() {
 
 // for methods where we don't expect results (INSERT, UPDATE, DELETE)
 // backend returns an array with single string containing either 'OK' or an error cause
-async function callNeonBackend(method: string, body: Record<string, unknown>): NeonEditType {
+async function callNeonBackend(method: string, body: NeonBodyType): NeonEditType {
   const ret = await fetchFromNeonBackend<string>(method, body)
   if (isNeonSuccess(ret)) {
     return (ret as Array<string>)[0]
@@ -101,7 +101,7 @@ async function callNeonBackend(method: string, body: Record<string, unknown>): N
 
 // this is the actual call for server-side endpoints
 // backend returns either an array of results or an error object
-async function fetchFromNeonBackend<T>(method: string, body: Record<string, unknown>): NeonDataType<T> {
+async function fetchFromNeonBackend<T>(method: string, body: NeonBodyType): NeonDataType<T> {
   try {
     return await $fetch<Array<T> | NeonError>(`/api/_neon/${method}`, {
       method: 'POST',

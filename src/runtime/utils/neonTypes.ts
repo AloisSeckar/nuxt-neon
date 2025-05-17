@@ -82,3 +82,11 @@ export type NeonDataType<T> = Promise<Array<T> | NeonError>
 export type NeonCountType = Promise<number | NeonError>
 export type NeonEditType = Promise<string | NeonError>
 export type NeonStatusType = Promise<NeonStatusResult>
+
+export type NeonColumnType = string | string[]
+export type NeonTableType = string | NeonTableQuery
+export type NeonFromType = string | NeonTableQuery | NeonTableQuery[]
+export type NeonWhereType = string | NeonWhereQuery | NeonWhereQuery[]
+export type NeonOrderType = string | NeonOrderQuery | NeonOrderQuery[]
+export type NeonValueType = Record<string, string>
+export type NeonBodyType = Record<string, unknown>

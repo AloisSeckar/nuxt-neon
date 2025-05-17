@@ -1,4 +1,4 @@
-export function getTableClause(from: string | NeonTableQuery | NeonTableQuery[]): string {
+export function getTableClause(from: NeonFromType): string {
   let sqlString = ' FROM '
   if (typeof from === 'string') {
     sqlString += from
@@ -29,7 +29,7 @@ function tableWithSchema(t: NeonTableQuery): string {
   return t.table
 }
 
-export function getColumnsClause(columns: string | string[]): string {
+export function getColumnsClause(columns: NeonColumnType): string {
   let sqlString = ''
   if (Array.isArray(columns)) {
     sqlString += columns.join(', ')
@@ -40,7 +40,7 @@ export function getColumnsClause(columns: string | string[]): string {
   return sqlString
 }
 
-export function getWhereClause(where?: string | NeonWhereQuery | NeonWhereQuery[]): string {
+export function getWhereClause(where?: NeonWhereType): string {
   let sqlString = ''
   if (where) {
     sqlString += ' WHERE '
@@ -66,7 +66,7 @@ export function getWhereClause(where?: string | NeonWhereQuery | NeonWhereQuery[
   return sqlString
 }
 
-export function getOrderClause(order?: string | NeonOrderQuery | NeonOrderQuery[]): string {
+export function getOrderClause(order?: NeonOrderType): string {
   let sqlString = ''
   if (order) {
     sqlString = ' ORDER BY '
@@ -92,7 +92,7 @@ export function getOrderClause(order?: string | NeonOrderQuery | NeonOrderQuery[
   return sqlString
 }
 
-export function getGroupByClause(group?: string | string[]): string {
+export function getGroupByClause(group?: NeonColumnType): string {
   let sqlString = ''
   if (group) {
     sqlString = ' GROUP BY '
@@ -106,7 +106,7 @@ export function getGroupByClause(group?: string | string[]): string {
   return sqlString
 }
 
-export function getHavingClause(having?: string | NeonWhereQuery | NeonWhereQuery[]): string {
+export function getHavingClause(having?: NeonWhereType): string {
   let sqlString = ''
   if (having) {
     sqlString += ' HAVING '
