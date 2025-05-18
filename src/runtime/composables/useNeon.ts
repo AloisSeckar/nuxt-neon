@@ -29,7 +29,7 @@ export function useNeon() {
   }
 
   const raw = async <T> (query: string): NeonDataType<T> => {
-    if (displayRawWarning()) {
+    if (displayRawWarning() && query !== 'SELECT 1=1 as status') {
       console.warn(NEON_RAW_WARNING)
     }
     const ret = await fetchFromNeonBackend<T>('raw', { query })
