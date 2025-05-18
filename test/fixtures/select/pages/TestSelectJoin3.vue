@@ -10,8 +10,8 @@ FROM
 WHERE
   p2.value_bool = true
     </pre>
-    <div id="data-4">
-      Data 4: {{ data4 }}
+    <div id="data">
+      {{ data }}
     </div>
   </div>
 </template>
@@ -31,7 +31,7 @@ const { select } = useNeon()
 //   JOIN playing_with_neon_3 p3 ON p2.value_bool = p3.bool_key
 // WHERE
 //   p2.value_bool = true
-const { data: data4 } = await useAsyncData(() => select(
+const { data } = await useAsyncData(() => select(
   // columns
   [
     { alias: 'p1', name: 'id' },

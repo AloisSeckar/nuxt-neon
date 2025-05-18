@@ -6,8 +6,8 @@ SELECT
 FROM
   neon2.playing_with_neon
     </pre>
-    <div id="data-7">
-      Data 7: {{ data7 }}
+    <div id="data">
+      {{ data }}
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@ const { select } = useNeon()
 //   id, name, value
 // FROM
 //   neon2.playing_with_neon
-const { data: data7 } = await useAsyncData(() => select(
+const { data } = await useAsyncData(() => select(
   // columns
   ['id', 'name', 'value'],
   // test specifying db schema in FROM

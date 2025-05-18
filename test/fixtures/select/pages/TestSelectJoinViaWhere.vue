@@ -11,8 +11,8 @@ WHERE
   p1.id = p2.id
   AND p2.value_bool = p3.bool_key
     </pre>
-    <div id="data-8">
-      Data 8: {{ data8 }}
+    <div id="data">
+      {{ data }}
     </div>
   </div>
 </template>
@@ -33,7 +33,7 @@ const { select } = useNeon()
 // WHERE
 //   p1.id = p2.id
 //   AND p2.value_bool = p3.bool_key
-const { data: data8 } = await useAsyncData(() => select(
+const { data } = await useAsyncData(() => select(
   // columns
   [
     { alias: 'p1', name: 'id' },

@@ -8,8 +8,8 @@ FROM
 WHERE
   name = 'c4ca4238a0' OR name = 'a87ff679a2'
     </pre>
-    <div id="data-5">
-      Data 5: {{ data5 }}
+    <div id="data">
+      {{ data }}
     </div>
   </div>
 </template>
@@ -27,7 +27,7 @@ const { select } = useNeon()
 //   playing_with_neon
 // WHERE
 //   name = 'c4ca4238a0' OR name = 'a87ff679a2'
-const { data: data5 } = await useAsyncData(() => select(
+const { data } = await useAsyncData(() => select(
   // columns
   ['id', 'name'],
   // from

@@ -10,8 +10,8 @@ WHERE
 ORDER BY
   id DESC
     </pre>
-    <div id="data-6">
-      Data 6: {{ data6 }}
+    <div id="data">
+      {{ data }}
     </div>
   </div>
 </template>
@@ -31,7 +31,7 @@ const { select } = useNeon()
 //   id > 5
 // ORDER BY
 //   id DESC
-const { data: data6 } = await useAsyncData(() => select(
+const { data } = await useAsyncData(() => select(
   // test single-string column
   'id',
   // test single-string FROM

@@ -6,8 +6,8 @@ SELECT
 FROM
   playing_with_neon p1
     </pre>
-    <div id="data-9">
-      Data 9: {{ data9 }}
+    <div id="data">
+      {{ data }}
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@ const { select } = useNeon()
 //   p1.id, p1.name, p1.value
 // FROM
 //   playing_with_neon p1
-const { data: data9 } = await useAsyncData(() => select(
+const { data } = await useAsyncData(() => select(
   // columns
   [
     { alias: 'p1', name: 'id' },
