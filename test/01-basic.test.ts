@@ -29,7 +29,7 @@ describe('nuxt-neon basic test suite', async () => {
     expect(statusHTML).toContain('"database": "elrh-neon"')
     expect(statusHTML).toContain('"status": "OK"')
     expect(statusHTML).toContain('"debugInfo": ""')
-  }, 10000)
+  }, 10000) // first test in suite always needs longer timeout
 
   test('All test components are rendered', async () => {
     // render in browser

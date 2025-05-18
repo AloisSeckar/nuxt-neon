@@ -31,29 +31,26 @@ export async function select(neon: NeonDriver, columns: NeonColumnType, from: Ne
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function insert(neon: NeonDriver, table: NeonTableType, values: NeonValueType): NeonDriverResponse {
-  let sqlString = `INSERT INTO ${table}`
+export async function insert(neon: NeonDriver, table: NeonTableType, values: NeonInsertType): NeonDriverResponse {
+  // data to be inserted
+  const rows = Array.isArray(values) ? values : [values]
 
-  const sqlColumns = [] as string[]
-  const sqlValues = [] as string[]
-  for (const [key, value] of Object.entries(values)) {
-    sqlColumns.push(key)
-    sqlValues.push(sanitizeSQLString(value))
-  }
+  // definition of columns for the insert statement
+  const columns = Object.keys(rows[0])
+  const sqlColumns = columns.join(', ')
 
-  sqlString += ' ('
-  sqlString += sqlColumns.join(', ')
-  sqlString += ') '
+  // definition of values for the insert statement
+  const valueTuples = rows.map(row =>
+    '(' + columns.map(col => sanitizeSQLString(row[col])).join(', ') + ')',
+  ).join(', ')
 
-  sqlString += ' VALUES ('
-  sqlString += sqlValues.join(', ')
-  sqlString += ')'
+  const sqlString = `INSERT INTO ${table} (${sqlColumns}) VALUES ${valueTuples}`
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function update(neon: NeonDriver, table: NeonTableType, values: NeonValueType, where?: NeonWhereType): NeonDriverResponse {
+export async function update(neon: NeonDriver, table: NeonTableType, values: NeonUpdateType, where?: NeonWhereType): NeonDriverResponse {
   let sqlString = `UPDATE ${table}`
 
   sqlString += ' SET '

@@ -1,0 +1,43 @@
+<template>
+  <div style="margin-bottom: 10px;">
+    <pre>
+INSERT INTO
+  playing_with_neon (name, value)
+VALUES
+  ('automatic-test', 123)
+    </pre>
+    <div id="insert-result">
+      {{ result }}
+    </div>
+    <button
+      id="insert-button"
+      @click="doInsert"
+    >
+      Execute insert
+    </button>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useNeon } from '#imports'
+
+const { insert } = useNeon()
+
+// INSERT with only one value (parameter is Record<string, string>)
+
+// INSERT INTO
+//   playing_with_neon (name, value)
+// VALUES
+//   ('automatic-test', 123)
+
+const result = ref({})
+async function doInsert() {
+  result.value = await insert(
+    // table
+    'playing_with_neon',
+    // values
+    { name: 'automatic-test', value: '123' },
+  )
+}
+</script>

@@ -61,11 +61,11 @@ export function useNeon() {
     }
   }
 
-  const insert = async (table: NeonTableType, values: NeonValueType): NeonEditType => {
+  const insert = async (table: NeonTableType, values: NeonInsertType): NeonEditType => {
     return await callNeonBackend('insert', { table, values })
   }
 
-  const update = async (table: NeonTableType, values: NeonValueType, where?: NeonWhereType): NeonEditType => {
+  const update = async (table: NeonTableType, values: NeonUpdateType, where?: NeonWhereType): NeonEditType => {
     return await callNeonBackend('update', { table, values, where })
   }
 

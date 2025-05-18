@@ -23,6 +23,7 @@ declare global {
   export type NeonFromType = types.NeonFromType
   export type NeonWhereType = types.NeonWhereType
   export type NeonOrderType = types.NeonOrderType
-  export type NeonValueType = types.NeonValueType
+  export type NeonInsertType = types.NeonInsertType
+  export type NeonUpdateType = types.NeonUpdateType
   export type NeonBodyType = types.NeonBodyType
 }

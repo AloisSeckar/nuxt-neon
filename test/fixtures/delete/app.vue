@@ -1,15 +1,17 @@
 <template>
-  <h3 id="delete">
-    DELETE
-  </h3>
+  <h1>Nuxt-Neon DELETE TEST</h1>
+  <!-- <NuxtPage /> -->
+  <h2 id="delete">
+    Clean-up after each test run
+  </h2>
   <button
     id="delete-button"
     @click="doDelete"
   >
     Execute delete
   </button>
-  <div id="delete-data">
-    Result: {{ result }}
+  <div id="delete-result">
+    {{ result }}
   </div>
 </template>
 
@@ -23,13 +25,7 @@ const result = ref('')
 async function doDelete() {
   result.value = await del(
     'playing_with_neon',
-    [{ column: 'name', condition: 'LIKE', value: '\'%test%\'' }],
+    [{ column: 'id', condition: '>', value: '10' }],
   ) as string
 }
 </script>
-
-<style>
-.info {
-  margin-bottom: 5px;
-}
-</style>
