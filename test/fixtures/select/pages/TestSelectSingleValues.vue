@@ -21,6 +21,8 @@ import { useAsyncData, useNeon } from '#imports'
 
 const { select } = useNeon()
 
+// test single values
+
 // SELECT
 //   id
 // FROM
@@ -30,9 +32,9 @@ const { select } = useNeon()
 // ORDER BY
 //   id DESC
 const { data: data6 } = await useAsyncData(() => select(
-  // test string value (select single column)
+  // test single-string column
   'id',
-  // test string value (single table)
+  // test single-string FROM
   'playing_with_neon',
   // test single-clause WHERE
   { column: 'id', condition: '>', value: '5' },

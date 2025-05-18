@@ -23,6 +23,7 @@ import { useAsyncData, useNeon } from '#imports'
 const { select } = useNeon()
 
 // testing "join tables w/o JOIN (#28)"
+
 // SELECT
 //   p1.id, p1.name, p2.value_int, p3.bool_value
 // FROM
@@ -40,7 +41,7 @@ const { data: data8 } = await useAsyncData(() => select(
     { alias: 'p2', name: 'value_int' },
     { alias: 'p3', name: 'bool_value' },
   ],
-  // tables
+  // from
   [
     { schema: 'neon2', table: 'playing_with_neon', alias: 'p1' },
     { table: 'playing_with_neon_2', alias: 'p2' },

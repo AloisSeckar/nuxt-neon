@@ -17,7 +17,8 @@ import { useAsyncData, useNeon } from '#imports'
 
 const { select } = useNeon()
 
-// test single NeonTableQuery with an aliis (fix #29)
+// test single NeonTableQuery with an alias (fix #29)
+
 // SELECT
 //   p1.id, p1.name, p1.value
 // FROM
@@ -29,7 +30,7 @@ const { data: data9 } = await useAsyncData(() => select(
     { alias: 'p1', name: 'name' },
     { alias: 'p1', name: 'value' },
   ],
-  // single table with an alias
+  // FROM - single table with an alias
   { table: 'playing_with_neon', alias: 'p1' },
 ))
 </script>

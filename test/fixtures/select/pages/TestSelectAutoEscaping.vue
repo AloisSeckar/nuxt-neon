@@ -19,6 +19,8 @@ import { useAsyncData, useNeon } from '#imports'
 
 const { select } = useNeon()
 
+// test auto-escaping values in WHERE conditions
+
 // SELECT
 //   id, name
 // FROM
@@ -26,8 +28,11 @@ const { select } = useNeon()
 // WHERE
 //   name = 'c4ca4238a0' OR name = 'a87ff679a2'
 const { data: data5 } = await useAsyncData(() => select(
+  // columns
   ['id', 'name'],
+  // from
   'playing_with_neon',
+  // where
   [
     // test auto-escaping if quotes are added if necessary
     { column: 'name', condition: '=', value: 'c4ca4238a0' },

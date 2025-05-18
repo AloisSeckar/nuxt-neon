@@ -17,6 +17,8 @@ import { useAsyncData, useNeon } from '#imports'
 
 const { select } = useNeon()
 
+// test select using DB schema
+
 // SELECT
 //   id, name, value
 // FROM
@@ -24,7 +26,7 @@ const { select } = useNeon()
 const { data: data7 } = await useAsyncData(() => select(
   // columns
   ['id', 'name', 'value'],
-  // test specifying db schema
+  // test specifying db schema in FROM
   { table: 'playing_with_neon', schema: 'neon2' },
 ))
 </script>
