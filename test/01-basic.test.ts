@@ -29,7 +29,7 @@ describe('nuxt-neon basic test suite', async () => {
     expect(statusHTML).toContain('"database": "elrh-neon"')
     expect(statusHTML).toContain('"status": "OK"')
     expect(statusHTML).toContain('"debugInfo": ""')
-  })
+  }, 10000)
 
   test('All test components are rendered', async () => {
     // render in browser

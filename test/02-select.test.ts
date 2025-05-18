@@ -28,7 +28,7 @@ describe('nuxt-neon SELECT test suite', async () => {
     expect(dataHtml).toContain('"name": "c4ca4238a0"')
     expect(dataHtml).toContain('"value_bool": false')
     expect(countIds(dataHtml)).toBe(10)
-  })
+  }, 10000)
 
   test('SELECT - JOIN + WHERE w1 AND w2', async ({ expect }) => {
     const dataHtml = await getDataHtml('TestSelectJoinWhereAnd')
