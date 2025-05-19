@@ -6,7 +6,7 @@ async function getInsertResult(pageName: string) {
   // render in browser
   const page = await createPage()
   await page.goto(url(`/${pageName}`), { waitUntil: 'hydration' })
-  // cick the "insert" button, wait for response and collect the result
+  // click the "insert" button, wait for response and collect the result
   await page.click('#insert-button')
   await page.waitForResponse(response =>
     response.url().includes('/api/_neon/insert') && response.ok(),
@@ -31,6 +31,11 @@ describe('nuxt-neon INSERT test suite', async () => {
 
   test('INSERT - multiple', async ({ expect }) => {
     const insertHTML = await getInsertResult('TestInsertMultiple')
+    expect(insertHTML).toContain('OK')
+  })
+
+  test('INSERT - with schema', async ({ expect }) => {
+    const insertHTML = await getInsertResult('TestInsertSchema')
     expect(insertHTML).toContain('OK')
   })
 })

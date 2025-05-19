@@ -2,8 +2,8 @@ import type { NeonQueryFunction } from '@neondatabase/serverless'
 import type { NeonDriverResult } from './getNeonClient'
 import { sanitizeSQLString } from './helpers/sanitizeSQL'
 import {
-  getColumnsClause, getGroupByClause, getHavingClause,
-  getLimitClause, getOrderClause, getTableClause, getWhereClause,
+  getColumnsClause, getGroupByClause, getHavingClause, getLimitClause,
+  getOrderClause, getTableClause, getWhereClause, getTableName, isTableWithAlias,
 } from './helpers/neonSQLHelpers'
 
 type NeonDriver = NeonQueryFunction<boolean, boolean>
@@ -32,6 +32,11 @@ export async function select(neon: NeonDriver, columns: NeonColumnType, from: Ne
 }
 
 export async function insert(neon: NeonDriver, table: NeonTableType, values: NeonInsertType): NeonDriverResponse {
+  // alias is technically not allowed for insert
+  if (isTableWithAlias(table)) {
+    throw new Error('Table alias is not allowed for INSERT statement')
+  }
+
   // data to be inserted
   const rows = Array.isArray(values) ? values : [values]
 
@@ -44,14 +49,20 @@ export async function insert(neon: NeonDriver, table: NeonTableType, values: Neo
     '(' + columns.map(col => sanitizeSQLString(row[col])).join(', ') + ')',
   ).join(', ')
 
-  const sqlString = `INSERT INTO ${table} (${sqlColumns}) VALUES ${valueTuples}`
+  const sqlString = `INSERT INTO ${getTableName(table)} (${sqlColumns}) VALUES ${valueTuples}`
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
 export async function update(neon: NeonDriver, table: NeonTableType, values: NeonUpdateType, where?: NeonWhereType): NeonDriverResponse {
-  let sqlString = `UPDATE ${table}`
+  let sqlString = `UPDATE ${getTableName(table)}`
+
+  // alias has a special syntax in update with "AS"
+  if (isTableWithAlias(table)) {
+    const alias = (table as NeonTableQuery).alias
+    sqlString.replace(` ${alias}`, ` AS ${alias}`)
+  }
 
   sqlString += ' SET '
   Object.entries(values).forEach(([key, value]) => {
@@ -68,7 +79,7 @@ export async function update(neon: NeonDriver, table: NeonTableType, values: Neo
 }
 
 export async function del(neon: NeonDriver, table: NeonTableType, where?: NeonWhereType): NeonDriverResponse {
-  let sqlString = `DELETE FROM ${table}`
+  let sqlString = `DELETE FROM ${getTableName(table)}`
 
   sqlString += getWhereClause(where)
 

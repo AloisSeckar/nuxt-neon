@@ -1,3 +1,21 @@
+export function getTableName(table: NeonTableType): string {
+  if (typeof table === 'string') {
+    // return as is
+    return table
+  }
+  else {
+    // evaluate schema and alias
+    return tableWithSchemaAndAlias(table)
+  }
+}
+
+export function isTableWithAlias(table: NeonTableType): boolean {
+  return typeof table === 'object'
+    && table !== null
+    && typeof table.alias === 'string'
+    && table.alias.trim() !== ''
+}
+
 export function getTableClause(from: NeonFromType): string {
   let sqlString = ' FROM '
   if (typeof from === 'string') {
