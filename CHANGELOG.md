@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.6.0 (2025-05-20)
+- BREAKING CHANGE: switched to options-object pattern for SQL wrappers (all wrapper calls needs to be updated - encapsulate all params in an object and add respective keys)
+- feat: TS types for params and return types of SQL wrappers were consolidated and logically re-named
+- feat: it is now possible to INSERT more than 1 row at once
+- feat: allow GROUP BY and HAVING clauses in SELECT wrapper
+- feat: add `NeonColumnObject` to allow columns with aliases
+- feat: allow aliases in `NeonTableObject` and `NeonWhereObject`
+- fix: respect schema and alias (where possible) in INSERT, UPDATE and DELETE wrappers
+- fix: JOIN was made more flexible (join column clauses can be replaced with where condition with certain limitations)
+- fix: don't require `alias` property if single `NeonTableObject` is passed
+- fix: SQL wrappers return `NeonError` instance instead of transforming it to a string
+- fix: logic for (not) displaying warning when using unsafe `raw` was corrected
+- build: bump Nuxt to `3.17.4` + update other deps
+- test: major re-wamping of tests to be more flexible and cover more scenarios
+- refactor: several tweaks for better code readability and maintainability
+
 ## v0.5.0 (2025-05-09)
 - BREAKING CHANGE: changed `insert` wrapper signature to match `update`
 - BREAKING CHANGE: dropped `sslMode` and `rawWarning` config in favor of `neonSSLMode` and `neonRawWarning`
