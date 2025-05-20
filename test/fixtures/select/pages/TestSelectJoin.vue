@@ -18,7 +18,7 @@ import { useAsyncData, useNeon } from '#imports'
 const { select } = useNeon()
 
 // simple JOIN of two tables via ID
-// using NeonColumnQuery to define joining columns
+// using NeonColumnObject to define joining columns
 
 // SELECT
 //   p1.id, p1.name, p1.value, p2.value_int, p2.value_bool, p2.value_text

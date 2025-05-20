@@ -17,7 +17,7 @@ import { useAsyncData, useNeon } from '#imports'
 
 const { select } = useNeon()
 
-// test single NeonTableQuery with an alias (fix #29)
+// test single NeonTableObject with an alias (fix #29)
 
 // SELECT
 //   p1.id, p1.name, p1.value

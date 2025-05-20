@@ -46,14 +46,14 @@ export function getTableClause(from: NeonFromType): string {
 }
 
 // include schema name if specified
-function tableWithSchemaAndAlias(t: NeonTableQuery): string {
+function tableWithSchemaAndAlias(t: NeonTableObject): string {
   if (t.schema) {
     return `${t.schema}.${tableWithAlias(t)}`
   }
   return tableWithAlias(t)
 }
 
-function tableWithAlias(t: NeonTableQuery): string {
+function tableWithAlias(t: NeonTableObject): string {
   if (t.alias) {
     return `${t.table} ${t.alias}`
   }
@@ -61,7 +61,7 @@ function tableWithAlias(t: NeonTableQuery): string {
 }
 
 // handle join condition
-function getJoinCondition(c1: string | NeonColumnQuery, c2: string | NeonColumnQuery) {
+function getJoinCondition(c1: string | NeonColumnObject, c2: string | NeonColumnObject) {
   const left = typeof c1 === 'string' ? c1 : columnWithAlias(c1)
   const right = typeof c2 === 'string' ? c2 : columnWithAlias(c2)
   return `${left} = ${right}`
@@ -71,7 +71,7 @@ export function getColumnsClause(columns: NeonColumnType): string {
   let sqlString = ''
   if (Array.isArray(columns)) {
     if (columns[0] && (typeof columns[0] === 'object')) {
-      sqlString += columns.map(c => columnWithAlias(c as NeonColumnQuery)).join(', ')
+      sqlString += columns.map(c => columnWithAlias(c as NeonColumnObject)).join(', ')
     }
     else {
       sqlString += columns.join(', ')
@@ -89,7 +89,7 @@ export function getColumnsClause(columns: NeonColumnType): string {
 }
 
 // include table alias if specified
-function columnWithAlias(c: NeonColumnQuery): string {
+function columnWithAlias(c: NeonColumnObject): string {
   if (c.alias) {
     return `${c.alias}.${c.name}`
   }
@@ -123,7 +123,7 @@ export function getWhereClause(where?: NeonWhereType): string {
 }
 
 // include table alias if specified
-function whereColumnWithAlias(w: NeonWhereQuery): string {
+function whereColumnWithAlias(w: NeonWhereObject): string {
   if (w.alias) {
     return `${w.alias}.${w.column}`
   }

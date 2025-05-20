@@ -5,13 +5,13 @@ declare global {
   export type NeonError = types.NeonError
   export type NeonStatusResult = types.NeonStatusResult
 
-  export type NeonColumnQuery = types.NeonColumnQuery
-  export type NeonTableQuery = types.NeonTableQuery
+  export type NeonColumnObject = types.NeonColumnObject
+  export type NeonTableObject = types.NeonTableObject
   export type NeonWhereCondition = types.NeonWhereCondition
   export type NeonWhereOperator = types.NeonWhereOperator
-  export type NeonWhereQuery = types.NeonWhereQuery
+  export type NeonWhereObject = types.NeonWhereObject
   export type NeonSortDirection = types.NeonSortDirection
-  export type NeonOrderQuery = types.NeonOrderQuery
+  export type NeonOrderObject = types.NeonOrderObject
 
   export type NeonDataType<T> = types.NeonDataType<T>
   export type NeonCountType = types.NeonCountType
@@ -27,9 +27,9 @@ declare global {
   export type NeonUpdateType = types.NeonUpdateType
   export type NeonBodyType = types.NeonBodyType
 
-  export type NeonCountProps = types.NeonCountProps
-  export type NeonSelectProps = types.NeonSelectProps
-  export type NeonInsertProps = types.NeonInsertProps
-  export type NeonUpdateProps = types.NeonUpdateProps
-  export type NeonDeleteProps = types.NeonDeleteProps
+  export type NeonCountQuery = types.NeonCountQuery
+  export type NeonSelectQuery = types.NeonSelectQuery
+  export type NeonInsertQuery = types.NeonInsertQuery
+  export type NeonUpdateQuery = types.NeonUpdateQuery
+  export type NeonDeleteQuery = types.NeonDeleteQuery
 }

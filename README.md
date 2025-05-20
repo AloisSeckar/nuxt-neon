@@ -102,24 +102,24 @@ Since this method is potentially unsafe, a warning will display by default, if c
 #### `count()`
 
 ```ts
-// async (from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<number | NeonError>
+// async (from: string | NeonTableObject | NeonTableObject[], where?: string | NeonWhereObject | NeonWhereObject[]): Promise<number | NeonError>
 const { count } = useNeon()
 ```
 
 This is a special wrapper to allow `select count(*) from` query:
 - **from** - definition of table(s) to select from
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will be parsed into a chain of `JOIN` clauses
+  - or an instance (or array) of [`NeonTableObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will be parsed into a chain of `JOIN` clauses
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - oran instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
+  - oran instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
 
 It just calls the `select()` wrapper function under the hood, but abstracts users from having to pass `columns = ['count(*)']`.
 
 #### `select()`
 
 ```ts
-// async <T> (columns: string | string[] | NeonColumnQuery | NeonColumnQuery[], from: string | NeonTableQuery | NeonTableQuery[], where?: string | NeonWhereQuery | NeonWhereQuery[], order?: string | NeonOrderQuery | NeonOrderQuery[], limit?: number, group?: string | string[] | NeonColumnQuery | NeonColumnQuery[], having?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<Array<T> | NeonError>
+// async <T> (columns: string | string[] | NeonColumnObject | NeonColumnObject[], from: string | NeonTableObject | NeonTableObject[], where?: string | NeonWhereObject | NeonWhereObject[], order?: string | NeonOrderObject | NeonOrderObject[], limit?: number, group?: string | string[] | NeonColumnObject | NeonColumnObject[], having?: string | NeonWhereObject | NeonWhereObject[]): Promise<Array<T> | NeonError>
 const { select } = useNeon()
 ```
 
@@ -129,18 +129,18 @@ You can perform `SELECT` operation via this function with following parameters:
   - you can use special `*` for "all columns"
   - you can also use SQL functions (e.g. `count(*)`) 
   - if you use aliases in `from` part, you can to provide them together with the column name (e.g. `t.column`)
-  - or an instance (or array) of [`NeonColumnQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L37) type which can handle `alias` as well
+  - or an instance (or array) of [`NeonColumnObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L37) type which can handle `alias` as well
 - **from** - definition of table(s) to select from
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonTableQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will (usually) be parsed into a chain of `JOIN` clauses
+  - or an instance (or array) of [`NeonTableObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will (usually) be parsed into a chain of `JOIN` clauses
   - the `JOIN` clause is not required and can be substituted with adequate `WHERE` condition(s), however, due to current API limitations, such clause(s) need to be passed in as a raw string (e.g. `p1.id = p2.id`)
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column = 1`)
 - **order** - _optional_ criteria for ordering results
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonOrderQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L82) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonOrderObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L82) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column DESC`)
 - **limit** - _optional_ limit of results, if more results expected (number)
 - **group** - _optional_ definition for GROUP BY aggregation clause
@@ -151,7 +151,7 @@ Returns the result of the SELECT query (Neon client returns `[]` for empty set) 
 #### `insert()`
 
 ```ts
-// async (table: string | NeonTableQuery, values: Record<string, string> | Record<string, string>[]): Promise<string | NeonError>
+// async (table: string | NeonTableObject, values: Record<string, string> | Record<string, string>[]): Promise<string | NeonError>
 const { insert } = useNeon()
 ```
 
@@ -166,7 +166,7 @@ Currently, `INSERT` is limited to one row at the time.
 #### `update()`
 
 ```ts
-// sync (table: string | NeonTableQuery, values: Record<string, string>, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string | NeonError>
+// sync (table: string | NeonTableObject, values: Record<string, string>, where?: string | NeonWhereObject | NeonWhereObject[]): Promise<string | NeonError>
 const { update } = useNeon()
 ```
 You can perform `UPDATE` operation via this function with following parameters:
@@ -174,21 +174,21 @@ You can perform `UPDATE` operation via this function with following parameters:
 - **values** - list of key-value pairs to be updated, values are being sanitized before applied to database
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
 
 #### `del()`
 
 **NOTE:** Because `delete` is not allowed as identifier in TypeScript, the wrapper for SQL DELETE function is available here as `del()`.
 
 ```ts
-// async (table: string | NeonTableQuery, where?: string | NeonWhereQuery | NeonWhereQuery[]): Promise<string | NeonError>
+// async (table: string | NeonTableObject, where?: string | NeonWhereObject | NeonWhereObject[]): Promise<string | NeonError>
 const { del } = useNeon()
 ```
 You can perform `DELETE` operation via this function with following parameters:
 - **table** - DB table to be deleled from
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereQuery`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
 
 Returns `'OK'` if query was successfully executed or returned erorr message.
 

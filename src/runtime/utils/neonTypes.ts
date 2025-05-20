@@ -34,7 +34,7 @@ export type NeonStatusResult = {
 }
 
 /** Object for defining column with a table alias */
-export type NeonColumnQuery = {
+export type NeonColumnObject = {
   /** Alias used for table */
   alias?: string
   /** Column name */
@@ -42,7 +42,7 @@ export type NeonColumnQuery = {
 }
 
 /** Object for defining 2+ tables for JOIN in SELECT. */
-export type NeonTableQuery = {
+export type NeonTableObject = {
   /** Schema name */
   schema?: string
   /** Table name */
@@ -50,9 +50,9 @@ export type NeonTableQuery = {
   /** Alias used for table */
   alias?: string
   /** Left column (including alias) for JOIN (ignored for 1st table) */
-  joinColumn1?: string | NeonColumnQuery
+  joinColumn1?: string | NeonColumnObject
   /** Right column (including alias) for JOIN (ignored for 1st table) */
-  joinColumn2?: string | NeonColumnQuery
+  joinColumn2?: string | NeonColumnObject
 }
 
 /** Enum-like type to define operation for column-value pair in WHERE clause */
@@ -62,7 +62,7 @@ export type NeonWhereCondition = '=' | '!=' | '>' | '>=' | '<' | '<=' | 'LIKE'
 export type NeonWhereOperator = 'AND' | 'OR'
 
 /** Object for defining a WHERE clause. */
-export type NeonWhereQuery = {
+export type NeonWhereObject = {
   /** Alias used for table */
   alias?: string
   /** Column name */
@@ -79,7 +79,7 @@ export type NeonWhereQuery = {
 export type NeonSortDirection = 'ASC' | 'DESC'
 
 /** Object for defining an ORDER BY clause. */
-export type NeonOrderQuery = {
+export type NeonOrderObject = {
   /** Column name */
   column: string
   /** Sort direction (`ASC` if not specified) */
@@ -93,21 +93,23 @@ export type NeonCountType = Promise<number | NeonError>
 export type NeonEditType = Promise<string | NeonError>
 export type NeonStatusType = Promise<NeonStatusResult>
 
-export type NeonColumnType = string | string[] | NeonColumnQuery | NeonColumnQuery[]
-export type NeonTableType = string | NeonTableQuery
-export type NeonFromType = string | NeonTableQuery | NeonTableQuery[]
-export type NeonWhereType = string | NeonWhereQuery | NeonWhereQuery[]
-export type NeonOrderType = string | NeonOrderQuery | NeonOrderQuery[]
+export type NeonColumnType = string | string[] | NeonColumnObject | NeonColumnObject[]
+export type NeonTableType = string | NeonTableObject
+export type NeonFromType = string | NeonTableObject | NeonTableObject[]
+export type NeonWhereType = string | NeonWhereObject | NeonWhereObject[]
+export type NeonOrderType = string | NeonOrderObject | NeonOrderObject[]
 export type NeonInsertType = Record<string, string> | Record<string, string>[]
 export type NeonUpdateType = Record<string, string>
 export type NeonBodyType = Record<string, unknown>
 
-export type NeonCountProps = {
+// query objects for SQL wrappers
+
+export type NeonCountQuery = {
   from: NeonFromType
   where?: NeonWhereType
 }
 
-export type NeonSelectProps = {
+export type NeonSelectQuery = {
   columns: NeonColumnType
   from: NeonFromType
   where?: NeonWhereType
@@ -117,18 +119,18 @@ export type NeonSelectProps = {
   having?: NeonWhereType
 }
 
-export type NeonInsertProps = {
+export type NeonInsertQuery = {
   table: NeonTableType
   values: NeonInsertType
 }
 
-export type NeonUpdateProps = {
+export type NeonUpdateQuery = {
   table: NeonTableType
   values: NeonUpdateType
   where?: NeonWhereType
 }
 
-export type NeonDeleteProps = {
+export type NeonDeleteQuery = {
   table: NeonTableType
   where?: NeonWhereType
 }

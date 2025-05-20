@@ -41,7 +41,7 @@ export function useNeon() {
     }
   }
 
-  const count = async (query: NeonCountProps): NeonCountType => {
+  const count = async (query: NeonCountQuery): NeonCountType => {
     const ret = await fetchFromNeonBackend<number>('count', { ...query })
     if (isNeonSuccess(ret)) {
       return (ret as Array<number>).at(0) || -1
@@ -51,7 +51,7 @@ export function useNeon() {
     }
   }
 
-  const select = async <T> (query: NeonSelectProps): NeonDataType<T> => {
+  const select = async <T> (query: NeonSelectQuery): NeonDataType<T> => {
     const ret = await fetchFromNeonBackend<T>('select', { ...query })
     if (isNeonSuccess(ret)) {
       return ret as Array<T>
@@ -61,15 +61,15 @@ export function useNeon() {
     }
   }
 
-  const insert = async (query: NeonInsertProps): NeonEditType => {
+  const insert = async (query: NeonInsertQuery): NeonEditType => {
     return await callNeonBackend('insert', { ...query })
   }
 
-  const update = async (query: NeonUpdateProps): NeonEditType => {
+  const update = async (query: NeonUpdateQuery): NeonEditType => {
     return await callNeonBackend('update', { ...query })
   }
 
-  const del = async (query: NeonDeleteProps): NeonEditType => {
+  const del = async (query: NeonDeleteQuery): NeonEditType => {
     return await callNeonBackend('delete', { ...query })
   }
 
