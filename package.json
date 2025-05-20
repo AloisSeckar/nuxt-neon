@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "1.0.0",
-    "@nuxt/kit": "3.17.3",
+    "@nuxt/kit": "3.17.4",
     "sqlstring": "2.3.3",
     "vite-plugin-commonjs": "0.10.4"
   },
@@ -36,11 +36,11 @@
     "@nuxt/devtools": "2.4.1",
     "@nuxt/eslint-config": "1.4.0",
     "@nuxt/module-builder": "1.0.1",
-    "@nuxt/schema": "3.17.3",
+    "@nuxt/schema": "3.17.4",
     "@types/node": "22.15.18",
     "changelogen": "0.6.1",
     "eslint": "9.27.0",
-    "nuxt": "3.17.3",
+    "nuxt": "3.17.4",
     "nuxt-spec": "0.0.4",
     "typescript": "5.8.3",
     "vue-tsc": "2.2.10"
