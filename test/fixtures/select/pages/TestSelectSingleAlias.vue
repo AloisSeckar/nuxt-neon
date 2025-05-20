@@ -23,14 +23,13 @@ const { select } = useNeon()
 //   p1.id, p1.name, p1.value
 // FROM
 //   playing_with_neon p1
-const { data } = await useAsyncData(() => select(
-  // columns
-  [
+
+const { data } = await useAsyncData(() => select({
+  columns: [
     { alias: 'p1', name: 'id' },
     { alias: 'p1', name: 'name' },
     { alias: 'p1', name: 'value' },
   ],
-  // FROM - single table with an alias
-  { table: 'playing_with_neon', alias: 'p1' },
-))
+  from: { table: 'playing_with_neon', alias: 'p1' },
+}))
 </script>

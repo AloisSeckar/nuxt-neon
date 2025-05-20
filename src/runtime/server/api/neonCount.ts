@@ -8,7 +8,7 @@ export default defineEventHandler(async (event): NeonDataType<number> => {
     const body = await readBody(event)
     const neon = getNeonClient()
     // result is returned as [ { count: 'n' } ]
-    const countData = await count(neon, body.from, body.where) as { count: number }[]
+    const countData = await count(neon, { ...body }) as { count: number }[]
     // extract only the number
     // or return -1 if response cannot be parsed
     return [countData?.at(0)?.count || -1]

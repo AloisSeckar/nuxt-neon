@@ -13,14 +13,16 @@
 </template>
 
 <script setup lang="ts">
+import { ref, useNeon } from '#imports'
+
 const { count } = useNeon()
 
 const result = ref({})
 async function doCount() {
-  result.value = await count(
-    'playing_with_neon',
-    [{ column: 'name', condition: 'LIKE', value: 'test%' }],
-  )
+  result.value = await count({
+    from: 'playing_with_neon',
+    where: [{ column: 'name', condition: 'LIKE', value: 'test%' }],
+  })
 }
 </script>
 

@@ -8,7 +8,7 @@ export default defineEventHandler(async (event): NeonDataType<string> => {
     const body = await readBody(event)
     const neon = getNeonClient()
 
-    const ret = await update(neon, body.table, body.values, body.where)
+    const ret = await update(neon, { ...body })
 
     // successful UPDATE operation returns []
     if (ret.length === 0) {

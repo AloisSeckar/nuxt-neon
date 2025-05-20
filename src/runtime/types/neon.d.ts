@@ -26,4 +26,10 @@ declare global {
   export type NeonInsertType = types.NeonInsertType
   export type NeonUpdateType = types.NeonUpdateType
   export type NeonBodyType = types.NeonBodyType
+
+  export type NeonCountProps = types.NeonCountProps
+  export type NeonSelectProps = types.NeonSelectProps
+  export type NeonInsertProps = types.NeonInsertProps
+  export type NeonUpdateProps = types.NeonUpdateProps
+  export type NeonDeleteProps = types.NeonDeleteProps
 }

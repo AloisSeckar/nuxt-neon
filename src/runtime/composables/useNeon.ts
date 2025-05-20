@@ -4,7 +4,7 @@ import { useRuntimeConfig } from '#imports'
 
 export function useNeon() {
   const neonStatus = async (anonymous: boolean = true, debug: boolean = false): NeonStatusType => {
-    const dbName = useRuntimeConfig().public.neonDB
+    const dbName = useRuntimeConfig().public.neonDB as string
 
     let error = ''
     try {
@@ -41,8 +41,8 @@ export function useNeon() {
     }
   }
 
-  const count = async (from: NeonFromType, where?: NeonWhereType): NeonCountType => {
-    const ret = await fetchFromNeonBackend<number>('count', { from, where })
+  const count = async (query: NeonCountProps): NeonCountType => {
+    const ret = await fetchFromNeonBackend<number>('count', { ...query })
     if (isNeonSuccess(ret)) {
       return (ret as Array<number>).at(0) || -1
     }
@@ -51,8 +51,8 @@ export function useNeon() {
     }
   }
 
-  const select = async <T> (columns: NeonColumnType, from: NeonFromType, where?: NeonWhereType, order?: NeonOrderType, limit?: number, group?: NeonColumnType, having?: NeonWhereType): NeonDataType<T> => {
-    const ret = await fetchFromNeonBackend<T>('select', { columns, from, where, order, limit, group, having })
+  const select = async <T> (query: NeonSelectProps): NeonDataType<T> => {
+    const ret = await fetchFromNeonBackend<T>('select', { ...query })
     if (isNeonSuccess(ret)) {
       return ret as Array<T>
     }
@@ -61,16 +61,16 @@ export function useNeon() {
     }
   }
 
-  const insert = async (table: NeonTableType, values: NeonInsertType): NeonEditType => {
-    return await callNeonBackend('insert', { table, values })
+  const insert = async (query: NeonInsertProps): NeonEditType => {
+    return await callNeonBackend('insert', { ...query })
   }
 
-  const update = async (table: NeonTableType, values: NeonUpdateType, where?: NeonWhereType): NeonEditType => {
-    return await callNeonBackend('update', { table, values, where })
+  const update = async (query: NeonUpdateProps): NeonEditType => {
+    return await callNeonBackend('update', { ...query })
   }
 
-  const del = async (table: NeonTableType, where?: NeonWhereType): NeonEditType => {
-    return await callNeonBackend('delete', { table, where })
+  const del = async (query: NeonDeleteProps): NeonEditType => {
+    return await callNeonBackend('delete', { ...query })
   }
 
   return {

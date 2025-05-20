@@ -101,3 +101,34 @@ export type NeonOrderType = string | NeonOrderQuery | NeonOrderQuery[]
 export type NeonInsertType = Record<string, string> | Record<string, string>[]
 export type NeonUpdateType = Record<string, string>
 export type NeonBodyType = Record<string, unknown>
+
+export type NeonCountProps = {
+  from: NeonFromType
+  where?: NeonWhereType
+}
+
+export type NeonSelectProps = {
+  columns: NeonColumnType
+  from: NeonFromType
+  where?: NeonWhereType
+  order?: NeonOrderType
+  limit?: number
+  group?: NeonColumnType
+  having?: NeonWhereType
+}
+
+export type NeonInsertProps = {
+  table: NeonTableType
+  values: NeonInsertType
+}
+
+export type NeonUpdateProps = {
+  table: NeonTableType
+  values: NeonUpdateType
+  where?: NeonWhereType
+}
+
+export type NeonDeleteProps = {
+  table: NeonTableType
+  where?: NeonWhereType
+}

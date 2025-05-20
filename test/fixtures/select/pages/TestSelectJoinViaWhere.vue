@@ -33,22 +33,19 @@ const { select } = useNeon()
 // WHERE
 //   p1.id = p2.id
 //   AND p2.value_bool = p3.bool_key
-const { data } = await useAsyncData(() => select(
-  // columns
-  [
+
+const { data } = await useAsyncData(() => select({
+  columns: [
     { alias: 'p1', name: 'id' },
     { alias: 'p1', name: 'name' },
     { alias: 'p2', name: 'value_int' },
     { alias: 'p3', name: 'bool_value' },
   ],
-  // from
-  [
+  from: [
     { schema: 'neon2', table: 'playing_with_neon', alias: 'p1' },
     { table: 'playing_with_neon_2', alias: 'p2' },
     { table: 'playing_with_neon_3', alias: 'p3' },
   ],
-  // where
-  // currently there is no way to input this in object-like fashion
-  'p1.id = p2.id AND p2.value_bool = p3.bool_key',
-))
+  where: 'p1.id = p2.id AND p2.value_bool = p3.bool_key',
+}))
 </script>

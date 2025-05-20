@@ -16,6 +16,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, useNeon } from '#imports'
+
 const { raw } = useNeon()
 
 const result = ref({})

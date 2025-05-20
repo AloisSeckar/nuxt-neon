@@ -13,14 +13,16 @@
 </template>
 
 <script setup lang="ts">
+import { ref, useNeon } from '#imports'
+
 const { del } = useNeon()
 
 const result = ref({})
 async function doDelete() {
-  result.value = await del(
-    'playing_with_neon',
-    [{ column: 'name', condition: '=', value: 'test' }],
-  )
+  result.value = await del({
+    table: 'playing_with_neon',
+    where: [{ column: 'name', condition: '=', value: 'test' }],
+  })
 }
 </script>
 

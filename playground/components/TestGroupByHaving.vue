@@ -13,19 +13,19 @@
 </template>
 
 <script setup lang="ts">
+import { ref, useNeon } from '#imports'
+
 const { select } = useNeon()
 
 const result = ref({})
 async function doSelect() {
-  result.value = await select(
-    ['value', 'count(id)'],
-    'playing_with_neon',
-    undefined,
-    { column: 'value', direction: 'DESC' },
-    undefined,
-    ['value'], // GROUP BY
-    { column: 'value', condition: '>=', value: '1' }, // HAVING
-  )
+  result.value = await select({
+    columns: ['value', 'count(id)'],
+    from: 'playing_with_neon',
+    order: { column: 'value', direction: 'DESC' },
+    group: ['value'],
+    having: { column: 'value', condition: '>=', value: '1' },
+  })
 }
 </script>
 

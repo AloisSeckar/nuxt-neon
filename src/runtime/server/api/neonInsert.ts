@@ -8,7 +8,7 @@ export default defineEventHandler(async (event): NeonDataType<string> => {
     const body = await readBody(event)
     const neon = getNeonClient()
 
-    const ret = await insert(neon, body.table, body.values)
+    const ret = await insert(neon, { ...body })
 
     // successful INSERT operation returns []
     if (ret.length === 0) {

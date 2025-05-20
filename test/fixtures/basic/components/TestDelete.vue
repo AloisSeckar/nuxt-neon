@@ -21,10 +21,10 @@ const { del } = useNeon()
 
 const result = ref('')
 async function doDelete() {
-  result.value = await del(
-    'playing_with_neon',
-    [{ column: 'name', condition: 'LIKE', value: '\'%test%\'' }],
-  ) as string
+  result.value = await del({
+    table: 'playing_with_neon',
+    where: [{ column: 'name', condition: 'LIKE', value: '\'%test%\'' }],
+  }) as string
 }
 </script>
 

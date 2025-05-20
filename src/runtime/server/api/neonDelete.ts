@@ -8,7 +8,7 @@ export default defineEventHandler(async (event): NeonDataType<string> => {
     const body = await readBody(event)
     const neon = getNeonClient()
 
-    const ret = await del(neon, body.table, body.where)
+    const ret = await del(neon, { ...body })
 
     // successful DELETE operation returns []
     if (ret.length === 0) {

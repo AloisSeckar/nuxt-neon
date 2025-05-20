@@ -27,17 +27,14 @@ const { select } = useNeon()
 //   playing_with_neon
 // WHERE
 //   name = 'c4ca4238a0' OR name = 'a87ff679a2'
-const { data } = await useAsyncData(() => select(
-  // columns
-  ['id', 'name'],
-  // from
-  'playing_with_neon',
-  // where
-  [
+const { data } = await useAsyncData(() => select({
+  columns: ['id', 'name'],
+  from: 'playing_with_neon',
+  where: [
     // test auto-escaping if quotes are added if necessary
     { column: 'name', condition: '=', value: 'c4ca4238a0' },
     // test auto-escaping if quotes are NOT added if not necessary
     { column: 'name', condition: '=', value: '\'a87ff679a2\'', operator: 'OR' },
   ],
-))
+}))
 </script>

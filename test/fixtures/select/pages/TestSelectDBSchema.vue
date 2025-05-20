@@ -23,10 +23,9 @@ const { select } = useNeon()
 //   id, name, value
 // FROM
 //   neon2.playing_with_neon
-const { data } = await useAsyncData(() => select(
-  // columns
-  ['id', 'name', 'value'],
-  // test specifying db schema in FROM
-  { table: 'playing_with_neon', schema: 'neon2' },
-))
+
+const { data } = await useAsyncData(() => select({
+  columns: ['id', 'name', 'value'],
+  from: { table: 'playing_with_neon', schema: 'neon2' },
+}))
 </script>

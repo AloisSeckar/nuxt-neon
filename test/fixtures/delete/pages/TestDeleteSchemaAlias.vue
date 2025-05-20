@@ -34,11 +34,9 @@ const { del } = useNeon()
 
 const result = ref('')
 async function doDelete() {
-  result.value = await del(
-    // delete from
-    { schema: 'neon2', table: 'playing_with_neon', alias: 'p1' },
-    // where
-    { alias: 'p1', column: 'id', condition: '>', value: '10' },
-  ) as string
+  result.value = await del({
+    table: { schema: 'neon2', table: 'playing_with_neon', alias: 'p1' },
+    where: [{ alias: 'p1', column: 'id', condition: '>', value: '10' }],
+  }) as string
 }
 </script>

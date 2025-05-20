@@ -22,13 +22,13 @@ const { select } = useNeon()
 
 const result = ref([] as NeonTestData[])
 async function doSelect() {
-  result.value = await select<NeonTestData>(
-    ['id', 'name', 'value'],
-    'playing_with_neon',
-    [{ column: 'name', condition: 'LIKE', value: '\'test%\'' }],
-    [{ column: 'name' }, { column: 'value', direction: 'DESC' }],
-    50,
-  ) as NeonTestData[]
+  result.value = await select<NeonTestData>({
+    columns: ['id', 'name', 'value'],
+    from: 'playing_with_neon',
+    where: [{ column: 'name', condition: 'LIKE', value: '\'test%\'' }],
+    order: [{ column: 'name' }, { column: 'value', direction: 'DESC' }],
+    limit: 50,
+  }) as NeonTestData[]
 }
 </script>
 

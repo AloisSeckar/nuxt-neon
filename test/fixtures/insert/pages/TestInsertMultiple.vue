@@ -37,15 +37,13 @@ const { insert } = useNeon()
 
 const result = ref({})
 async function doInsert() {
-  result.value = await insert(
-    // table
-    'playing_with_neon',
-    // values
-    [
+  result.value = await insert({
+    table: 'playing_with_neon',
+    values: [
       { name: 'automatic-test', value: '111' },
       { name: 'automatic-test', value: '222' },
       { name: 'automatic-test', value: '333' },
     ],
-  )
+  })
 }
 </script>

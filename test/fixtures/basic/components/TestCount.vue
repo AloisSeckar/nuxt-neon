@@ -21,10 +21,10 @@ const { count } = useNeon()
 
 const result = ref(-2) // initial state for test
 async function doCount() {
-  result.value = await count(
-    'playing_with_neon',
-    [{ column: 'name', condition: 'LIKE', value: '\'test%\'' }],
-  ) as number
+  result.value = await count({
+    from: 'playing_with_neon',
+    where: [{ column: 'name', condition: 'LIKE', value: '\'test%\'' }],
+  }) as number
 }
 </script>
 

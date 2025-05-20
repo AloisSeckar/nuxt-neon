@@ -38,13 +38,10 @@ const { update } = useNeon()
 
 const result = ref({})
 async function doUpdate() {
-  result.value = await update(
-    // table
-    { schema: 'neon2', table: 'playing_with_neon', alias: 'p1' },
-    // values
-    { value: '200' },
-    // where
-    { alias: 'p1', column: 'value', condition: '=', value: '11' },
-  )
+  result.value = await update({
+    table: { schema: 'neon2', table: 'playing_with_neon', alias: 'p1' },
+    values: { value: '200' },
+    where: [{ alias: 'p1', column: 'id', condition: '=', value: '11' }],
+  })
 }
 </script>

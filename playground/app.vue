@@ -44,6 +44,8 @@
 </template>
 
 <script setup lang="ts">
+import { useNeon } from '#imports'
+
 const { neonStatus, isOk } = useNeon()
 const dbStatus = await neonStatus(false, true) // consider disclosing in prod (see docs)
 const connectionOpen = await isOk()

@@ -10,20 +10,20 @@ type NeonDriver = NeonQueryFunction<boolean, boolean>
 type NeonDriverResponse = Promise<NeonDriverResult<false, false>>
 
 // separate wrapper instead of forcing users to pass 'count(*)' as column name
-export async function count(neon: NeonDriver, from: NeonFromType, where?: NeonWhereType): NeonDriverResponse {
-  return await select(neon, ['count(*)'], from, where, undefined, undefined)
+export async function count(neon: NeonDriver, query: NeonCountProps): NeonDriverResponse {
+  return await select(neon, { ...query, columns: ['count(*)'] })
 }
 
-export async function select(neon: NeonDriver, columns: NeonColumnType, from: NeonFromType, where?: NeonWhereType, order?: NeonOrderType, limit?: number, group?: NeonColumnType, having?: NeonWhereType): NeonDriverResponse {
+export async function select(neon: NeonDriver, query: NeonSelectProps): NeonDriverResponse {
   let sqlString = 'SELECT '
 
-  sqlString += getColumnsClause(columns)
-  sqlString += getTableClause(from)
-  sqlString += getWhereClause(where)
-  sqlString += getGroupByClause(group)
-  sqlString += getHavingClause(having)
-  sqlString += getOrderClause(order)
-  sqlString += getLimitClause(limit)
+  sqlString += getColumnsClause(query.columns)
+  sqlString += getTableClause(query.from)
+  sqlString += getWhereClause(query.where)
+  sqlString += getGroupByClause(query.group)
+  sqlString += getHavingClause(query.having)
+  sqlString += getOrderClause(query.order)
+  sqlString += getLimitClause(query.limit)
 
   console.debug(sqlString)
 
@@ -31,14 +31,14 @@ export async function select(neon: NeonDriver, columns: NeonColumnType, from: Ne
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function insert(neon: NeonDriver, table: NeonTableType, values: NeonInsertType): NeonDriverResponse {
+export async function insert(neon: NeonDriver, query: NeonInsertProps): NeonDriverResponse {
   // alias is technically not allowed for insert
-  if (isTableWithAlias(table)) {
+  if (isTableWithAlias(query.table)) {
     throw new Error('Table alias is not allowed for INSERT statement')
   }
 
   // data to be inserted
-  const rows = Array.isArray(values) ? values : [values]
+  const rows = Array.isArray(query.values) ? query.values : [query.values]
 
   // definition of columns for the insert statement
   const columns = Object.keys(rows[0])
@@ -49,28 +49,28 @@ export async function insert(neon: NeonDriver, table: NeonTableType, values: Neo
     '(' + columns.map(col => sanitizeSQLString(row[col])).join(', ') + ')',
   ).join(', ')
 
-  const sqlString = `INSERT INTO ${getTableName(table)} (${sqlColumns}) VALUES ${valueTuples}`
+  const sqlString = `INSERT INTO ${getTableName(query.table)} (${sqlColumns}) VALUES ${valueTuples}`
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function update(neon: NeonDriver, table: NeonTableType, values: NeonUpdateType, where?: NeonWhereType): NeonDriverResponse {
-  let sqlString = `UPDATE ${getTableName(table)}`
+export async function update(neon: NeonDriver, query: NeonUpdateProps): NeonDriverResponse {
+  let sqlString = `UPDATE ${getTableName(query.table)}`
 
   // alias has a special syntax in update with "AS"
-  if (isTableWithAlias(table)) {
-    const alias = (table as NeonTableQuery).alias
+  if (isTableWithAlias(query.table)) {
+    const alias = (query.table as NeonTableQuery).alias
     sqlString.replace(` ${alias}`, ` AS ${alias}`)
   }
 
   sqlString += ' SET '
-  Object.entries(values).forEach(([key, value]) => {
+  Object.entries(query.values).forEach(([key, value]) => {
     sqlString += `${key} = ${sanitizeSQLString(value)},`
   })
   sqlString = sqlString.slice(0, -1) // remove last comma
 
-  sqlString += getWhereClause(where)
+  sqlString += getWhereClause(query.where)
 
   console.debug(sqlString)
 
@@ -78,10 +78,10 @@ export async function update(neon: NeonDriver, table: NeonTableType, values: Neo
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function del(neon: NeonDriver, table: NeonTableType, where?: NeonWhereType): NeonDriverResponse {
-  let sqlString = `DELETE FROM ${getTableName(table)}`
+export async function del(neon: NeonDriver, query: NeonDeleteProps): NeonDriverResponse {
+  let sqlString = `DELETE FROM ${getTableName(query.table)}`
 
-  sqlString += getWhereClause(where)
+  sqlString += getWhereClause(query.where)
 
   console.debug(sqlString)
 

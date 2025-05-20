@@ -31,14 +31,11 @@ const { select } = useNeon()
 //   id > 5
 // ORDER BY
 //   id DESC
-const { data } = await useAsyncData(() => select(
-  // test single-string column
-  'id',
-  // test single-string FROM
-  'playing_with_neon',
-  // test single-clause WHERE
-  { column: 'id', condition: '>', value: '5' },
-  // test single-clause ORDER BY
-  { column: 'id', direction: 'DESC' },
-))
+
+const { data } = await useAsyncData(() => select({
+  columns: ['id'],
+  from: 'playing_with_neon',
+  where: [{ column: 'id', condition: '>', value: '5' }],
+  order: [{ column: 'id', direction: 'DESC' }],
+}))
 </script>
