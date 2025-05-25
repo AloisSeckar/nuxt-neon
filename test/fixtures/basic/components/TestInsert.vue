@@ -27,9 +27,3 @@ async function doInsert() {
   }) as string
 }
 </script>
-
-<style>
-.info {
-margin-bottom: 5px;
-}
-</style>

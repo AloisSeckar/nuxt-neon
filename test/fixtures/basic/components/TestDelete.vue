@@ -27,9 +27,3 @@ async function doDelete() {
   }) as string
 }
 </script>
-
-<style>
-.info {
-  margin-bottom: 5px;
-}
-</style>

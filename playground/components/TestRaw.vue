@@ -27,9 +27,3 @@ async function doRaw() {
   )
 }
 </script>
-
-<style>
-.info {
-    margin-bottom: 5px;
-}
-</style>

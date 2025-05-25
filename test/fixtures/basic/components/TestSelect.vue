@@ -31,9 +31,3 @@ async function doSelect() {
   }) as NeonTestData[]
 }
 </script>
-
-<style>
-.info {
-  margin-bottom: 5px;
-}
-</style>

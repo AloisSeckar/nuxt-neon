@@ -27,9 +27,3 @@ async function doCount() {
   }) as number
 }
 </script>
-
-<style>
-.info {
-  margin-bottom: 5px;
-}
-</style>
