@@ -1,3 +1,5 @@
+import type { NeonError } from '../utils/neonTypes'
+
 /**
  * Helper to verify result of nuxt-neon methods.
  * Internally it is just an inverted call of `isNeonError`.

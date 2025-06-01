@@ -1,4 +1,8 @@
 import type { NeonQueryFunction } from '@neondatabase/serverless'
+import type {
+  NeonCountQuery, NeonSelectQuery, NeonInsertQuery, NeonUpdateQuery,
+  NeonDeleteQuery, NeonTableObject,
+} from '../../utils/neonTypes'
 import type { NeonDriverResult } from './getNeonClient'
 import { sanitizeSQLString } from './helpers/sanitizeSQL'
 import {

@@ -1,3 +1,8 @@
+import type {
+  NeonBodyType, NeonDataType, NeonEditType, NeonStatusType, NeonError,
+  NeonCountQuery, NeonCountType, NeonSelectQuery, NeonInsertQuery,
+  NeonUpdateQuery, NeonDeleteQuery,
+} from '../utils/neonTypes'
 import { NEON_RAW_WARNING, displayRawWarning } from '../utils/neonWarnings'
 import { formatNeonError, handleNeonError, isNeonSuccess } from '../utils/neonErrors'
 import { useRuntimeConfig } from '#imports'

@@ -1,3 +1,4 @@
+import type { NeonDataType } from '../../utils/neonTypes'
 import { getNeonClient } from '../utils/getNeonClient'
 import { parseNeonClientError } from '../utils/neonErrors'
 import { count } from '../utils/neonSQL'

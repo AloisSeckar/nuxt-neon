@@ -1,6 +1,11 @@
+import type {
+  NeonFromType, NeonTableType, NeonTableObject, NeonOrderType,
+  NeonColumnObject, NeonColumnType, NeonWhereType, NeonWhereObject,
+} from '../../../utils/neonTypes'
+
 export function getTableName(table: NeonTableType): string {
   if (typeof table === 'string') {
-    // return as is
+    // return as iss
     return table
   }
   else {

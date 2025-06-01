@@ -1,5 +1,6 @@
 // server-side re-export of NeonError-related utils
 
+import type { NeonError } from '../../utils/neonTypes'
 import { isNeonSuccess, isNeonError, formatNeonError } from '../../utils/neonErrors'
 
 export {

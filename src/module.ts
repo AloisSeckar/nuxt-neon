@@ -151,11 +151,6 @@ export default defineNuxtModule<ModuleOptions>({
       src: resolver.resolve('runtime/types/neon.d.ts'),
       filename: 'types/neon.d.ts',
     })
-    /*
-    nuxt.hook('prepare:types', async (options) => {
-      options.references.push({ path: resolver.resolve(nuxt.options.buildDir, 'types/neon.d.ts') })
-    })
-    */
 
     // 'sqlstring' only exists as a CommonJS module
     // this should allow it being consumed in ESM runtimes

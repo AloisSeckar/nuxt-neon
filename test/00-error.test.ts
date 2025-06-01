@@ -1,5 +1,6 @@
 import { describe, test, expect } from 'vitest'
 import { isNeonSuccess, isNeonError, formatNeonError } from '../src/runtime/utils/neonErrors'
+import type { NeonError } from '../src/runtime/utils/neonTypes'
 
 describe('nuxt-neon error handling features test', async () => {
   // valid data object

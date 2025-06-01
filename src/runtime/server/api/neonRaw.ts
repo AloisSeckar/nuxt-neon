@@ -1,4 +1,5 @@
 import type { H3Event, EventHandlerRequest } from 'h3'
+import type { NeonDataType } from '../../utils/neonTypes'
 import { getNeonClient } from '../utils/getNeonClient'
 import { parseNeonClientError } from '../utils/neonErrors'
 import { NEON_RAW_WARNING, displayRawWarning } from '../../utils/neonWarnings'
