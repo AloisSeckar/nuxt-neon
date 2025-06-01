@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.6.1 (2025-06-01)
+- feat: allow debugging faulty SQL queries
+- fix: export types definition propely via neon.d.ts
+
 ## v0.6.0 (2025-05-20)
 - BREAKING CHANGE: switched to options-object pattern for SQL wrappers (all wrapper calls needs to be updated - encapsulate all params in an object and add respective keys)
 - feat: TS types for params and return types of SQL wrappers were consolidated and logically re-named
