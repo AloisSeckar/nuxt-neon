@@ -3,6 +3,7 @@ import type { NeonDataType } from '../../utils/neonTypes'
 import { getNeonClient } from '../utils/getNeonClient'
 import { parseNeonClientError } from '../utils/neonErrors'
 import { NEON_RAW_WARNING, displayRawWarning } from '../../utils/neonWarnings'
+import { debugSQLIfAllowed } from '../utils/helpers/debugSQL'
 import { defineEventHandler, readBody } from '#imports'
 
 export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>): NeonDataType<T> => {
@@ -16,11 +17,13 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
       console.warn(NEON_RAW_WARNING)
     }
 
+    debugSQLIfAllowed(body.query)
+
     // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
     const results = await neon.query(body.query, undefined, { arrayMode: false, fullResults: false })
     return results as Array<T>
   }
   catch (err) {
-    return parseNeonClientError('/api/_neon/raw', err)
+    return await parseNeonClientError('/api/_neon/raw', err)
   }
 })

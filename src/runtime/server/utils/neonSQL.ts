@@ -4,11 +4,12 @@ import type {
   NeonDeleteQuery, NeonTableObject,
 } from '../../utils/neonTypes'
 import type { NeonDriverResult } from './getNeonClient'
-import { sanitizeSQLString } from './helpers/sanitizeSQL'
 import {
   getColumnsClause, getGroupByClause, getHavingClause, getLimitClause,
   getOrderClause, getTableClause, getWhereClause, getTableName, isTableWithAlias,
 } from './helpers/neonSQLHelpers'
+import { debugSQLIfAllowed } from './helpers/debugSQL'
+import { sanitizeSQLString } from './helpers/sanitizeSQL'
 
 type NeonDriver = NeonQueryFunction<boolean, boolean>
 type NeonDriverResponse = Promise<NeonDriverResult<false, false>>
@@ -29,7 +30,7 @@ export async function select(neon: NeonDriver, query: NeonSelectQuery): NeonDriv
   sqlString += getOrderClause(query.order)
   sqlString += getLimitClause(query.limit)
 
-  console.debug(sqlString)
+  await debugSQLIfAllowed(sqlString)
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
@@ -55,6 +56,8 @@ export async function insert(neon: NeonDriver, query: NeonInsertQuery): NeonDriv
 
   const sqlString = `INSERT INTO ${getTableName(query.table)} (${sqlColumns}) VALUES ${valueTuples}`
 
+  await debugSQLIfAllowed(sqlString)
+
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
@@ -76,7 +79,7 @@ export async function update(neon: NeonDriver, query: NeonUpdateQuery): NeonDriv
 
   sqlString += getWhereClause(query.where)
 
-  console.debug(sqlString)
+  await debugSQLIfAllowed(sqlString)
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
@@ -87,7 +90,7 @@ export async function del(neon: NeonDriver, query: NeonDeleteQuery): NeonDriverR
 
   sqlString += getWhereClause(query.where)
 
-  console.debug(sqlString)
+  await debugSQLIfAllowed(sqlString)
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })

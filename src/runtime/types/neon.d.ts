@@ -12,6 +12,7 @@ export type NeonError = {
   source: string
   code: number
   message: string
+  sql?: string
 }
 
 /** Result of `neonStatus` health check. */

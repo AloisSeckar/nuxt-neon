@@ -17,6 +17,8 @@ export interface ModuleOptions {
   neonSSLMode: NeonSSLModeOption
   /** Display warning when `raw()` wrapper is used (`true` by default) */
   neonRawWarning: boolean
+  /** If true, the SQL query is captured and attached to error response */
+  neonDebugSQL: boolean
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -33,6 +35,7 @@ export default defineNuxtModule<ModuleOptions>({
     neonDB: '',
     neonSSLMode: 'require',
     neonRawWarning: true,
+    neonDebugSQL: false,
   },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
@@ -44,6 +47,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.neonDB = options.neonDB
     nuxt.options.runtimeConfig.public.neonSSLMode = options.neonSSLMode
     nuxt.options.runtimeConfig.public.neonRawWarning = options.neonRawWarning
+    nuxt.options.runtimeConfig.public.neonDebugSQL = options.neonDebugSQL
 
     addServerHandler({
       route: '/api/_neon/raw',

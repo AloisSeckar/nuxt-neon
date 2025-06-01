@@ -2,6 +2,7 @@
 
 import type { NeonError } from '../../utils/neonTypes'
 import { isNeonSuccess, isNeonError, formatNeonError } from '../../utils/neonErrors'
+import { useRuntimeConfig, useStorage } from '#imports'
 
 export {
   isNeonSuccess,
@@ -9,16 +10,17 @@ export {
   formatNeonError,
 }
 
-export function getGenericError(source: string, message: string): NeonError {
+export async function getGenericError(source: string, message: string): Promise<NeonError> {
   return {
     name: 'NuxtNeonServerError',
     source,
     code: 500,
     message,
+    sql: await getSQLIfAllowed(),
   }
 }
 
-export function parseNeonClientError(source: string, err: unknown): NeonError {
+export async function parseNeonClientError(source: string, err: unknown): Promise<NeonError> {
   const error = err as Error
   const name = error.name
   let message = error.message
@@ -33,19 +35,29 @@ export function parseNeonClientError(source: string, err: unknown): NeonError {
     const jsonStart = message.indexOf('{')
     const jsonEnd = message.lastIndexOf('}') + 1
     const jsonStr = message.slice(jsonStart, jsonEnd)
-    message = JSON.parse(jsonStr).message
+    if (jsonStr) {
+      message = JSON.parse(jsonStr).message
+    }
 
     return {
       name: 'NuxtNeonServerError',
       source,
       code,
       message,
+      sql: await getSQLIfAllowed(),
     }
   }
   else {
     console.debug('Received other error object:')
     console.debug(name, message)
 
-    return getGenericError(source, message)
+    return await getGenericError(source, message)
   }
+}
+
+async function getSQLIfAllowed(): Promise<string | undefined> {
+  if (useRuntimeConfig().public.neonDebugSQL) {
+    return await useStorage().getItem('neonSQLQuery') as string
+  }
+  return undefined
 }

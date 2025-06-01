@@ -226,6 +226,9 @@ Existing options:
 - `neonRawWarning` - display warning message when using `raw()` SQL wrapper
   - `true` (default)
   - `false`
+- `neonDebugSQL` - if true, the SQL query is captured and attached to error response
+  - `true`
+  - `false` (default)
 
 Example:
 
@@ -235,6 +238,7 @@ export default defineNuxtConfig({
   neon: {
     neonSSLMode: 'verify-full',
     neonRawWarning: false,
+    neonDebugSQL: true,
   },
   // other configuration
 })
@@ -247,6 +251,7 @@ Module options can also be passed as Nuxt runtime config variables in `.env` fil
 ```
 NUXT_PUBLIC_NEON_SSL_MODE=verify-full
 NUXT_PUBLIC_NEON_RAW_WARNING=false
+NUXT_PUBLIC_NEON_DEBUG_SQL=true
 ```
 
 ## See also

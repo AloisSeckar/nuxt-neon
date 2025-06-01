@@ -15,6 +15,6 @@ export default defineEventHandler(async (event): NeonDataType<number> => {
     return [countData?.at(0)?.count || -1]
   }
   catch (err) {
-    return parseNeonClientError('/api/_neon/count', err)
+    return await parseNeonClientError('/api/_neon/count', err)
   }
 })

@@ -14,6 +14,6 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
     return results as Array<T>
   }
   catch (err) {
-    return parseNeonClientError('/api/_neon/select', err)
+    return await parseNeonClientError('/api/_neon/select', err)
   }
 })

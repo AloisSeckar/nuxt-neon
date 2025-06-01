@@ -18,10 +18,10 @@ export default defineEventHandler(async (event): NeonDataType<string> => {
     else {
       console.debug(ret)
       // TODO can we extract more detailed error cause from within the driver response?
-      return getGenericError('/api/_neon/update', 'UPDATE operation failed')
+      return await getGenericError('/api/_neon/update', 'UPDATE operation failed')
     }
   }
   catch (err) {
-    return parseNeonClientError('/api/_neon/update', err)
+    return await parseNeonClientError('/api/_neon/update', err)
   }
 })
