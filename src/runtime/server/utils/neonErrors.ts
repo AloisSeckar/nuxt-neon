@@ -56,7 +56,7 @@ export async function parseNeonClientError(source: string, err: unknown): Promis
 }
 
 async function getSQLIfAllowed(): Promise<string | undefined> {
-  if (useRuntimeConfig().public.neonDebugSQL) {
+  if (useRuntimeConfig().public.neonDebugSQL === true) {
     return await useStorage().getItem('neonSQLQuery') as string
   }
   return undefined
