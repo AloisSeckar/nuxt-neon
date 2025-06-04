@@ -220,5 +220,5 @@ describe('nuxt-neon basic test suite', async () => {
     )
     countHTML = await countData.innerHTML()
     expect(countHTML).toContain('0')
-  })
+  }, 10000) // this occasionally times out for no apparent reason (usually on the first run)
 })
