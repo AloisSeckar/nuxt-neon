@@ -8,7 +8,7 @@ import { formatNeonError, handleNeonError, isNeonSuccess } from '../utils/neonEr
 import { useRuntimeConfig } from '#imports'
 
 export function useNeon() {
-  const neonStatus = async (anonymous: boolean = true, debug: boolean = false): NeonStatusType => {
+  const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusType> => {
     const dbName = useRuntimeConfig().public.neonDB as string
 
     let error = ''
@@ -33,7 +33,7 @@ export function useNeon() {
     return (await neonStatus()).status === 'OK'
   }
 
-  const raw = async <T> (query: string): NeonDataType<T> => {
+  const raw = async <T> (query: string): Promise<NeonDataType<T>> => {
     if (displayRawWarning() && query !== 'SELECT 1=1 as status') {
       console.warn(NEON_RAW_WARNING)
     }
@@ -46,7 +46,7 @@ export function useNeon() {
     }
   }
 
-  const count = async (query: NeonCountQuery): NeonCountType => {
+  const count = async (query: NeonCountQuery): Promise<NeonCountType> => {
     const ret = await fetchFromNeonBackend<number>('count', { ...query })
     if (isNeonSuccess(ret)) {
       return (ret as Array<number>).at(0) || -1
@@ -56,7 +56,7 @@ export function useNeon() {
     }
   }
 
-  const select = async <T> (query: NeonSelectQuery): NeonDataType<T> => {
+  const select = async <T> (query: NeonSelectQuery): Promise<NeonDataType<T>> => {
     const ret = await fetchFromNeonBackend<T>('select', { ...query })
     if (isNeonSuccess(ret)) {
       return ret as Array<T>
@@ -66,15 +66,15 @@ export function useNeon() {
     }
   }
 
-  const insert = async (query: NeonInsertQuery): NeonEditType => {
+  const insert = async (query: NeonInsertQuery): Promise<NeonEditType> => {
     return await callNeonBackend('insert', { ...query })
   }
 
-  const update = async (query: NeonUpdateQuery): NeonEditType => {
+  const update = async (query: NeonUpdateQuery): Promise<NeonEditType> => {
     return await callNeonBackend('update', { ...query })
   }
 
-  const del = async (query: NeonDeleteQuery): NeonEditType => {
+  const del = async (query: NeonDeleteQuery): Promise<NeonEditType> => {
     return await callNeonBackend('delete', { ...query })
   }
 
@@ -94,7 +94,7 @@ export function useNeon() {
 
 // for methods where we don't expect results (INSERT, UPDATE, DELETE)
 // backend returns an array with single string containing either 'OK' or an error cause
-async function callNeonBackend(method: string, body: NeonBodyType): NeonEditType {
+async function callNeonBackend(method: string, body: NeonBodyType): Promise<NeonEditType> {
   const ret = await fetchFromNeonBackend<string>(method, body)
   if (isNeonSuccess(ret)) {
     return (ret as Array<string>)[0]
@@ -106,7 +106,7 @@ async function callNeonBackend(method: string, body: NeonBodyType): NeonEditType
 
 // this is the actual call for server-side endpoints
 // backend returns either an array of results or an error object
-async function fetchFromNeonBackend<T>(method: string, body: NeonBodyType): NeonDataType<T> {
+async function fetchFromNeonBackend<T>(method: string, body: NeonBodyType): Promise<NeonDataType<T>> {
   try {
     return await $fetch<Array<T> | NeonError>(`/api/_neon/${method}`, {
       method: 'POST',

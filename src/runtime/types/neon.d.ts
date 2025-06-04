@@ -89,10 +89,10 @@ export type NeonOrderObject = {
 
 // consolidated types
 
-export type NeonDataType<T> = Promise<Array<T> | NeonError>
-export type NeonCountType = Promise<number | NeonError>
-export type NeonEditType = Promise<string | NeonError>
-export type NeonStatusType = Promise<NeonStatusResult>
+export type NeonDataType<T> = Array<T> | NeonError
+export type NeonCountType = number | NeonError
+export type NeonEditType = string | NeonError
+export type NeonStatusType = NeonStatusResult
 
 export type NeonColumnType = string | string[] | NeonColumnObject | NeonColumnObject[]
 export type NeonTableType = string | NeonTableObject
