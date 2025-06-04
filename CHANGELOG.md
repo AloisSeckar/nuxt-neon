@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.6.2 (2025-06-04)
+- fix: remove incorrect `Promise` from type definitions
+- build: bump Nuxt to `3.17.5` + update other deps
+
 ## v0.6.1 (2025-06-01)
 - feat: allow debugging faulty SQL queries
 - fix: export types definition propely via neon.d.ts
