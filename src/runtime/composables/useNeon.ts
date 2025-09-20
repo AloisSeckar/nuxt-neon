@@ -97,7 +97,7 @@ export function useNeon() {
 async function callNeonBackend(method: string, body: NeonBodyType): Promise<NeonEditType> {
   const ret = await fetchFromNeonBackend<string>(method, body)
   if (isNeonSuccess(ret)) {
-    return (ret as Array<string>)[0]
+    return (ret as Array<string>)[0]!
   }
   else {
     return handleNeonError(ret)
@@ -107,13 +107,20 @@ async function callNeonBackend(method: string, body: NeonBodyType): Promise<Neon
 // this is the actual call for server-side endpoints
 // backend returns either an array of results or an error object
 async function fetchFromNeonBackend<T>(method: string, body: NeonBodyType): Promise<NeonDataType<T>> {
+  const debug = useRuntimeConfig().public.neonDebugRuntime === true
   try {
+    if (debug) {
+      console.debug(`Calling Neon '${method}' with:`, body)
+    }
     return await $fetch<Array<T> | NeonError>(`/api/_neon/${method}`, {
       method: 'POST',
       body,
     })
   }
   catch (err) {
+    if (debug) {
+      console.warn(`Neon '${method}' failed`)
+    }
     const error = err as Error
     return {
       name: 'NuxtNeonClientError',

@@ -19,6 +19,8 @@ export interface ModuleOptions {
   neonRawWarning: boolean
   /** If true, the SQL query is captured and attached to error response */
   neonDebugSQL: boolean
+  /** If true, extra runtime information is captured and logged */
+  neonDebugRuntime: boolean
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -36,6 +38,7 @@ export default defineNuxtModule<ModuleOptions>({
     neonSSLMode: 'require',
     neonRawWarning: true,
     neonDebugSQL: false,
+    neonDebugRuntime: false,
   },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
@@ -48,6 +51,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.neonSSLMode = options.neonSSLMode
     nuxt.options.runtimeConfig.public.neonRawWarning = options.neonRawWarning
     nuxt.options.runtimeConfig.public.neonDebugSQL = options.neonDebugSQL
+    nuxt.options.runtimeConfig.public.neonDebugRuntime = options.neonDebugRuntime
 
     addServerHandler({
       route: '/api/_neon/raw',

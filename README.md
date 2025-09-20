@@ -229,6 +229,12 @@ Existing options:
 - `neonDebugSQL` - if true, the SQL query is captured and attached to error response
   - `true`
   - `false` (default)
+- `neonDebugSQL` - if true, the SQL query is captured and attached to error response
+  - `true`
+  - `false` (default)
+- `neonDebugRuntime` - if true, extra runtime information is captured and logged
+  - `true`
+  - `false` (default)
 
 Example:
 
