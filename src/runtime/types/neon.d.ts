@@ -54,7 +54,12 @@ export type NeonTableObject = {
   joinColumn1?: string | NeonColumnObject
   /** Right column (including alias) for JOIN (ignored for 1st table) */
   joinColumn2?: string | NeonColumnObject
+  /** Type for JOIN (ignored for 1st table) */
+  joinType?: NeonJoinType
 }
+
+/** Enum-like type to define JOIN type */
+export type NeonJoinType = 'INNER' | 'LEFT' | 'RIGHT' | 'FULL'
 
 /** Enum-like type to define operation for column-value pair in WHERE clause */
 export type NeonWhereCondition = '=' | '!=' | '>' | '>=' | '<' | '<=' | 'LIKE'

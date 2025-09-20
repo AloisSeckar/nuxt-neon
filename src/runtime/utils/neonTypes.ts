@@ -8,6 +8,7 @@ export type NeonStatusResult = types.NeonStatusResult
 
 export type NeonColumnObject = types.NeonColumnObject
 export type NeonTableObject = types.NeonTableObject
+export type NeonJoinType = types.NeonJoinType
 export type NeonWhereCondition = types.NeonWhereCondition
 export type NeonWhereOperator = types.NeonWhereOperator
 export type NeonWhereObject = types.NeonWhereObject

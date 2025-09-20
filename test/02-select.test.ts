@@ -30,6 +30,14 @@ describe('nuxt-neon SELECT test suite', async () => {
     expect(countIds(dataHtml)).toBe(10)
   }, 10000) // first test in suite always needs longer timeout
 
+  test('SELECT - LEFT JOIN', async ({ expect }) => {
+    const dataHtml = await getDataHtml('TestSelectLeftJoin')
+    expect(dataHtml).toContain('id')
+    expect(dataHtml).toContain('"name": "c4ca4238a0"')
+    expect(dataHtml).toContain('"value_bool": false')
+    expect(countIds(dataHtml)).toBe(10)
+  })
+
   test('SELECT - JOIN + WHERE w1 AND w2', async ({ expect }) => {
     const dataHtml = await getDataHtml('TestSelectJoinWhereAnd')
     expect(dataHtml).toContain('"id": 4')

@@ -32,7 +32,7 @@ export function getTableClause(from: NeonFromType): string {
       if (tables) {
         if (t.joinColumn1) {
           const joinCondition = getJoinCondition(t.joinColumn1!, t.joinColumn2!)
-          tables += ` JOIN ${tableWithSchemaAndAlias(t)} ON ${joinCondition}`
+          tables += ` ${t.joinType || 'INNER'} JOIN ${tableWithSchemaAndAlias(t)} ON ${joinCondition}`
         }
         else {
           tables += `, ${tableWithSchemaAndAlias(t)}`
