@@ -73,8 +73,8 @@ export type NeonWhereObject = {
   column: string | NeonColumnObject
   /** Condition type */
   condition: NeonWhereCondition
-  /** Value to be used for filtering */
-  value: string
+  /** String value to be used for filtering or column from other table */
+  value: string | NeonColumnObject
   /** Relation with other clauses (ignored for 1st clause) */
   operator?: NeonWhereOperator
 }
