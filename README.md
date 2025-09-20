@@ -1,4 +1,4 @@
-# Nuxt-Neon
+# Nuxt Neon
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
@@ -7,10 +7,10 @@
 
 ![nuxt-neon](https://github.com/user-attachments/assets/35d6c6dd-5063-4501-ac2a-86bebec53abf)
 
-A simple [Nuxt module](https://nuxt.com/modules) alowing smooth integration with [Neon database](https://neon.tech/).
+A simple [Nuxt v4-compilant module](https://nuxt.com/modules) allowing smooth integration with [Neon database](https://neon.tech/).
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
-
+  
 ## How to use?
 
 Install the module to your Nuxt application with one command:
@@ -19,7 +19,7 @@ Install the module to your Nuxt application with one command:
 npx nuxi module add nuxt-neon
 ```
 
-Provide connection details to your Neon DB instance through a set of Nuxt [runtime config variables](https://nuxt.com/docs/guide/going-further/runtime-config#environment-variables):
+Provide connection details to your Neon DB instance through a set of Nuxt [runtime config variables](https://nuxt.com/docs/4.x/guide/going-further/runtime-config):
 - `NUXT_NEON_HOST`
 - `NUXT_NEON_USER`
 - `NUXT_NEON_PASS`
@@ -30,7 +30,7 @@ For database name, you can alternatively set:
 
 Note this will allow to disclose your database name on client side, which you might or might not want to do. If both env variables are set, `NUXT_NEON_DB` is always used for the actual connection string, but value of `NUXT_PUBLIC_NEON_DB` becomes available on client side.
 
-Nuxt-Neon will construct a PostgreSQL connection string based on given values:
+Nuxt Neon will construct a PostgreSQL connection string based on given values:
 
 ```ts
 `postgresql://${NUXT_NEON_USER}:${NUXT_NEON_PASS}@${NUXT_NEON_HOST}.neon.tech/${NUXT[_PUBLIC]NEON_DB}`
@@ -38,7 +38,7 @@ Nuxt-Neon will construct a PostgreSQL connection string based on given values:
 
 Settings are used to initialize the [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) object initialized on the Nuxt server.
 
-NOTE: Sensitive connection data are sealed on Nuxt server. The only public property might be the database name (if you pick the public variant).
+**NOTE:** Sensitive connection data are sealed within the Nuxt server (Nitro). The only public property might be the database name (if you pick the public variant). On the other hand, this means you cannot use **Nuxt Neon** in static builds and deploy without JS runtime.
 
 ### `useNeon` composable
 
@@ -82,7 +82,7 @@ Value returned is a `NeonStatusResult` promise:
 
 ### SQL Wrappers
 
-This module offers SQL wrappers that communicate with Nuxt server-side endpoints connected to the native `neonClient`. Currently 5 of them are available.
+This module offers SQL wrappers that communicate with Nuxt server-side endpoints connected to the native `neonClient`. Currently six of them are available.
 
 #### `raw()`
 
@@ -93,11 +93,11 @@ const { raw } = useNeon()
 
 This wrapper allows you to perform **ANY** SQL directly.
 
-Returns the result of the query (Neon client returns `[]` for INSERT, UPDATE and DELETE) or DB client's erorr message. Generic casting can be used for type-hint (`raw<T>()`).
+Returns the result of the query (Neon client returns `[]` for INSERT, UPDATE and DELETE) or DB client's error message. Generic casting can be used for type-hint (`raw<T>()`).
 
-**SECURITY WARNING**: the value of `query` cannot be sanitized before being applied to the database, so make sure you **NEVER allow unchecked user input via `raw` handler**. This method is implemented to allow bypassing edge cases that cannot be covered by the following wrappers, that ensure input security more.
+**SECURITY WARNING**: the value of `query` cannot be sanitized before being applied to the database, so make sure you **NEVER allow unchecked user input via `raw` handler**. This method is implemented to allow bypassing edge cases that cannot be covered by following wrappers that ensure input security more.
 
-Since this method is potentially unsafe, a warning will display by default, if called. If you are 100% sure what you are doing, you can disable the warning by setting `neon.neonRawWarning: false`
+Since this method is potentially unsafe, a warning will display by default when it is called. If you are 100% sure what you are doing, you can disable the warning by setting `neon.neonRawWarning: false`.
 
 #### `count()`
 
@@ -109,10 +109,10 @@ const { count } = useNeon()
 This is a special wrapper to allow `select count(*) from` query:
 - **from** - definition of table(s) to select from
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonTableObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will be parsed into a chain of `JOIN` clauses
+  - or an instance (or array) of [`NeonTableObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L45) type which will be parsed into a chain of `JOIN` clauses
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - oran instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L70) type which will be parsed into chain of clauses
 
 It just calls the `select()` wrapper function under the hood, but abstracts users from having to pass `columns = ['count(*)']`.
 
@@ -129,18 +129,18 @@ You can perform `SELECT` operation via this function with following parameters:
   - you can use special `*` for "all columns"
   - you can also use SQL functions (e.g. `count(*)`) 
   - if you use aliases in `from` part, you can to provide them together with the column name (e.g. `t.column`)
-  - or an instance (or array) of [`NeonColumnObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L37) type which can handle `alias` as well
+  - or an instance (or array) of [`NeonColumnObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L37) type which can handle `alias` as well
 - **from** - definition of table(s) to select from
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonTableObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L45) type which will (usually) be parsed into a chain of `JOIN` clauses
-  - the `JOIN` clause is not required and can be substituted with adequate `WHERE` condition(s), however, due to current API limitations, such clause(s) need to be passed in as a raw string (e.g. `p1.id = p2.id`)
+  - or an instance (or array) of [`NeonTableObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L45) type which will (usually) be parsed into a chain of `JOIN` clauses (`JOIN` type can be specified, defaults to `INNER JOIN`)
+  - the `JOIN` clause is not required and can be substituted with adequate `WHERE` condition(s) - e.g. `p1.id = p2.id`
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L70) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column = 1`)
 - **order** - _optional_ criteria for ordering results
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonOrderObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L82) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonOrderObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L85) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column DESC`)
 - **limit** - _optional_ limit of results, if more results expected (number)
 - **group** - _optional_ definition for GROUP BY aggregation clause
@@ -174,7 +174,7 @@ You can perform `UPDATE` operation via this function with following parameters:
 - **values** - list of key-value pairs to be updated, values are being sanitized before applied to database
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L70) type which will be parsed into chain of clauses
 
 #### `del()`
 
@@ -188,7 +188,7 @@ You can perform `DELETE` operation via this function with following parameters:
 - **table** - DB table to be deleled from
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/utils/neonTypes.ts#L65) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L70) type which will be parsed into chain of clauses
 
 Returns `'OK'` if query was successfully executed or returned erorr message.
 
@@ -214,9 +214,9 @@ Utility `formatNeonError(err: NeonError): string` can be used to print out error
 
 ## Module options
 
-Nuxt-Neon can be configured by overriding the default options values using key `neon` inside `nuxt.config.ts`.
+Nuxt Neon can be configured by overriding the default options values using key `neon` inside `nuxt.config.ts`.
 
-Existing options:
+**Existing options:**
 
 - `neonSSLMode` - allows setting [secure connection mode](https://neon.tech/docs/connect/connect-securely) when constructing the DB connection string by adding `sslmode` parameter to URL. Values can be:
   - `require` (default)
@@ -245,6 +245,7 @@ export default defineNuxtConfig({
     neonSSLMode: 'verify-full',
     neonRawWarning: false,
     neonDebugSQL: true,
+    neonDebugRuntime: true,
   },
   // other configuration
 })
@@ -258,6 +259,7 @@ Module options can also be passed as Nuxt runtime config variables in `.env` fil
 NUXT_PUBLIC_NEON_SSL_MODE=verify-full
 NUXT_PUBLIC_NEON_RAW_WARNING=false
 NUXT_PUBLIC_NEON_DEBUG_SQL=true
+NUXT_PUBLIC_NEON_DEBUG_RUNTIME=true
 ```
 
 ## See also

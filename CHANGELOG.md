@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.7.0 (2025-09-20)
+- BREAKING: updated to `Nuxt v4`
+- BREAKING: changed column definition for WHERE and ORDER BY clauses to align with rest of the API
+- feat: new `neonDebugRuntime` to avoid connection status check if not requested
+- feat: it is not possible to select `JOIN` type in SELECT
+- feat: it is now possible to reference other table columns in WHERE
+
 ## v0.6.2 (2025-06-04)
 - fix: remove incorrect `Promise` from type definitions
 - build: bump Nuxt to `3.17.5` + update other deps
