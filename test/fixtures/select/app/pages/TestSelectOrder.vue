@@ -5,8 +5,8 @@ SELECT
   p1.id, p1.name, p1.value, p2.value_int, p2.value_bool, p2.value_text
 FROM
   playing_with_neon p1 JOIN playing_with_neon_2 p2 ON p1.id = p2.id
-WHERE
-  p1.value > 0.5 OR p2.value_bool = true
+ORDER BY
+  p1.id DESC, p2.value_int ASC
     </pre>
     <div id="data">
       {{ data }}
@@ -20,14 +20,15 @@ import { useAsyncData, useNeon } from '#imports'
 const { select } = useNeon()
 
 // simple JOIN of two tables via ID
-// with WHERE w1 OR w2
+// using NeonColumnObject to define joining columns
+// with ORDER BY on two columns
 
 // SELECT
 //   p1.id, p1.name, p1.value, p2.value_int, p2.value_bool, p2.value_text
 // FROM
 //   playing_with_neon p1 JOIN playing_with_neon_2 p2 ON p1.id = p2.id
-// WHERE
-//   p1.value > 0.5 OR p2.value_bool = true
+// ORDER BY
+//   p1.id DESC, p2.value_int ASC
 
 const { data } = await useAsyncData(() => select({
   columns: [
@@ -35,11 +36,11 @@ const { data } = await useAsyncData(() => select({
   ],
   from: [
     { table: 'playing_with_neon', alias: 'p1' },
-    { table: 'playing_with_neon_2', alias: 'p2', joinColumn1: 'p1.id', joinColumn2: 'p2.id' },
+    { table: 'playing_with_neon_2', alias: 'p2', joinColumn1: { alias: 'p1', name: 'id' }, joinColumn2: { alias: 'p2', name: 'id' } },
   ],
-  where: [
-    { column: { alias: 'p1', name: 'value' }, condition: '>', value: '0.5' },
-    { column: { alias: 'p2', name: 'value_bool' }, condition: '=', value: 'true', operator: 'OR' },
+  order: [
+    { column: { alias: 'p1', name: 'id' }, direction: 'DESC' },
+    { column: { alias: 'p2', name: 'value_int' } },
   ],
 }))
 </script>

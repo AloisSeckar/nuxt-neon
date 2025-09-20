@@ -41,7 +41,7 @@ async function doUpdate() {
   result.value = await update({
     table: { schema: 'neon2', table: 'playing_with_neon', alias: 'p1' },
     values: { value: '200' },
-    where: [{ alias: 'p1', column: 'id', condition: '=', value: '11' }],
+    where: [{ column: { alias: 'p1', name: 'id' }, condition: '=', value: '11' }],
   })
 }
 </script>

@@ -69,10 +69,8 @@ export type NeonWhereOperator = 'AND' | 'OR'
 
 /** Object for defining a WHERE clause. */
 export type NeonWhereObject = {
-  /** Alias used for table */
-  alias?: string
-  /** Column name */
-  column: string
+  /** Column definition */
+  column: string | NeonColumnObject
   /** Condition type */
   condition: NeonWhereCondition
   /** Value to be used for filtering */
@@ -86,8 +84,8 @@ export type NeonSortDirection = 'ASC' | 'DESC'
 
 /** Object for defining an ORDER BY clause. */
 export type NeonOrderObject = {
-  /** Column name */
-  column: string
+  /** Column definition */
+  column: string | NeonColumnObject
   /** Sort direction (`ASC` if not specified) */
   direction?: NeonSortDirection
 }

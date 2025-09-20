@@ -1,11 +1,11 @@
 import type {
   NeonFromType, NeonTableType, NeonTableObject, NeonOrderType,
-  NeonColumnObject, NeonColumnType, NeonWhereType, NeonWhereObject,
+  NeonColumnObject, NeonColumnType, NeonWhereType,
 } from '../../../utils/neonTypes'
 
 export function getTableName(table: NeonTableType): string {
   if (typeof table === 'string') {
-    // return as iss
+    // return as is
     return table
   }
   else {
@@ -67,9 +67,7 @@ function tableWithAlias(t: NeonTableObject): string {
 
 // handle join condition
 function getJoinCondition(c1: string | NeonColumnObject, c2: string | NeonColumnObject) {
-  const left = typeof c1 === 'string' ? c1 : columnWithAlias(c1)
-  const right = typeof c2 === 'string' ? c2 : columnWithAlias(c2)
-  return `${left} = ${right}`
+  return `${columnWithAlias(c1)} = ${columnWithAlias(c2)}`
 }
 
 export function getColumnsClause(columns: NeonColumnType): string {
@@ -83,21 +81,21 @@ export function getColumnsClause(columns: NeonColumnType): string {
     }
   }
   else {
-    if (typeof columns === 'object') {
-      sqlString += columnWithAlias(columns)
-    }
-    else {
-      sqlString += columns
-    }
+    sqlString += columnWithAlias(columns)
   }
   return sqlString
 }
 
 // include table alias if specified
-function columnWithAlias(c: NeonColumnObject): string {
+function columnWithAlias(c: string | NeonColumnObject): string {
+  if (typeof c === 'string') {
+    return c
+  }
+
   if (c.alias) {
     return `${c.alias}.${c.name}`
   }
+
   return c.name
 }
 
@@ -112,10 +110,10 @@ export function getWhereClause(where?: NeonWhereType): string {
       let conditions = ''
       where.forEach((w) => {
         if (conditions) {
-          conditions += ` ${w.operator} ${whereColumnWithAlias(w)} ${w.condition} ${escapeIfNeeded(w.value)}`
+          conditions += ` ${w.operator} ${columnWithAlias(w.column)} ${w.condition} ${escapeIfNeeded(w.value)}`
         }
         else {
-          conditions = `${whereColumnWithAlias(w)} ${w.condition} ${escapeIfNeeded(w.value)}`
+          conditions = `${columnWithAlias(w.column)} ${w.condition} ${escapeIfNeeded(w.value)}`
         }
       })
       sqlString += conditions
@@ -125,14 +123,6 @@ export function getWhereClause(where?: NeonWhereType): string {
     }
   }
   return sqlString
-}
-
-// include table alias if specified
-function whereColumnWithAlias(w: NeonWhereObject): string {
-  if (w.alias) {
-    return `${w.alias}.${w.column}`
-  }
-  return w.column
 }
 
 export function getOrderClause(order?: NeonOrderType): string {
@@ -146,16 +136,14 @@ export function getOrderClause(order?: NeonOrderType): string {
       let ordering = ''
       order.forEach((o) => {
         if (ordering) {
-          ordering += `, ${o.column} ${o.direction || 'ASC'}`
+          ordering += `, `
         }
-        else {
-          ordering = `${o.column} ${o.direction || 'ASC'}`
-        }
+        ordering += `${columnWithAlias(o.column)} ${o.direction || 'ASC'}`
       })
       sqlString += ordering
     }
     else {
-      sqlString += `${order.column} ${order.direction || 'ASC'}`
+      sqlString += `${columnWithAlias(order.column)} ${order.direction || 'ASC'}`
     }
   }
   return sqlString

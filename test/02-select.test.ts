@@ -96,4 +96,21 @@ describe('nuxt-neon SELECT test suite', async () => {
     expect(dataHtml).toContain('"value": 0.9541963')
     expect(countIds(dataHtml)).toBe(10)
   })
+
+  test('SELECT - ORDER BY', async ({ expect }) => {
+    const dataHtml = await getDataHtml('TestSelectOrder')
+
+    const v1 = dataHtml.indexOf('c4ca4238a0') // id = 1
+    const v2 = dataHtml.indexOf('d3d9446802') // id = 10
+    const v3 = dataHtml.indexOf('e4da3b7fbb') // id = 5
+
+    // items must be present
+    expect(v1).toBeGreaterThan(-1)
+    expect(v2).toBeGreaterThan(-1)
+    expect(v3).toBeGreaterThan(-1)
+    // and in correct order
+    expect(v1).toBeGreaterThan(v2)
+    expect(v1).toBeGreaterThan(v3)
+    expect(v3).toBeGreaterThan(v2)
+  })
 })
