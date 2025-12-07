@@ -2,6 +2,7 @@ import type {
   NeonFromType, NeonTableType, NeonTableObject, NeonOrderType,
   NeonColumnObject, NeonColumnType, NeonWhereType,
 } from '../../../utils/neonTypes'
+import { decodeWhereType } from '../../../utils/neonUtils'
 
 export function getTableName(table: NeonTableType): string {
   if (typeof table === 'string') {
@@ -101,6 +102,10 @@ function columnWithAlias(c: string | NeonColumnObject): string {
 
 export function getWhereClause(where?: NeonWhereType): string {
   let sqlString = ''
+
+  // fix for https://github.com/AloisSeckar/nuxt-neon/issues/45
+  where = decodeWhereType(where)
+
   if (where) {
     sqlString += ' WHERE '
     if (typeof where === 'string') {
@@ -169,6 +174,10 @@ export function getGroupByClause(group?: NeonColumnType): string {
 
 export function getHavingClause(having?: NeonWhereType): string {
   let sqlString = ''
+
+  // fix for https://github.com/AloisSeckar/nuxt-neon/issues/45
+  having = decodeWhereType(having)
+
   if (having) {
     sqlString += ' HAVING '
     if (typeof having === 'string') {

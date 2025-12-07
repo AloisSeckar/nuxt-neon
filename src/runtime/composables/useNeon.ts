@@ -1,11 +1,12 @@
 import type {
   NeonBodyType, NeonDataType, NeonEditType, NeonStatusType, NeonError,
   NeonCountQuery, NeonCountType, NeonSelectQuery, NeonInsertQuery,
-  NeonUpdateQuery, NeonDeleteQuery,
+  NeonUpdateQuery, NeonDeleteQuery, NeonWhereType,
 } from '../utils/neonTypes'
 import { NEON_RAW_WARNING, displayRawWarning } from '../utils/neonWarnings'
 import { formatNeonError, handleNeonError, isNeonSuccess } from '../utils/neonErrors'
 import { useRuntimeConfig } from '#imports'
+import { encodeWhereType } from '../utils/neonUtils'
 
 export function useNeon() {
   const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusType> => {
@@ -109,6 +110,14 @@ async function callNeonBackend(method: string, body: NeonBodyType): Promise<Neon
 async function fetchFromNeonBackend<T>(method: string, body: NeonBodyType): Promise<NeonDataType<T>> {
   const debug = useRuntimeConfig().public.neonDebugRuntime === true
   try {
+    // fix for https://github.com/AloisSeckar/nuxt-neon/issues/45
+    if (Object.hasOwn(body, 'where')) {
+      body.where = encodeWhereType(body.where as NeonWhereType)
+    }
+    if (Object.hasOwn(body, 'having')) {
+      body.having = encodeWhereType(body.having as NeonWhereType)
+    }
+
     if (debug) {
       console.debug(`Calling Neon '${method}' with:`, body)
     }
