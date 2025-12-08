@@ -138,6 +138,7 @@ You can perform `SELECT` operation via this function with following parameters:
   - can be either a string with custom value (including more complicated)
   - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L70) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column = 1`)
+  - because of [possible issues with angle brackets](https://github.com/AloisSeckar/nuxt-neon/issues/45), safe aliases `GT`, `GTE`, `LT`, `LTE` exist within `NeonWhereCondition` type for `>`, `>=`, `<`, `<=` operators. When communicating between `useNeon` composable and the backend API endpoints, automatic conversion happens.
 - **order** - _optional_ criteria for ordering results
   - can be either a string with custom value (including more complicated)
   - or an instance (or array) of [`NeonOrderObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L85) type which will be parsed into chain of clauses

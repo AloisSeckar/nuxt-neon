@@ -62,8 +62,7 @@ export type NeonTableObject = {
 export type NeonJoinType = 'INNER' | 'LEFT' | 'RIGHT' | 'FULL'
 
 /** Enum-like type to define operation for column-value pair in WHERE clause */
-export type NeonWhereCondition = '=' | '!=' | '>' | '>=' | '<' | '<=' | 'LIKE'
-type NeonEncodedWhereCondition = 'GT' | 'GTE' | 'LT' | 'LTE' // internal type for encoded angle brackets
+export type NeonWhereCondition = '=' | '!=' | '>' | 'GT' | '>=' | 'GTE' | '<' | 'LT' | '<=' | 'LTE' | 'LIKE'
 
 /** Enum-like type to define logical operator between more WHERE clauses */
 export type NeonWhereOperator = 'AND' | 'OR'
@@ -73,7 +72,7 @@ export type NeonWhereObject = {
   /** Column definition */
   column: string | NeonColumnObject
   /** Condition type */
-  condition: NeonWhereCondition | NeonEncodedWhereCondition
+  condition: NeonWhereCondition
   /** String value to be used for filtering or column from other table */
   value: string | NeonColumnObject
   /** Relation with other clauses (ignored for 1st clause) */
