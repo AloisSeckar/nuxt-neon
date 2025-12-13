@@ -10,16 +10,25 @@ import {
 } from './helpers/neonSQLHelpers'
 import { debugSQLIfAllowed } from './helpers/debugSQL'
 import { sanitizeSQLString } from './helpers/sanitizeSQL'
+import { useRuntimeConfig } from '#imports'
 
 type NeonDriver = NeonQueryFunction<boolean, boolean>
 type NeonDriverResponse = Promise<NeonDriverResult<false, false>>
 
 // separate wrapper instead of forcing users to pass 'count(*)' as column name
 export async function count(neon: NeonDriver, query: NeonCountQuery): NeonDriverResponse {
+  if (useRuntimeConfig().public.neonDebugRuntime === true) {
+    console.debug('Neon `count` server-side wrapper invoked')
+  }
+
   return await select(neon, { ...query, columns: ['count(*)'] })
 }
 
 export async function select(neon: NeonDriver, query: NeonSelectQuery): NeonDriverResponse {
+  if (useRuntimeConfig().public.neonDebugRuntime === true) {
+    console.debug('Neon `select` server-side wrapper invoked')
+  }
+
   let sqlString = 'SELECT '
 
   sqlString += getColumnsClause(query.columns)
@@ -37,6 +46,10 @@ export async function select(neon: NeonDriver, query: NeonSelectQuery): NeonDriv
 }
 
 export async function insert(neon: NeonDriver, query: NeonInsertQuery): NeonDriverResponse {
+  if (useRuntimeConfig().public.neonDebugRuntime === true) {
+    console.debug('Neon `insert` server-side wrapper invoked')
+  }
+
   // alias is technically not allowed for insert
   if (isTableWithAlias(query.table)) {
     throw new Error('Table alias is not allowed for INSERT statement')
@@ -63,6 +76,10 @@ export async function insert(neon: NeonDriver, query: NeonInsertQuery): NeonDriv
 }
 
 export async function update(neon: NeonDriver, query: NeonUpdateQuery): NeonDriverResponse {
+  if (useRuntimeConfig().public.neonDebugRuntime === true) {
+    console.debug('Neon `update` server-side wrapper invoked')
+  }
+
   let sqlString = `UPDATE ${getTableName(query.table)}`
 
   // alias has a special syntax in update with "AS"
@@ -86,6 +103,10 @@ export async function update(neon: NeonDriver, query: NeonUpdateQuery): NeonDriv
 }
 
 export async function del(neon: NeonDriver, query: NeonDeleteQuery): NeonDriverResponse {
+  if (useRuntimeConfig().public.neonDebugRuntime === true) {
+    console.debug('Neon `delete` server-side wrapper invoked')
+  }
+
   let sqlString = `DELETE FROM ${getTableName(query.table)}`
 
   sqlString += getWhereClause(query.where)

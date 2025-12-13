@@ -4,11 +4,20 @@ import { getNeonClient } from '../utils/getNeonClient'
 import { parseNeonClientError } from '../utils/neonErrors'
 import { NEON_RAW_WARNING, displayRawWarning } from '../../utils/neonWarnings'
 import { debugSQLIfAllowed } from '../utils/helpers/debugSQL'
-import { defineEventHandler, readBody } from '#imports'
+import { defineEventHandler, readBody, useRuntimeConfig } from '#imports'
 
 export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>): Promise<NeonDataType<T>> => {
   try {
+    const debug = useRuntimeConfig().public.neonDebugRuntime === true
+    if (debug) {
+      console.debug('Neon `raw` API endpoint invoked')
+    }
+
     const body = await readBody(event)
+    if (debug) {
+      console.debug('Request body:', body)
+    }
+
     const neon = getNeonClient()
 
     // warning about this method being potentially unsafe

@@ -2,11 +2,20 @@ import type { NeonDataType } from '../../utils/neonTypes'
 import { getNeonClient } from '../utils/getNeonClient'
 import { getGenericError, parseNeonClientError } from '../utils/neonErrors'
 import { update } from '../utils/neonSQL'
-import { defineEventHandler, readBody } from '#imports'
+import { defineEventHandler, readBody, useRuntimeConfig } from '#imports'
 
 export default defineEventHandler(async (event): Promise<NeonDataType<string>> => {
   try {
+    const debug = useRuntimeConfig().public.neonDebugRuntime === true
+    if (debug) {
+      console.debug('Neon `update` API endpoint invoked')
+    }
+
     const body = await readBody(event)
+    if (debug) {
+      console.debug('Request body:', body)
+    }
+
     const neon = getNeonClient()
 
     const ret = await update(neon, { ...body })
@@ -16,7 +25,6 @@ export default defineEventHandler(async (event): Promise<NeonDataType<string>> =
       return ['OK']
     }
     else {
-      console.debug(ret)
       // TODO can we extract more detailed error cause from within the driver response?
       return await getGenericError('/api/_neon/update', 'UPDATE operation failed')
     }

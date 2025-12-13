@@ -2,11 +2,20 @@ import type { NeonDataType } from '../../utils/neonTypes'
 import { getNeonClient } from '../utils/getNeonClient'
 import { getGenericError, parseNeonClientError } from '../utils/neonErrors'
 import { insert } from '../utils/neonSQL'
-import { defineEventHandler, readBody } from '#imports'
+import { defineEventHandler, readBody, useRuntimeConfig } from '#imports'
 
 export default defineEventHandler(async (event): Promise<NeonDataType<string>> => {
   try {
+    const debug = useRuntimeConfig().public.neonDebugRuntime === true
+    if (debug) {
+      console.debug('Neon `insert` API endpoint invoked')
+    }
+
     const body = await readBody(event)
+    if (debug) {
+      console.debug('Request body:', body)
+    }
+
     const neon = getNeonClient()
 
     const ret = await insert(neon, { ...body })

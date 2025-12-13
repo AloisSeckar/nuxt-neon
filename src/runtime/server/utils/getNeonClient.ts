@@ -9,6 +9,9 @@ let neonClient: NeonQueryFunction<boolean, boolean> | null = null
 export function getNeonClient() {
   const neonConnectionString = buildNeonConnectionString()
   if (neonClient === null) {
+    if (useRuntimeConfig().public.neonDebugRuntime === true) {
+      console.debug('Creating new Neon client instance')
+    }
     neonClient = neon(neonConnectionString)
   }
   return neonClient

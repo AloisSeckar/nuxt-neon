@@ -3,11 +3,20 @@ import type { NeonDataType } from '../../utils/neonTypes'
 import { getNeonClient } from '../utils/getNeonClient'
 import { parseNeonClientError } from '../utils/neonErrors'
 import { select } from '../utils/neonSQL'
-import { defineEventHandler, readBody } from '#imports'
+import { defineEventHandler, readBody, useRuntimeConfig } from '#imports'
 
 export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>): Promise<NeonDataType<T>> => {
   try {
+    const debug = useRuntimeConfig().public.neonDebugRuntime === true
+    if (debug) {
+      console.debug('Neon `select` API endpoint invoked')
+    }
+
     const body = await readBody(event)
+    if (debug) {
+      console.debug('Request body:', body)
+    }
+
     const neon = getNeonClient()
 
     const results = await select(neon, { ...body })
