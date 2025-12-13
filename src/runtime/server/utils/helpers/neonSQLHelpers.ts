@@ -107,25 +107,30 @@ export function getWhereClause(where?: NeonWhereType): string {
   where = decodeWhereType(where)
 
   if (where) {
-    sqlString += ' WHERE '
     if (typeof where === 'string') {
       sqlString += where
     }
     else if (Array.isArray(where)) {
-      let conditions = ''
-      where.forEach((w) => {
-        if (conditions) {
-          conditions += ` ${w.operator} ${columnWithAlias(w.column)} ${w.condition} ${getWhereValue(w.value)}`
-        }
-        else {
-          conditions = `${columnWithAlias(w.column)} ${w.condition} ${getWhereValue(w.value)}`
-        }
-      })
-      sqlString += conditions
+      if (where.length > 0) {
+        let conditions = ''
+        where.forEach((w) => {
+          if (conditions) {
+            conditions += ` ${w.operator} ${columnWithAlias(w.column)} ${w.condition} ${getWhereValue(w.value)}`
+          }
+          else {
+            conditions = `${columnWithAlias(w.column)} ${w.condition} ${getWhereValue(w.value)}`
+          }
+        })
+        sqlString += conditions
+      }
     }
     else {
       sqlString += `${where.column} ${where.condition} ${getWhereValue(where.value)}`
     }
+  }
+
+  if (sqlString) {
+    sqlString = ' WHERE ' + sqlString
   }
   return sqlString
 }
@@ -141,24 +146,30 @@ function getWhereValue(v: string | NeonColumnObject) {
 
 export function getOrderClause(order?: NeonOrderType): string {
   let sqlString = ''
+
   if (order) {
-    sqlString = ' ORDER BY '
     if (typeof order === 'string') {
       sqlString += order
     }
     else if (Array.isArray(order)) {
-      let ordering = ''
-      order.forEach((o) => {
-        if (ordering) {
-          ordering += `, `
-        }
-        ordering += `${columnWithAlias(o.column)} ${o.direction || 'ASC'}`
-      })
-      sqlString += ordering
+      if (order.length > 0) {
+        let ordering = ''
+        order.forEach((o) => {
+          if (ordering) {
+            ordering += `, `
+          }
+          ordering += `${columnWithAlias(o.column)} ${o.direction || 'ASC'}`
+        })
+        sqlString += ordering
+      }
     }
     else {
       sqlString += `${columnWithAlias(order.column)} ${order.direction || 'ASC'}`
     }
+  }
+
+  if (sqlString) {
+    sqlString = ' ORDER BY ' + sqlString
   }
   return sqlString
 }
@@ -179,25 +190,30 @@ export function getHavingClause(having?: NeonWhereType): string {
   having = decodeWhereType(having)
 
   if (having) {
-    sqlString += ' HAVING '
     if (typeof having === 'string') {
       sqlString += having
     }
     else if (Array.isArray(having)) {
-      let conditions = ''
-      having.forEach((h) => {
-        if (conditions) {
-          conditions += ` ${h.operator} ${h.column} ${h.condition} ${escapeIfNeeded(h.value)}`
-        }
-        else {
-          conditions = `${h.column} ${h.condition} ${escapeIfNeeded(h.value)}`
-        }
-      })
-      sqlString += conditions
+      if (having.length > 0) {
+        let conditions = ''
+        having.forEach((h) => {
+          if (conditions) {
+            conditions += ` ${h.operator} ${h.column} ${h.condition} ${escapeIfNeeded(h.value)}`
+          }
+          else {
+            conditions = `${h.column} ${h.condition} ${escapeIfNeeded(h.value)}`
+          }
+        })
+        sqlString += conditions
+      }
     }
     else {
       sqlString += `${having.column} ${having.condition} ${escapeIfNeeded(having.value)}`
     }
+  }
+
+  if (sqlString) {
+    sqlString = ' HAVING ' + sqlString
   }
   return sqlString
 }

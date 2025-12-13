@@ -113,4 +113,11 @@ describe('nuxt-neon SELECT test suite', async () => {
     expect(v1).toBeGreaterThan(v3)
     expect(v3).toBeGreaterThan(v2)
   })
+
+  test('SELECT - empty WHERE and ORDER BY', async ({ expect }) => {
+    const dataHtml = await getDataHtml('TestSelectWithEmptyConditions')
+    expect(dataHtml).toContain('"id": 1')
+    expect(dataHtml).toContain('"id": 10')
+    expect(countIds(dataHtml)).toBe(10)
+  })
 })
