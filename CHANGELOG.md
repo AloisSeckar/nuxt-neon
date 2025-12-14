@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.7.1 (2025-12-14)
+- feat: add more debug logging options on server-side (#40)
+- feat: support `IN`, `NOT IN` and `BETWEEN` operators in WHERE clauses (#43)
+- feat: support case-insensitive sort direction in ORDER BY clauses (#46)
+- fix: treat empty WHERE, ORDER BY and HAVING arrays properly (#44)
+- fix: encode angle brackets in client-server communication to prevent false security issues (#45)
+- build: bump Nuxt to `4.2.2` + update other deps (as of `2025-12-14`)
+
 ## v0.7.0 (2025-09-20)
 - BREAKING: updated to `Nuxt v4`
 - BREAKING: changed column definition for WHERE and ORDER BY clauses to align with rest of the API
