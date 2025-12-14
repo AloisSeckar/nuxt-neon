@@ -62,7 +62,7 @@ export type NeonTableObject = {
 export type NeonJoinType = 'INNER' | 'LEFT' | 'RIGHT' | 'FULL'
 
 /** Enum-like type to define operation for column-value pair in WHERE clause */
-export type NeonWhereCondition = '=' | '!=' | '>' | 'GT' | '>=' | 'GTE' | '<' | 'LT' | '<=' | 'LTE' | 'LIKE'
+export type NeonWhereCondition = '=' | '!=' | '>' | 'GT' | '>=' | 'GTE' | '<' | 'LT' | '<=' | 'LTE' | 'LIKE' | 'IN' | 'NOT IN' | 'BETWEEN'
 
 /** Enum-like type to define logical operator between more WHERE clauses */
 export type NeonWhereOperator = 'AND' | 'OR'

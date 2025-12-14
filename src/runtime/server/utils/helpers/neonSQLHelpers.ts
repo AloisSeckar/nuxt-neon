@@ -1,6 +1,6 @@
 import type {
   NeonFromType, NeonTableType, NeonTableObject, NeonOrderType,
-  NeonColumnObject, NeonColumnType, NeonWhereType,
+  NeonColumnObject, NeonColumnType, NeonWhereObject, NeonWhereType,
 } from '../../../utils/neonTypes'
 import { decodeWhereType } from '../../../utils/neonUtils'
 
@@ -112,20 +112,20 @@ export function getWhereClause(where?: NeonWhereType): string {
     }
     else if (Array.isArray(where)) {
       if (where.length > 0) {
-        let conditions = ''
+        let clause = ''
         where.forEach((w) => {
-          if (conditions) {
-            conditions += ` ${w.operator} ${columnWithAlias(w.column)} ${w.condition} ${getWhereValue(w.value)}`
+          if (clause) {
+            clause += formatWhereObject(w, true)
           }
           else {
-            conditions = `${columnWithAlias(w.column)} ${w.condition} ${getWhereValue(w.value)}`
+            clause = formatWhereObject(w)
           }
         })
-        sqlString += conditions
+        sqlString += clause
       }
     }
     else {
-      sqlString += `${where.column} ${where.condition} ${getWhereValue(where.value)}`
+      sqlString += formatWhereObject(where)
     }
   }
 
@@ -135,7 +135,37 @@ export function getWhereClause(where?: NeonWhereType): string {
   return sqlString
 }
 
-function getWhereValue(v: string | NeonColumnObject) {
+function formatWhereObject(w: NeonWhereObject, includeOperator: boolean = false) {
+  let whereSQL = ''
+
+  if (includeOperator) {
+    whereSQL += ` ${w.operator} `
+  }
+
+  whereSQL += columnWithAlias(w.column)
+  whereSQL += ` ${w.condition} `
+
+  if (w.condition.includes('IN')) {
+    // values separated by comma must be passed
+    const inValues = w.value.toString().split(',')
+    whereSQL += `('`
+    whereSQL += inValues.join(`', '`)
+    whereSQL += `')`
+  }
+  else if (w.condition === 'BETWEEN') {
+    // exactly two values separated by comma must be passed
+    const betweenValues = w.value.toString().split(',')
+    whereSQL += `${betweenValues[0]} AND ${betweenValues[1]}`
+  }
+  else {
+    // no special processing for other operators
+    whereSQL += formatWhereValue(w.value)
+  }
+
+  return whereSQL
+}
+
+function formatWhereValue(v: string | NeonColumnObject) {
   // plain value from current table
   if (typeof v === 'string') {
     return escapeIfNeeded(v)

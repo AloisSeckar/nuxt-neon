@@ -75,6 +75,14 @@ describe('nuxt-neon SELECT test suite', async () => {
     expect(countIds(dataHtml)).toBe(5)
   })
 
+  test('SELECT - IN and BETWEEN', async ({ expect }) => {
+    const dataHtml = await getDataHtml('TestSelectInBetween')
+    expect(dataHtml).toContain('"id": 3')
+    expect(dataHtml).toContain('"id": 5')
+    expect(dataHtml).toContain('"id": 7')
+    expect(countIds(dataHtml)).toBe(3)
+  })
+
   test('SELECT - specify DB schema', async ({ expect }) => {
     const dataHtml = await getDataHtml('TestSelectDBSchema')
     expect(dataHtml).toContain('"name": "neon2-1"')
