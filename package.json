@@ -36,23 +36,23 @@
     "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
   },
   "dependencies": {
-    "@neondatabase/serverless": "1.0.1",
-    "@nuxt/kit": "4.1.2",
+    "@neondatabase/serverless": "1.0.2",
+    "@nuxt/kit": "4.2.2",
     "sqlstring": "2.3.3",
     "vite-plugin-commonjs": "0.10.4"
   },
   "devDependencies": {
-    "@nuxt/devtools": "2.6.3",
-    "@nuxt/eslint-config": "1.9.0",
+    "@nuxt/devtools": "3.1.1",
+    "@nuxt/eslint-config": "1.12.1",
     "@nuxt/module-builder": "1.0.2",
-    "@nuxt/schema": "4.1.2",
-    "@types/node": "24.5.2",
+    "@nuxt/schema": "4.2.2",
+    "@types/node": "25.0.2",
     "changelogen": "0.6.2",
-    "eslint": "9.36.0",
-    "nuxt": "4.1.2",
-    "nuxt-spec": "0.1.8",
-    "typescript": "5.9.2",
-    "vue-tsc": "3.0.7"
+    "eslint": "9.39.2",
+    "nuxt": "4.2.2",
+    "nuxt-spec": "0.1.15",
+    "typescript": "5.9.3",
+    "vue-tsc": "3.1.8"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -61,5 +61,5 @@
       "unrs-resolver"
     ]
   },
-  "packageManager": "pnpm@10.17.0"
+  "packageManager": "pnpm@10.25.0"
 }
