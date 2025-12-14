@@ -188,13 +188,13 @@ export function getOrderClause(order?: NeonOrderType): string {
           if (ordering) {
             ordering += `, `
           }
-          ordering += `${columnWithAlias(o.column)} ${o.direction || 'ASC'}`
+          ordering += `${columnWithAlias(o.column)} ${o.direction?.toUpperCase() || 'ASC'}`
         })
         sqlString += ordering
       }
     }
     else {
-      sqlString += `${columnWithAlias(order.column)} ${order.direction || 'ASC'}`
+      sqlString += `${columnWithAlias(order.column)} ${order.direction?.toUpperCase() || 'ASC'}`
     }
   }
 

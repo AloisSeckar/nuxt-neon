@@ -6,7 +6,7 @@ SELECT
 FROM
   playing_with_neon p1 JOIN playing_with_neon_2 p2 ON p1.id = p2.id
 ORDER BY
-  p1.id DESC, p2.value_int ASC
+  p1.id DESC, p2.value_int DESC
     </pre>
     <div id="data">
       {{ data }}
@@ -40,7 +40,7 @@ const { data } = await useAsyncData(() => select({
   ],
   order: [
     { column: { alias: 'p1', name: 'id' }, direction: 'DESC' },
-    { column: { alias: 'p2', name: 'value_int' } },
+    { column: { alias: 'p2', name: 'value_int' }, direction: 'desc' }, // test lowercase 'desc'
   ],
 }))
 </script>

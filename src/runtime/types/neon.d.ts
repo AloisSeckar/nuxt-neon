@@ -80,7 +80,7 @@ export type NeonWhereObject = {
 }
 
 /** Enum-like type to define `ascending` or `descending` sorting */
-export type NeonSortDirection = 'ASC' | 'DESC'
+export type NeonSortDirection = 'ASC' | 'asc' | 'DESC' | 'desc'
 
 /** Object for defining an ORDER BY clause. */
 export type NeonOrderObject = {
