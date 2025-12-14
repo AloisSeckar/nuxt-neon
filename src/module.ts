@@ -162,13 +162,12 @@ export default defineNuxtModule<ModuleOptions>({
 
     // 'sqlstring' only exists as a CommonJS module
     // this should allow it being consumed in ESM runtimes
-    nuxt.hook('vite:extendConfig', (config) => {
-      config.plugins = config.plugins || []
-      config.plugins.push(commonjs())
-      config.optimizeDeps = config.optimizeDeps || {}
-      config.optimizeDeps.include = config.optimizeDeps.include || []
-      config.optimizeDeps.include.push('sqlstring')
-    })
+    nuxt.options.vite ??= {}
+    nuxt.options.vite.plugins ??= []
+    nuxt.options.vite.plugins.push(commonjs())
+    nuxt.options.vite.optimizeDeps ??= {}
+    nuxt.options.vite.optimizeDeps.include ??= []
+    nuxt.options.vite.optimizeDeps.include.push('sqlstring')
 
     // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
     addPlugin(resolver.resolve('./runtime/plugin'))
