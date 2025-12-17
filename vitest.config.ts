@@ -17,13 +17,6 @@ export default loadVitestConfig({
     // run test files strictly one after another
     fileParallelism: false,
 
-    // Keep a single worker process so the Playwright browser can be reused
-    poolOptions: {
-      forks: {
-        singleFork: true,
-      },
-    },
-
     // start the Nuxt app (and browser) only once
     globalSetup: ['./node_modules/@nuxt/test-utils/dist/runtime/global-setup.mjs'],
 
