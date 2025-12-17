@@ -40,7 +40,45 @@ Settings are used to initialize the [Neon serverless driver](https://neon.tech/d
 
 **NOTE:** Sensitive connection data are sealed within the Nuxt server (Nitro). The only public property might be the database name (if you pick the public variant). On the other hand, this means you cannot use **Nuxt Neon** in static builds and deploy without JS runtime.
 
-### `useNeon` composable
+That's it! Your Nuxt app is now connected to a Neon database instance ✨
+
+### Server side
+
+**It is advised to use Nuxt Neon module server-side.** Only expose custom data fetching endpoints tailored for your applications. This is currently the safest way to keepy your Neon database secured.
+
+Following server-side util methods are exposed for usage in your server routes:
+- `getNeonClient()` - returns an instance on `neonClient` constructed based on config params
+- `raw()` - WILL BE MADE AVAILABLE (only recommeneded for edge cases, see below)
+- `count()` - server-side COUNT wrapper, requires `neonClient` to be passed as 1st param
+- `select()` - server-side SELECT wrapper, requires `neonClient` to be passed as 1st param
+- `insert()` - server-side INSERT wrapper, requires `neonClient` to be passed as 1st param
+- `update()` - server-side UPDATE wrapper, requires `neonClient` to be passed as 1st param
+- `del()` - server-side DELETE wrapper, requires `neonClient` to be passed as 1st param
+
+Server-side wrappers return promise of `NeonDriverResult`, which is a type derived from the underlaying Neon Serverless Driver. As of now, the results are opinionated to [default settings](https://neon.tech/docs/serverless/serverless-driver#neon-function-configuration-options).
+
+TODO add detailed description for server-side wrappers
+
+
+### Error handling
+
+When an error is occured and caught within the module, an instance of `NeonError` is returned instead of expected data. 
+
+Utility functions `isNeonSuccess(obj: unknown): boolean` and `isNeonError(obj: unknown): boolean` can be used to verify the results. 
+
+Utility `formatNeonError(err: NeonError): string` can be used to print out error data in a consistent way.
+
+### Client side
+
+**WARNING: Exposing database connection to the client side is a serious security risk.**
+
+Nuxt Neon technically allows accessing the Neon database from the client side via a set of wrapper functions and exposed API endpoints. However, this way of using is disabled by default and it strongly recommended not to use it. 
+
+If you are 100% your application cannot be compromised (i.e. it is running in a trusted and shielded intranet environment), you can enable the feature by setting module option `neonExposeEndpoints: true` or runtime config variable `NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=true`.
+
+Once enabled, you can use following client-side features:
+
+#### `useNeon` composable
 
 This module exposes `useNeon()` composable on the client side. Currently two health check probes and six SQL wrappers are available:
 
@@ -51,9 +89,7 @@ const { isOk, neonStatus } = useNeon()
 const { raw, count, select, insert, update, del } = useNeon()
 ```
 
-That's it! Your Nuxt app is now connected to a Neon database instance ✨
-
-### Health checks
+#### Health checks
 
 Current status of the connection can be quickly checked by calling async function `isOk` provided by `useNeon` composable: 
 
@@ -80,9 +116,17 @@ Value returned is a `NeonStatusResult` promise:
 - `status: 'OK' | 'ERR'` - `OK` if connection works, `ERR` if error occured
 - `debug?: string` - Neon driver error, if `status = 'ERR'` and `debug = true`
 
-### SQL Wrappers
+#### SQL Wrappers
 
-This module offers SQL wrappers that communicate with Nuxt server-side endpoints connected to the native `neonClient`. Currently six of them are available.
+This module offers SQL client-side wrappers that communicate with Nuxt server-side endpoints connected to the native `neonClient`. Currently six of them are availabl within `useNeon` composable:
+- `raw()` - client-side RAW wrapper (extra discouraged*)
+- `count()` - client-side COUNT wrapper
+- `select()` - cient-side SELECT wrapper
+- `insert()` - cient-side INSERT wrapper
+- `update()` - cient-side UPDATE wrapper
+- `del()` - cient-side DELETE wrapper
+
+*) Needs module option `neonExposeRawEndpoint: true` or runtime config variable `NUXT_PUBLIC_NEON_EXPOSE_RAW_ENDPOINT=true` to be allowed.
 
 #### `raw()`
 
@@ -196,26 +240,6 @@ You can perform `DELETE` operation via this function with following parameters:
 
 Returns `'OK'` if query was successfully executed or returned erorr message.
 
-### Server side
-
-Following server-side util methods are exposed for usage in your server routes:
-- `getNeonClient()` - returns an instance on `neonClient` constructed based on config params (connection-string builder is not exposed)
-- `count()` - server-side variant of COUNT wrapper, requires `neonClient` to be passed as 1st param
-- `select()` - server-side variant of SELECT wrapper, requires `neonClient` to be passed as 1st param
-- `insert()` - server-side variant of INSERT wrapper, requires `neonClient` to be passed as 1st param
-- `update()` - server-side variant of UPDATE wrapper, requires `neonClient` to be passed as 1st param
-- `del()` - server-side variant of DELETE wrapper, requires `neonClient` to be passed as 1st param
-
-Server-side wrappers return promise of `NeonDriverResult`, which is a type derived from the underlaying Neon Serverless Driver. As of now, the results are opinionated to [default settings](https://neon.tech/docs/serverless/serverless-driver#neon-function-configuration-options). 
-
-### Error handling
-
-When an error is occured and caught within the module, an instance of `NeonError` is returned instead of expected data. 
-
-Utility functions `isNeonSuccess(obj: unknown): boolean` and `isNeonError(obj: unknown): boolean` can be used to verify the results. 
-
-Utility `formatNeonError(err: NeonError): string` can be used to print out error data in a consistent way.
-
 ## Module options
 
 Nuxt Neon can be configured by overriding the default options values using key `neon` inside `nuxt.config.ts`.
@@ -239,6 +263,12 @@ Nuxt Neon can be configured by overriding the default options values using key `
 - `neonDebugRuntime` - if true, extra runtime information is captured and logged
   - `true`
   - `false` (default)
+- `neonExposeEndpoints` - if true, Nuxt Neon can be used client-side via exposed API endpoints (**discouraged**)
+  - `true`
+  - `false` (default)
+- `neonExposeRawEndpoint` - if true, `raw()` SQL wrapper can be used client-side via exposed API endpoint (**extra discouraged**)
+  - `true`
+  - `false` (default)
 
 Example:
 
@@ -250,6 +280,8 @@ export default defineNuxtConfig({
     neonRawWarning: false,
     neonDebugSQL: true,
     neonDebugRuntime: true,
+    neonExposeEndpoints: true, // discouraged
+    neonExposeRawEndpoint: true, // extra discouraged
   },
   // other configuration
 })
@@ -264,6 +296,10 @@ NUXT_PUBLIC_NEON_SSL_MODE=verify-full
 NUXT_PUBLIC_NEON_RAW_WARNING=false
 NUXT_PUBLIC_NEON_DEBUG_SQL=true
 NUXT_PUBLIC_NEON_DEBUG_RUNTIME=true
+# discouraged
+NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=true
+# extra discouraged
+NUXT_PUBLIC_NEON_EXPOSE_RAW_ENDPOINT=true
 ```
 
 ## See also

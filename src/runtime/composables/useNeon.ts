@@ -3,8 +3,11 @@ import type {
   NeonCountQuery, NeonCountType, NeonSelectQuery, NeonInsertQuery,
   NeonUpdateQuery, NeonDeleteQuery, NeonWhereType,
 } from '../utils/neonTypes'
+import {
+  NEON_ENDPOINTS_DISABLED, NEON_RAW_ENDPOINT_DISABLED,
+  formatNeonError, handleNeonError, isNeonSuccess,
+} from '../utils/neonErrors'
 import { NEON_RAW_WARNING, displayRawWarning } from '../utils/neonWarnings'
-import { formatNeonError, handleNeonError, isNeonSuccess } from '../utils/neonErrors'
 import { useRuntimeConfig } from '#imports'
 import { encodeWhereType } from '../utils/neonUtils'
 
@@ -109,7 +112,19 @@ async function callNeonBackend(method: string, body: NeonBodyType): Promise<Neon
 // backend returns either an array of results or an error object
 async function fetchFromNeonBackend<T>(method: string, body: NeonBodyType): Promise<NeonDataType<T>> {
   const debug = useRuntimeConfig().public.neonDebugRuntime === true
+  const endpoints = useRuntimeConfig().public.neonExposeEndpoints === true
   try {
+    // guards
+    if (!endpoints) {
+      throw new Error(NEON_ENDPOINTS_DISABLED)
+    }
+    if (method === 'raw') {
+      const rawEndpoint = useRuntimeConfig().public.neonExposeRawEndpoint === true
+      if (!rawEndpoint) {
+        throw new Error(NEON_RAW_ENDPOINT_DISABLED)
+      }
+    }
+
     // fix for https://github.com/AloisSeckar/nuxt-neon/issues/45
     if (Object.hasOwn(body, 'where')) {
       body.where = encodeWhereType(body.where as NeonWhereType)

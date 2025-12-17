@@ -1,13 +1,25 @@
 // server-side re-export of NeonError-related utils
 
 import type { NeonError } from '../../utils/neonTypes'
-import { isNeonSuccess, isNeonError, formatNeonError } from '../../utils/neonErrors'
+import {
+  NEON_RAW_ENDPOINT_DISABLED, NEON_ENDPOINTS_DISABLED,
+  isNeonSuccess, isNeonError, formatNeonError,
+} from '../../utils/neonErrors'
 import { useRuntimeConfig, useStorage } from '#imports'
 
 export {
   isNeonSuccess,
   isNeonError,
   formatNeonError,
+}
+
+export async function getForbiddenError(source: string, raw: boolean = false): Promise<NeonError> {
+  return {
+    name: 'NuxtNeonServerError',
+    source,
+    code: 403,
+    message: raw ? NEON_RAW_ENDPOINT_DISABLED : NEON_ENDPOINTS_DISABLED,
+  }
 }
 
 export async function getGenericError(source: string, message: string): Promise<NeonError> {

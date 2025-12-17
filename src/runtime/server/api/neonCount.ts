@@ -1,6 +1,6 @@
 import type { NeonDataType } from '../../utils/neonTypes'
 import { getNeonClient } from '../utils/getNeonClient'
-import { parseNeonClientError } from '../utils/neonErrors'
+import { getForbiddenError, parseNeonClientError } from '../utils/neonErrors'
 import { count } from '../utils/neonSQL'
 import { defineEventHandler, readBody, useRuntimeConfig } from '#imports'
 
@@ -9,6 +9,11 @@ export default defineEventHandler(async (event): Promise<NeonDataType<number>> =
     const debug = useRuntimeConfig().public.neonDebugRuntime === true
     if (debug) {
       console.debug('Neon `count` API endpoint invoked')
+    }
+
+    const endpoints = useRuntimeConfig().public.neonExposeEndpoints === true
+    if (!endpoints) {
+      return await getForbiddenError('/api/_neon/count')
     }
 
     const body = await readBody(event)

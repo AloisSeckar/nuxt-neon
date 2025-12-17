@@ -1,6 +1,16 @@
 import type { NeonError } from '../utils/neonTypes'
 
 /**
+ * By default, API endpoints are disabled for security reasons.
+ */
+export const NEON_ENDPOINTS_DISABLED = 'API endpoints are disabled for security reasons. It is advised to handle all DB operations at the server side. If you are 100% sure, you can expose them by setting `neon.neonExposeEndpoints: true` or `NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS: true`'
+
+/**
+ * By default, RAW endpoint is disabled (even if others are enabled) for security reasons.
+ */
+export const NEON_RAW_ENDPOINT_DISABLED = 'API endpoint for `raw` queries is disabled for security reasons (even if other endpoints are enabled). It is advised never to expose this one in production app. If you are 100% sure, you can expose it by setting `neon.neonExposeRawEndpoint: true` or `NUXT_PUBLIC_NEON_EXPOSE_RAW_ENDPOINT: true`'
+
+/**
  * Helper to verify result of nuxt-neon methods.
  * Internally it is just an inverted call of `isNeonError`.
  *

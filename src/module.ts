@@ -21,6 +21,10 @@ export interface ModuleOptions {
   neonDebugSQL: boolean
   /** If true, extra runtime information is captured and logged */
   neonDebugRuntime: boolean
+  /** If true, API endpoints are exposed from server-side */
+  neonExposeEndpoints: boolean
+  /** If true and `neonExposeEndpoints` is also true, API endpoints for `raw` SQL query is exposed from server-side */
+  neonExposeRawEndpoint: boolean
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -39,6 +43,8 @@ export default defineNuxtModule<ModuleOptions>({
     neonRawWarning: true,
     neonDebugSQL: false,
     neonDebugRuntime: false,
+    neonExposeEndpoints: false,
+    neonExposeRawEndpoint: false,
   },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
@@ -52,6 +58,8 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.neonRawWarning = options.neonRawWarning
     nuxt.options.runtimeConfig.public.neonDebugSQL = options.neonDebugSQL
     nuxt.options.runtimeConfig.public.neonDebugRuntime = options.neonDebugRuntime
+    nuxt.options.runtimeConfig.public.neonExposeEndpoints = options.neonExposeEndpoints
+    nuxt.options.runtimeConfig.public.neonExposeRawEndpoint = options.neonExposeRawEndpoint
 
     addServerHandler({
       route: '/api/_neon/raw',

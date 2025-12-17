@@ -1,7 +1,7 @@
 import type { H3Event, EventHandlerRequest } from 'h3'
 import type { NeonDataType } from '../../utils/neonTypes'
 import { getNeonClient } from '../utils/getNeonClient'
-import { parseNeonClientError } from '../utils/neonErrors'
+import { getForbiddenError, parseNeonClientError } from '../utils/neonErrors'
 import { select } from '../utils/neonSQL'
 import { defineEventHandler, readBody, useRuntimeConfig } from '#imports'
 
@@ -10,6 +10,11 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
     const debug = useRuntimeConfig().public.neonDebugRuntime === true
     if (debug) {
       console.debug('Neon `select` API endpoint invoked')
+    }
+
+    const endpoints = useRuntimeConfig().public.neonExposeEndpoints === true
+    if (!endpoints) {
+      return await getForbiddenError('/api/_neon/select')
     }
 
     const body = await readBody(event)
