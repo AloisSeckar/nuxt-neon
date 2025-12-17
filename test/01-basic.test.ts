@@ -8,7 +8,7 @@ describe('nuxt-neon basic test suite', () => {
     await page.goto(url('/TestBasic'), { waitUntil: 'hydration' })
 
     // title was rendered
-    const hasText = await page.getByText('Nuxt-Neon TEST').isVisible()
+    const hasText = await page.getByText('Nuxt Neon TEST APP').isVisible()
     expect(hasText).toBeTruthy()
 
     // isOk() method returns "true"
