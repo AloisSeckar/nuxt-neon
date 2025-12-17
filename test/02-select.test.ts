@@ -1,6 +1,5 @@
-import { fileURLToPath } from 'node:url'
 import { describe, test } from 'vitest'
-import { setup, createPage, url } from '@nuxt/test-utils/e2e'
+import { createPage, url } from '@nuxt/test-utils/e2e'
 
 async function getDataHtml(pageName: string) {
   // render in browser
@@ -15,12 +14,8 @@ function countIds(html: string) {
   return (html.match(/"id"/g) || []).length
 }
 
-describe('nuxt-neon SELECT test suite', async () => {
-  await setup({
-    rootDir: fileURLToPath(new URL('./fixtures/select', import.meta.url)),
-  })
-
-  // various test cases defined in /test/fixtures/select/pages/*.vue
+describe('nuxt-neon SELECT test suite', () => {
+  // various test cases defined in /test/neon-test-app/pages/*.vue
 
   test('SELECT - simple JOIN', async ({ expect }) => {
     const dataHtml = await getDataHtml('TestSelectJoin')

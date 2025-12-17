@@ -1,6 +1,5 @@
-import { fileURLToPath } from 'node:url'
 import { describe, test } from 'vitest'
-import { setup, createPage, url } from '@nuxt/test-utils/e2e'
+import { createPage, url } from '@nuxt/test-utils/e2e'
 
 async function getUpdateResult(pageName: string) {
   // render in browser
@@ -17,12 +16,8 @@ async function getUpdateResult(pageName: string) {
   return updateHTML
 }
 
-describe('nuxt-neon update test suite', async () => {
-  await setup({
-    rootDir: fileURLToPath(new URL('./fixtures/update', import.meta.url)),
-  })
-
-  // various test cases defined in /test/fixtures/update/pages/*.vue
+describe('nuxt-neon update test suite', () => {
+  // various test cases defined in /test/neon-test-app/pages/*.vue
 
   test('UPDATE - with schema and alias', async ({ expect }) => {
     const updateHTML = await getUpdateResult('TestUpdateSchemaAlias')

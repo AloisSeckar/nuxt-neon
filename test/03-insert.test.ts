@@ -1,6 +1,5 @@
-import { fileURLToPath } from 'node:url'
 import { describe, test } from 'vitest'
-import { setup, createPage, url } from '@nuxt/test-utils/e2e'
+import { createPage, url } from '@nuxt/test-utils/e2e'
 
 async function getInsertResult(pageName: string) {
   // render in browser
@@ -17,12 +16,8 @@ async function getInsertResult(pageName: string) {
   return insertHTML
 }
 
-describe('nuxt-neon INSERT test suite', async () => {
-  await setup({
-    rootDir: fileURLToPath(new URL('./fixtures/insert', import.meta.url)),
-  })
-
-  // various test cases defined in /test/fixtures/insert/pages/*.vue
+describe('nuxt-neon INSERT test suite', () => {
+  // various test cases defined in /test/neon-test-app/pages/*.vue
 
   test('INSERT - single', async ({ expect }) => {
     const insertHTML = await getInsertResult('TestInsertSingle')

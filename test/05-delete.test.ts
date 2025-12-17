@@ -1,6 +1,5 @@
-import { fileURLToPath } from 'node:url'
 import { describe, test } from 'vitest'
-import { setup, createPage, url } from '@nuxt/test-utils/e2e'
+import { createPage, url } from '@nuxt/test-utils/e2e'
 
 async function getDeleteResult(pageName: string) {
   // render in browser
@@ -17,12 +16,8 @@ async function getDeleteResult(pageName: string) {
   return deleteHTML
 }
 
-describe('nuxt-neon DELETE test suite', async () => {
-  await setup({
-    rootDir: fileURLToPath(new URL('./fixtures/delete', import.meta.url)),
-  })
-
-  // various test cases defined in /test/fixtures/delete/pages/*.vue
+describe('nuxt-neon DELETE test suite', () => {
+  // various test cases defined in /test/neon-test-app/pages/*.vue
 
   test('DELETE - cleanup', async ({ expect }) => {
     const deleteHTML = await getDeleteResult('TestCleanup')

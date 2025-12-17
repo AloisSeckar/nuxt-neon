@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { NeonTestData } from '../../../types'
+import type { NeonTestData } from '../utils/types'
 import { useNeon } from '#imports'
 
 const { select } = useNeon()

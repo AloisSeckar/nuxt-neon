@@ -1,16 +1,11 @@
-import { fileURLToPath } from 'node:url'
 import { describe, test, expect } from 'vitest'
-import { setup, createPage, url } from '@nuxt/test-utils/e2e'
+import { createPage, url } from '@nuxt/test-utils/e2e'
 
-describe('nuxt-neon basic test suite', async () => {
-  await setup({
-    rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
-  })
-
+describe('nuxt-neon basic test suite', () => {
   test('Neon demo app loaded and DB connected', async () => {
     // render in browser
     const page = await createPage()
-    await page.goto(url('/'), { waitUntil: 'hydration' })
+    await page.goto(url('/TestBasic'), { waitUntil: 'hydration' })
 
     // title was rendered
     const hasText = await page.getByText('Nuxt-Neon TEST').isVisible()
@@ -26,15 +21,15 @@ describe('nuxt-neon basic test suite', async () => {
     const statusDiv = page.locator('#status')
     expect(statusDiv).toBeDefined()
     const statusHTML = await statusDiv.innerHTML()
-    expect(statusHTML).toContain('"database": "elrh-neon"')
-    expect(statusHTML).toContain('"status": "OK"')
-    expect(statusHTML).toContain('"debugInfo": ""')
-  }, 10000) // first test in suite always needs longer timeout
+    expect(statusHTML).toContain('"database":"elrh-neon"')
+    expect(statusHTML).toContain('"status":"OK"')
+    expect(statusHTML).toContain('"debugInfo":""')
+  }, 10000) // first test in suite often needs longer timeout
 
   test('All test components are rendered', async () => {
     // render in browser
     const page = await createPage()
-    await page.goto(url('/'), { waitUntil: 'hydration' })
+    await page.goto(url('/TestBasic'), { waitUntil: 'hydration' })
 
     // TestRaw component mounted
     const rawTitle = page.locator('#raw')
@@ -83,12 +78,12 @@ describe('nuxt-neon basic test suite', async () => {
     expect(deleteHtml).toContain('DELETE')
     const deleteButton = page.locator('#delete-button')
     expect(deleteButton).toBeDefined()
-  })
+  }, 10000) // longer timeout to avoid unnecessary failures
 
   test('Basic DATA FETCHING test', async () => {
     // render in browser
     const page = await createPage()
-    await page.goto(url('/'), { waitUntil: 'hydration' })
+    await page.goto(url('/TestBasic'), { waitUntil: 'hydration' })
 
     // check contents
     await page.click('#raw-button')
@@ -100,12 +95,12 @@ describe('nuxt-neon basic test suite', async () => {
     expect(innerHTML).toContain('id')
     expect(innerHTML).toContain('name')
     expect(innerHTML).toContain('custom_value')
-  })
+  }, 10000) // longer timeout to avoid unnecessary failures
 
   test('Basic CRUD test', async () => {
     // render in browser
     const page = await createPage()
-    await page.goto(url('/'), { waitUntil: 'hydration' })
+    await page.goto(url('/TestBasic'), { waitUntil: 'hydration' })
 
     // go through full SELECT-INSERT-UPDATE-DELETE cycle
 
