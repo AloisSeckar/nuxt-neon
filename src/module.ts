@@ -120,6 +120,11 @@ export default defineNuxtModule<ModuleOptions>({
       },
       // wrapper methods
       {
+        name: 'raw',
+        as: 'raw',
+        from: resolver.resolve('runtime/server/utils/neonSQL'),
+      },
+      {
         name: 'count',
         as: 'count',
         from: resolver.resolve('runtime/server/utils/neonSQL'),

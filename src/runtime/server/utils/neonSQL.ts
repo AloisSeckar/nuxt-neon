@@ -116,3 +116,14 @@ export async function del(neon: NeonDriver, query: NeonDeleteQuery): NeonDriverR
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
+
+export async function raw(neon: NeonDriver, sqlString: string): NeonDriverResponse {
+  if (useRuntimeConfig().public.neonDebugRuntime === true) {
+    console.debug('Neon `raw` server-side wrapper invoked')
+  }
+
+  await debugSQLIfAllowed(sqlString)
+
+  // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
+  return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+}

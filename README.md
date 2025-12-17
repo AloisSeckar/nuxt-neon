@@ -48,7 +48,7 @@ That's it! Your Nuxt app is now connected to a Neon database instance ✨
 
 Following server-side util methods are exposed for usage in your server routes:
 - `getNeonClient()` - returns an instance on `neonClient` constructed based on config params
-- `raw()` - WILL BE MADE AVAILABLE (only recommeneded for edge cases, see below)
+- `raw()` - server-side function for RAW SQL queries, requires `neonClient` to be passed as 1st param (only recommeneded for edge cases)
 - `count()` - server-side COUNT wrapper, requires `neonClient` to be passed as 1st param
 - `select()` - server-side SELECT wrapper, requires `neonClient` to be passed as 1st param
 - `insert()` - server-side INSERT wrapper, requires `neonClient` to be passed as 1st param

@@ -3,6 +3,7 @@ import type { NeonDataType } from '../../utils/neonTypes'
 import { getNeonClient } from '../utils/getNeonClient'
 import { getForbiddenError, parseNeonClientError } from '../utils/neonErrors'
 import { NEON_RAW_WARNING, displayRawWarning } from '../../utils/neonWarnings'
+import { raw } from '../utils/neonSQL'
 import { debugSQLIfAllowed } from '../utils/helpers/debugSQL'
 import { defineEventHandler, readBody, useRuntimeConfig } from '#imports'
 
@@ -39,7 +40,7 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
     debugSQLIfAllowed(body.query)
 
     // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-    const results = await neon.query(body.query, undefined, { arrayMode: false, fullResults: false })
+    const results = await raw(neon, body.query)
     return results as Array<T>
   }
   catch (err) {
