@@ -1,8 +1,9 @@
 import type { NeonQueryFunction } from '@neondatabase/serverless'
 import type {
   NeonCountQuery, NeonSelectQuery, NeonInsertQuery, NeonUpdateQuery,
-  NeonDeleteQuery, NeonTableObject,
+  NeonDeleteQuery, NeonTableObject, NeonStatusType, NeonError,
 } from '../../utils/neonTypes'
+import { formatNeonError } from '../../utils/neonErrors'
 import type { NeonDriverResult } from './getNeonClient'
 import {
   getColumnsClause, getGroupByClause, getHavingClause, getLimitClause,
@@ -126,4 +127,37 @@ export async function raw(neon: NeonDriver, sqlString: string): NeonDriverRespon
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+}
+
+// health check probes
+
+export async function neonStatus(neon: NeonDriver, anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusType> {
+  if (useRuntimeConfig().public.neonDebugRuntime === true) {
+    console.debug('Neon `neonStatus` server-side health check invoked')
+  }
+
+  let error = ''
+  try {
+    const ret = await raw(neon, 'SELECT 1=1 as status')
+    if (!Array.isArray(ret)) {
+      error = formatNeonError(ret as NeonError)
+    }
+  }
+  catch (err) {
+    error = (err as Error).message
+  }
+
+  return {
+    database: anonymous ? '' : useRuntimeConfig().public.neonDB,
+    status: error ? 'ERR' : 'OK',
+    debugInfo: debug ? error : '',
+  }
+}
+
+export async function isOk(neon: NeonDriver): Promise<boolean> {
+  if (useRuntimeConfig().public.neonDebugRuntime === true) {
+    console.debug('Neon `isOk` server-side health check invoked')
+  }
+
+  return (await neonStatus(neon)).status === 'OK'
 }

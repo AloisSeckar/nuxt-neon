@@ -54,6 +54,8 @@ Following server-side util methods are exposed for usage in your server routes:
 - `insert()` - server-side INSERT wrapper, requires `neonClient` to be passed as 1st param
 - `update()` - server-side UPDATE wrapper, requires `neonClient` to be passed as 1st param
 - `del()` - server-side DELETE wrapper, requires `neonClient` to be passed as 1st param
+- `isOk()` - server-side health check wrapper, requires `neonClient` to be passed as 1st param
+- `neonStatus()` - server-side detailed health check wrapper, requires `neonClient` to be passed as 1st param
 
 Server-side wrappers return promise of `NeonDriverResult`, which is a type derived from the underlaying Neon Serverless Driver. As of now, the results are opinionated to [default settings](https://neon.tech/docs/serverless/serverless-driver#neon-function-configuration-options).
 
