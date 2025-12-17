@@ -26,6 +26,17 @@ describe('nuxt-neon basic test suite', () => {
     expect(statusHTML).toContain('"debugInfo":""')
   }, 10000) // first test in suite often needs longer timeout
 
+  // this was added to prevent https://github.com/AloisSeckar/nuxt-neon/issues/39
+  // it should ensure the initial database data are as expected
+  test('Initial cleanup was executed', async () => {
+    // render in browser
+    const page = await createPage()
+    await page.goto(url('/TestCleanup'), { waitUntil: 'hydration' })
+    // click the "delete" button and wait for response
+    await page.click('#delete-button')
+    await page.waitForResponse(response => response.ok())
+  })
+
   test('All test components are rendered', async () => {
     // render in browser
     const page = await createPage()
