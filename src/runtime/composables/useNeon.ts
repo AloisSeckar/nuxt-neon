@@ -118,7 +118,7 @@ async function fetchFromNeonBackend<T>(method: string, body: NeonBodyType): Prom
     if (!endpoints) {
       throw new Error(NEON_ENDPOINTS_DISABLED)
     }
-    if (method === 'raw') {
+    if (method === 'raw' && body.query !== 'SELECT 1=1 as status') {
       const rawEndpoint = useRuntimeConfig().public.neonExposeRawEndpoint === true
       if (!rawEndpoint) {
         throw new Error(NEON_RAW_ENDPOINT_DISABLED)
