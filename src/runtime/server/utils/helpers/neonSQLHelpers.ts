@@ -155,7 +155,7 @@ function formatWhereObject(w: NeonWhereObject, includeOperator: boolean = false)
   else if (w.condition === 'BETWEEN') {
     // exactly two values separated by comma must be passed
     const betweenValues = w.value.toString().split(',')
-    whereSQL += `${betweenValues[0]} AND ${betweenValues[1]}`
+    whereSQL += `${escapeIfNeeded(betweenValues[0])} AND ${escapeIfNeeded(betweenValues[1])}`
   }
   else {
     // no special processing for other operators
