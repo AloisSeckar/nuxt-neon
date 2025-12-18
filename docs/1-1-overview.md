@@ -1,16 +1,7 @@
 # Nuxt Neon
 
-[![npm version][npm-version-src]][npm-version-href]
-[![npm downloads][npm-downloads-src]][npm-downloads-href]
-[![License][license-src]][license-href]
-[![Nuxt][nuxt-src]][nuxt-href]
+A simple Nuxt module allowing smooth integration with Neon database.
 
-![nuxt-neon](https://github.com/user-attachments/assets/35d6c6dd-5063-4501-ac2a-86bebec53abf)
-
-A simple [Nuxt v4-compilant module](https://nuxt.com/modules) allowing smooth integration with [Neon database](https://neon.tech/).
-
-- [✨ &nbsp;Release Notes](/CHANGELOG.md)
-  
 ## How to use?
 
 Install the module to your Nuxt application with one command:
@@ -42,17 +33,8 @@ Settings are used to initialize the [Neon serverless driver](https://neon.tech/d
 
 That's it! Your Nuxt app is now connected to a Neon database instance ✨
 
-See [the documentation](https://nuxt-neon.netlify.app/) for more info.
+## More info
 
-<!-- Badges -->
-[npm-version-src]: https://img.shields.io/npm/v/nuxt-neon/latest.svg?style=flat&colorA=020420&colorB=00DC82
-[npm-version-href]: https://npmjs.com/package/nuxt-neon
-
-[npm-downloads-src]: https://img.shields.io/npm/dm/nuxt-neon.svg?style=flat&colorA=020420&colorB=00DC82
-[npm-downloads-href]: https://npmjs.com/package/nuxt-neon
-
-[license-src]: https://img.shields.io/npm/l/nuxt-neon.svg?style=flat&colorA=020420&colorB=00DC82
-[license-href]: https://github.com/AloisSeckar/nuxt-neon/blob/master/LICENSE
-
-[nuxt-src]: https://img.shields.io/badge/Nuxt-020420?logo=nuxt.js
-[nuxt-href]: https://nuxt.com
+- Continue to the [features](/2-1-features) for summary of what is available.
+- See [changelog](/3-1-changelog.html) to display the latest changes.
+- Visit [contributing guide](/4-1-contributing.html) if you want to help with development.
