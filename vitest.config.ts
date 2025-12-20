@@ -1,26 +1,11 @@
-import { resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { loadVitestConfig } from 'nuxt-spec/config'
-
-const rootDir = resolve(fileURLToPath(new URL('.', import.meta.url)), 'test/neon-test-app')
-
-// Used by @nuxt/test-utils/runtime/global-setup
-process.env.NUXT_TEST_OPTIONS = JSON.stringify({
-  // path to neon-test-app
-  rootDir,
-  // don't create a Playwright browser in globalSetup
-  browser: false,
-})
 
 export default loadVitestConfig({
   test: {
     // run test files strictly one after another
     fileParallelism: false,
-
-    // start the Nuxt app (and browser) only once
-    globalSetup: ['./node_modules/@nuxt/test-utils/dist/runtime/global-setup.mjs'],
-
-    // creates/closes Playwright browser only once
-    setupFiles: ['./test/e2e.setup.ts'],
+    // because order of loading test files is not 100% guaranted,
+    // enforicing "unit" test suite to run before "e2e" tests
+    // was achieved via scripts in package.json
   },
-})
+}, false)

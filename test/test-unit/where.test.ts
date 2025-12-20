@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { decodeWhereType, encodeWhereType } from '../src/runtime/utils/neonUtils'
+import { decodeWhereType, encodeWhereType } from '../../src/runtime/utils/neonUtils'
 
 describe('`encodeWhereType` utility unit test suite', async () => {
   test('WHERE undefined', () => {
