@@ -8,6 +8,7 @@
     "**/*.vue",
   ],
   "exclude": [
+    "src/runtime/server/**/*",
     "dist",
     "node_modules",
   ]
