@@ -44,8 +44,7 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
     debugSQLIfAllowed(body.query)
 
     // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-    const results = await raw(neon, body.query)
-    return results as Array<T>
+    return await raw(neon, body.query)
   }
   catch (err) {
     return await parseNeonClientError('/api/_neon/raw', err)

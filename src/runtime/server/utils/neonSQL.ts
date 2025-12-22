@@ -25,7 +25,7 @@ export async function count(neon: NeonDriver, query: NeonCountQuery): NeonDriver
   return await select(neon, { ...query, columns: ['count(*)'] })
 }
 
-export async function select(neon: NeonDriver, query: NeonSelectQuery): NeonDriverResponse {
+export async function select<T>(neon: NeonDriver, query: NeonSelectQuery): Promise<Array<T>> {
   if (useRuntimeConfig().public.neonDebugRuntime === true) {
     console.debug('Neon `select` server-side wrapper invoked')
   }
@@ -43,7 +43,8 @@ export async function select(neon: NeonDriver, query: NeonSelectQuery): NeonDriv
   await debugSQLIfAllowed(sqlString)
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-  return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+  const results = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+  return results as Array<T>
 }
 
 export async function insert(neon: NeonDriver, query: NeonInsertQuery): NeonDriverResponse {
@@ -118,7 +119,7 @@ export async function del(neon: NeonDriver, query: NeonDeleteQuery): NeonDriverR
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function raw(neon: NeonDriver, sqlString: string): NeonDriverResponse {
+export async function raw<T>(neon: NeonDriver, sqlString: string): Promise<Array<T>> {
   if (useRuntimeConfig().public.neonDebugRuntime === true) {
     console.debug('Neon `raw` server-side wrapper invoked')
   }
@@ -126,7 +127,8 @@ export async function raw(neon: NeonDriver, sqlString: string): NeonDriverRespon
   await debugSQLIfAllowed(sqlString)
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-  return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+  const results = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+  return results as Array<T>
 }
 
 // health check probes
