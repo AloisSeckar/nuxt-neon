@@ -32,8 +32,8 @@ export function getTableClause(from: NeonFromType): string {
     from.forEach((t) => {
       if (tables) {
         if (t.joinColumn1) {
-          const joinCondition = getJoinCondition(t.joinColumn1!, t.joinColumn2!)
-          tables += ` ${t.joinType || 'INNER'} JOIN ${tableWithSchemaAndAlias(t)} ON ${joinCondition}`
+          const joinClause = getJoinClause(t.joinColumn1!, t.joinColumn2!)
+          tables += ` ${t.joinType || 'INNER'} JOIN ${tableWithSchemaAndAlias(t)} ON ${joinClause}`
         }
         else {
           tables += `, ${tableWithSchemaAndAlias(t)}`
@@ -66,8 +66,8 @@ function tableWithAlias(t: NeonTableObject): string {
   return t.table
 }
 
-// handle join condition
-function getJoinCondition(c1: string | NeonColumnObject, c2: string | NeonColumnObject) {
+// handle join clause
+function getJoinClause(c1: string | NeonColumnObject, c2: string | NeonColumnObject) {
   return `${columnWithAlias(c1)} = ${columnWithAlias(c2)}`
 }
 
@@ -135,24 +135,24 @@ export function getWhereClause(where?: NeonWhereType): string {
   return sqlString
 }
 
-function formatWhereObject(w: NeonWhereObject, includeOperator: boolean = false) {
+function formatWhereObject(w: NeonWhereObject, includeRelation: boolean = false) {
   let whereSQL = ''
 
-  if (includeOperator) {
-    whereSQL += ` ${w.operator} `
+  if (includeRelation) {
+    whereSQL += ` ${w.relation} `
   }
 
   whereSQL += columnWithAlias(w.column)
-  whereSQL += ` ${w.condition} `
+  whereSQL += ` ${w.operator} `
 
-  if (w.condition.includes('IN')) {
+  if (w.operator.includes('IN')) {
     // values separated by comma must be passed
     const inValues = w.value.toString().split(',')
     whereSQL += `('`
     whereSQL += inValues.join(`', '`)
     whereSQL += `')`
   }
-  else if (w.condition === 'BETWEEN') {
+  else if (w.operator === 'BETWEEN') {
     // exactly two values separated by comma must be passed
     const betweenValues = w.value.toString().split(',')
     whereSQL += `${escapeIfNeeded(betweenValues[0])} AND ${escapeIfNeeded(betweenValues[1])}`
@@ -225,20 +225,20 @@ export function getHavingClause(having?: NeonWhereType): string {
     }
     else if (Array.isArray(having)) {
       if (having.length > 0) {
-        let conditions = ''
+        let clauses = ''
         having.forEach((h) => {
-          if (conditions) {
-            conditions += ` ${h.operator} ${h.column} ${h.condition} ${escapeIfNeeded(h.value)}`
+          if (clauses) {
+            clauses += ` ${h.relation} ${h.column} ${h.operator} ${escapeIfNeeded(h.value)}`
           }
           else {
-            conditions = `${h.column} ${h.condition} ${escapeIfNeeded(h.value)}`
+            clauses = `${h.column} ${h.operator} ${escapeIfNeeded(h.value)}`
           }
         })
-        sqlString += conditions
+        sqlString += clauses
       }
     }
     else {
-      sqlString += `${having.column} ${having.condition} ${escapeIfNeeded(having.value)}`
+      sqlString += `${having.column} ${having.operator} ${escapeIfNeeded(having.value)}`
     }
   }
 

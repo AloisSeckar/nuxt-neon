@@ -24,7 +24,7 @@ async function doSelect() {
     from: 'playing_with_neon',
     order: { column: 'value', direction: 'DESC' },
     group: ['value'],
-    having: { column: 'value', condition: '>=', value: '1' },
+    having: { column: 'value', operator: '>=', value: '1' },
   })
 }
 </script>

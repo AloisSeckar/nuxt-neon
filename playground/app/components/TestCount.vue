@@ -21,7 +21,7 @@ const result = ref({})
 async function doCount() {
   result.value = await count({
     from: 'playing_with_neon',
-    where: [{ column: 'name', condition: 'LIKE', value: 'test%' }],
+    where: [{ column: 'name', operator: 'LIKE', value: 'test%' }],
   })
 }
 </script>

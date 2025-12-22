@@ -23,7 +23,7 @@ const result = ref('')
 async function doDelete() {
   result.value = await del({
     table: 'playing_with_neon',
-    where: [{ column: 'name', condition: 'LIKE', value: '\'%test%\'' }],
+    where: [{ column: 'name', operator: 'LIKE', value: '\'%test%\'' }],
   }) as string
 }
 </script>

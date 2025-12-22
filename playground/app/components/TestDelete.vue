@@ -21,7 +21,7 @@ const result = ref({})
 async function doDelete() {
   result.value = await del({
     table: 'playing_with_neon',
-    where: [{ column: 'name', condition: '=', value: 'test' }],
+    where: [{ column: 'name', operator: '=', value: 'test' }],
   })
 }
 </script>

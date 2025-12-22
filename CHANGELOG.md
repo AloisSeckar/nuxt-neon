@@ -31,7 +31,7 @@
 - feat: add `NeonColumnObject` to allow columns with aliases
 - feat: allow aliases in `NeonTableObject` and `NeonWhereObject`
 - fix: respect schema and alias (where possible) in INSERT, UPDATE and DELETE wrappers
-- fix: JOIN was made more flexible (join column clauses can be replaced with where condition with certain limitations)
+- fix: JOIN was made more flexible (join column clauses can be replaced with where clause with certain limitations)
 - fix: don't require `alias` property if single `NeonTableObject` is passed
 - fix: SQL wrappers return `NeonError` instance instead of transforming it to a string
 - fix: logic for (not) displaying warning when using unsafe `raw` was corrected

@@ -48,7 +48,7 @@ const { data } = await useAsyncData(() => select({
     { table: 'playing_with_neon_3', alias: 'p3', joinColumn1: 'p2.value_bool', joinColumn2: 'p3.bool_key' },
   ],
   where: [
-    { column: 'p2.value_bool', condition: '=', value: 'true' },
+    { column: 'p2.value_bool', operator: '=', value: 'true' },
   ],
 }))
 </script>

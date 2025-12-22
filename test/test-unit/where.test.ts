@@ -13,30 +13,30 @@ describe('`encodeWhereType` utility unit test suite', async () => {
   })
 
   test('WHERE as single clause object', () => {
-    const whereClause1 = encodeWhereType({ column: 'a', condition: '>', value: '10' })
-    expect(whereClause1).toEqual({ column: 'a', condition: 'GT', value: '10' })
-    const whereClause2 = encodeWhereType({ column: 'a', condition: '<', value: '10' })
-    expect(whereClause2).toEqual({ column: 'a', condition: 'LT', value: '10' })
-    const whereClause3 = encodeWhereType({ column: 'a', condition: '>=', value: '10' })
-    expect(whereClause3).toEqual({ column: 'a', condition: 'GTE', value: '10' })
-    const whereClause4 = encodeWhereType({ column: 'a', condition: '<=', value: '10' })
-    expect(whereClause4).toEqual({ column: 'a', condition: 'LTE', value: '10' })
+    const whereClause1 = encodeWhereType({ column: 'a', operator: '>', value: '10' })
+    expect(whereClause1).toEqual({ column: 'a', operator: 'GT', value: '10' })
+    const whereClause2 = encodeWhereType({ column: 'a', operator: '<', value: '10' })
+    expect(whereClause2).toEqual({ column: 'a', operator: 'LT', value: '10' })
+    const whereClause3 = encodeWhereType({ column: 'a', operator: '>=', value: '10' })
+    expect(whereClause3).toEqual({ column: 'a', operator: 'GTE', value: '10' })
+    const whereClause4 = encodeWhereType({ column: 'a', operator: '<=', value: '10' })
+    expect(whereClause4).toEqual({ column: 'a', operator: 'LTE', value: '10' })
   })
 
   test('WHERE as multiple clause object', () => {
     const whereClauses = encodeWhereType([
-      { column: 'a', condition: '>', value: '10' },
-      { column: 'a', condition: '<', value: '20' },
-      { column: 'b', condition: '>=', value: '10' },
-      { column: 'b', condition: '<=', value: '20' },
-      { column: 'c', condition: '=', value: '30' }, // do not alter this
+      { column: 'a', operator: '>', value: '10' },
+      { column: 'a', operator: '<', value: '20' },
+      { column: 'b', operator: '>=', value: '10' },
+      { column: 'b', operator: '<=', value: '20' },
+      { column: 'c', operator: '=', value: '30' }, // do not alter this
     ])
     expect(whereClauses).toEqual([
-      { column: 'a', condition: 'GT', value: '10' },
-      { column: 'a', condition: 'LT', value: '20' },
-      { column: 'b', condition: 'GTE', value: '10' },
-      { column: 'b', condition: 'LTE', value: '20' },
-      { column: 'c', condition: '=', value: '30' },
+      { column: 'a', operator: 'GT', value: '10' },
+      { column: 'a', operator: 'LT', value: '20' },
+      { column: 'b', operator: 'GTE', value: '10' },
+      { column: 'b', operator: 'LTE', value: '20' },
+      { column: 'c', operator: '=', value: '30' },
     ])
   })
 })
@@ -53,30 +53,30 @@ describe('`decodeWhereType` utility unit test suite', async () => {
   })
 
   test('WHERE as single clause object', () => {
-    const whereClause1 = decodeWhereType({ column: 'a', condition: 'GT', value: '10' })
-    expect(whereClause1).toEqual({ column: 'a', condition: '>', value: '10' })
-    const whereClause2 = decodeWhereType({ column: 'a', condition: 'LT', value: '10' })
-    expect(whereClause2).toEqual({ column: 'a', condition: '<', value: '10' })
-    const whereClause3 = decodeWhereType({ column: 'a', condition: 'GTE', value: '10' })
-    expect(whereClause3).toEqual({ column: 'a', condition: '>=', value: '10' })
-    const whereClause4 = decodeWhereType({ column: 'a', condition: 'LTE', value: '10' })
-    expect(whereClause4).toEqual({ column: 'a', condition: '<=', value: '10' })
+    const whereClause1 = decodeWhereType({ column: 'a', operator: 'GT', value: '10' })
+    expect(whereClause1).toEqual({ column: 'a', operator: '>', value: '10' })
+    const whereClause2 = decodeWhereType({ column: 'a', operator: 'LT', value: '10' })
+    expect(whereClause2).toEqual({ column: 'a', operator: '<', value: '10' })
+    const whereClause3 = decodeWhereType({ column: 'a', operator: 'GTE', value: '10' })
+    expect(whereClause3).toEqual({ column: 'a', operator: '>=', value: '10' })
+    const whereClause4 = decodeWhereType({ column: 'a', operator: 'LTE', value: '10' })
+    expect(whereClause4).toEqual({ column: 'a', operator: '<=', value: '10' })
   })
 
   test('WHERE as multiple clause object', () => {
     const whereClauses = decodeWhereType([
-      { column: 'a', condition: 'GT', value: '10' },
-      { column: 'a', condition: 'LT', value: '20' },
-      { column: 'b', condition: 'GTE', value: '10' },
-      { column: 'b', condition: 'LTE', value: '20' },
-      { column: 'c', condition: '=', value: '30' }, // do not alter this
+      { column: 'a', operator: 'GT', value: '10' },
+      { column: 'a', operator: 'LT', value: '20' },
+      { column: 'b', operator: 'GTE', value: '10' },
+      { column: 'b', operator: 'LTE', value: '20' },
+      { column: 'c', operator: '=', value: '30' }, // do not alter this
     ])
     expect(whereClauses).toEqual([
-      { column: 'a', condition: '>', value: '10' },
-      { column: 'a', condition: '<', value: '20' },
-      { column: 'b', condition: '>=', value: '10' },
-      { column: 'b', condition: '<=', value: '20' },
-      { column: 'c', condition: '=', value: '30' },
+      { column: 'a', operator: '>', value: '10' },
+      { column: 'a', operator: '<', value: '20' },
+      { column: 'b', operator: '>=', value: '10' },
+      { column: 'b', operator: '<=', value: '20' },
+      { column: 'c', operator: '=', value: '30' },
     ])
   })
 })

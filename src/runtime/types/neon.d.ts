@@ -62,21 +62,21 @@ export type NeonTableObject = {
 export type NeonJoinType = 'INNER' | 'LEFT' | 'RIGHT' | 'FULL'
 
 /** Enum-like type to define operation for column-value pair in WHERE clause */
-export type NeonWhereCondition = '=' | '!=' | '>' | 'GT' | '>=' | 'GTE' | '<' | 'LT' | '<=' | 'LTE' | 'LIKE' | 'IN' | 'NOT IN' | 'BETWEEN'
+export type NeonWhereOperator = '=' | '!=' | '>' | 'GT' | '>=' | 'GTE' | '<' | 'LT' | '<=' | 'LTE' | 'LIKE' | 'IN' | 'NOT IN' | 'BETWEEN'
 
-/** Enum-like type to define logical operator between more WHERE clauses */
-export type NeonWhereOperator = 'AND' | 'OR'
+/** Enum-like type to define logical relations between more WHERE clauses */
+export type NeonWhereRelation = 'AND' | 'OR'
 
 /** Object for defining a WHERE clause. */
 export type NeonWhereObject = {
   /** Column definition */
   column: string | NeonColumnObject
-  /** Condition type */
-  condition: NeonWhereCondition
+  /** Operation type */
+  operator: NeonWhereOperator
   /** String value to be used for filtering or column from other table */
   value: string | NeonColumnObject
   /** Relation with other clauses (ignored for 1st clause) */
-  operator?: NeonWhereOperator
+  relation?: NeonWhereRelation
 }
 
 /** Enum-like type to define `ascending` or `descending` sorting */

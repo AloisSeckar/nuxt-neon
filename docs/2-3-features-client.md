@@ -103,7 +103,7 @@ You can perform `SELECT` operation via this function with following parameters:
 - **from** - definition of table(s) to select from
   - can be either a string with custom value (including more complicated)
   - or an instance (or array) of [`NeonTableObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L45) type which will (usually) be parsed into a chain of `JOIN` clauses (`JOIN` type can be specified, defaults to `INNER JOIN`)
-  - the `JOIN` clause is not required and can be substituted with adequate `WHERE` condition(s) - e.g. `p1.id = p2.id`
+  - the `JOIN` clause is not required and can be substituted with adequate `WHERE` clause(s) - e.g. `p1.id = p2.id`
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
   - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L70) type which will be parsed into chain of clauses
@@ -111,7 +111,7 @@ You can perform `SELECT` operation via this function with following parameters:
   - all possible operators are listed [here](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L65)
   - for `IN` and `NOT IN`, list of comma separated values is expected as `value` (e.g. `1,2,3`)
   - for `BETWEEN`, exactly two comma separated values are expected as `value` (e.g. `1,2`)
-  - because of [possible issues with angle brackets](https://github.com/AloisSeckar/nuxt-neon/issues/45), safe aliases `GT`, `GTE`, `LT`, `LTE` exist within `NeonWhereCondition` type for `>`, `>=`, `<`, `<=` operators. When communicating between `useNeon` composable and the backend API endpoints, automatic conversion happens.
+  - because of [possible issues with angle brackets](https://github.com/AloisSeckar/nuxt-neon/issues/45), safe aliases `GT`, `GTE`, `LT`, `LTE` exist within `NeonWhereOperator` type for `>`, `>=`, `<`, `<=` operators. When communicating between `useNeon` composable and the backend API endpoints, automatic conversion happens.
 - **order** - _optional_ criteria for ordering results
   - can be either a string with custom value (including more complicated)
   - or an instance (or array) of [`NeonOrderObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L85) type which will be parsed into chain of clauses

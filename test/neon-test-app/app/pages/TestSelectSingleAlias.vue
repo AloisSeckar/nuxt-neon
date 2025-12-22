@@ -36,6 +36,6 @@ const { data } = await useAsyncData(() => select({
     { alias: 'p1', name: 'value' },
   ],
   from: { table: 'playing_with_neon', alias: 'p1' },
-  where: { column: { alias: 'p1', name: 'value' }, condition: '>', value: '0' },
+  where: { column: { alias: 'p1', name: 'value' }, operator: '>', value: '0' },
 }))
 </script>

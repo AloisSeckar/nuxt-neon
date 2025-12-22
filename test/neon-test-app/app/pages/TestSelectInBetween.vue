@@ -36,8 +36,8 @@ const { data } = await useAsyncData(() => select({
   columns: ['id'],
   from: 'playing_with_neon',
   where: [
-    { column: 'id', condition: 'BETWEEN', value: '2,8' },
-    { column: 'id', condition: 'IN', value: '3,5,7', operator: 'AND' },
+    { column: 'id', operator: 'BETWEEN', value: '2,8' },
+    { column: 'id', operator: 'IN', value: '3,5,7', relation: 'AND' },
   ],
 }))
 </script>

@@ -22,7 +22,7 @@ async function doUpdate() {
   result.value = await update({
     table: 'playing_with_neon',
     values: { value: '1' },
-    where: [{ column: 'name', condition: '=', value: 'test' }],
+    where: [{ column: 'name', operator: '=', value: 'test' }],
   })
 }
 </script>

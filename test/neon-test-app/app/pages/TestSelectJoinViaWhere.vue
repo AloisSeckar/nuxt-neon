@@ -47,8 +47,8 @@ const { data } = await useAsyncData(() => select({
     { table: 'playing_with_neon_3', alias: 'p3' },
   ],
   where: [
-    { column: { alias: 'p1', name: 'id' }, condition: '=', value: { alias: 'p2', name: 'id' } },
-    { column: { alias: 'p2', name: 'value_bool' }, condition: '=', value: { alias: 'p3', name: 'bool_key' }, operator: 'AND' },
+    { column: { alias: 'p1', name: 'id' }, operator: '=', value: { alias: 'p2', name: 'id' } },
+    { column: { alias: 'p2', name: 'value_bool' }, operator: '=', value: { alias: 'p3', name: 'bool_key' }, relation: 'AND' },
   ],
   // raw string not needed anymore
   // where: 'p1.id = p2.id AND p2.value_bool = p3.bool_key'

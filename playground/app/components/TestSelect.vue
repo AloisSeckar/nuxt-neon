@@ -22,7 +22,7 @@ async function doSelect() {
   result.value = await select({
     columns: ['id', 'name', 'value'],
     from: 'playing_with_neon',
-    where: [{ column: 'name', condition: 'LIKE', value: 'test%' }],
+    where: [{ column: 'name', operator: 'LIKE', value: 'test%' }],
     order: [{ column: 'name' }, { column: 'value', direction: 'DESC' }],
     limit: 10,
   })

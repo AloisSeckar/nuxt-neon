@@ -35,7 +35,7 @@ const { select } = useNeon()
 const { data } = await useAsyncData(() => select({
   columns: ['id'],
   from: 'playing_with_neon',
-  where: [{ column: 'id', condition: '>', value: '5' }],
+  where: [{ column: 'id', operator: '>', value: '5' }],
   order: [{ column: 'id', direction: 'DESC' }],
 }))
 </script>

@@ -1,4 +1,4 @@
-import type { NeonWhereType, NeonWhereCondition } from './neonTypes'
+import type { NeonWhereType, NeonWhereOperator } from './neonTypes'
 
 // fix for https://github.com/AloisSeckar/nuxt-neon/issues/45
 // replace ">" and "<" in WHERE clauses with safe values (will be reverted in backend)
@@ -9,11 +9,11 @@ export function encodeWhereType(where?: NeonWhereType) {
     }
     else if (Array.isArray(where)) {
       where.forEach((w) => {
-        w.condition = encodeWhereString(w.condition)
+        w.operator = encodeWhereString(w.operator)
       })
     }
     else {
-      where.condition = encodeWhereString(where.condition)
+      where.operator = encodeWhereString(where.operator)
     }
   }
   return where
@@ -23,7 +23,7 @@ function encodeWhereString(where?: string) {
   if (where) {
     where = where.replaceAll('<=', 'LTE').replaceAll('<', 'LT').replaceAll('>=', 'GTE').replaceAll('>', 'GT')
   }
-  return where as NeonWhereCondition | 'GT' | 'GTE' | 'LT' | 'LTE'
+  return where as NeonWhereOperator
 }
 
 export function decodeWhereType(where?: NeonWhereType) {
@@ -33,11 +33,11 @@ export function decodeWhereType(where?: NeonWhereType) {
     }
     else if (Array.isArray(where)) {
       where.forEach((w) => {
-        w.condition = decodeWhereString(w.condition)
+        w.operator = decodeWhereString(w.operator)
       })
     }
     else {
-      where.condition = decodeWhereString(where.condition)
+      where.operator = decodeWhereString(where.operator)
     }
   }
   return where
@@ -47,5 +47,5 @@ function decodeWhereString(where?: string) {
   if (where) {
     where = where.replaceAll('LTE', '<=').replaceAll('LT', '<').replaceAll('GTE', '>=').replaceAll('GT', '>')
   }
-  return where as NeonWhereCondition
+  return where as NeonWhereOperator
 }
