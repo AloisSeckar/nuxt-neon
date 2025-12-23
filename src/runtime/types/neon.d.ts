@@ -50,11 +50,11 @@ export type NeonTableObject = {
   table: string
   /** Alias used for table */
   alias?: string
-  /** Left column (including alias) for JOIN (ignored for 1st table) */
+  /** Left column (may include alias) for JOIN (ignored for 1st table in array) */
   joinColumn1?: string | NeonColumnObject
-  /** Right column (including alias) for JOIN (ignored for 1st table) */
+  /** Right column (may include alias) for JOIN (ignored for 1st table in array) */
   joinColumn2?: string | NeonColumnObject
-  /** Type for JOIN (ignored for 1st table) */
+  /** Type for JOIN (ignored for 1st table in array) */
   joinType?: NeonJoinType
 }
 

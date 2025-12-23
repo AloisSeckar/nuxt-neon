@@ -3,11 +3,12 @@ import type {
   NeonColumnObject, NeonColumnType, NeonWhereObject, NeonWhereType,
 } from '../../../utils/neonTypes'
 import { decodeWhereType } from '../../../utils/neonUtils'
+import { sanitizeSQLIdentifier } from './sanitizeSQL'
 
 export function getTableName(table: NeonTableType): string {
   if (typeof table === 'string') {
-    // return as is
-    return table
+    // return as is (sanitized)
+    return sanitizeSQLIdentifier(table)
   }
   else {
     // evaluate schema and alias
@@ -25,7 +26,7 @@ export function isTableWithAlias(table: NeonTableType): boolean {
 export function getTableClause(from: NeonFromType): string {
   let sqlString = ' FROM '
   if (typeof from === 'string') {
-    sqlString += from
+    sqlString += sanitizeSQLIdentifier(from)
   }
   else if (Array.isArray(from)) {
     let tables = ''
@@ -54,16 +55,16 @@ export function getTableClause(from: NeonFromType): string {
 // include schema name if specified
 function tableWithSchemaAndAlias(t: NeonTableObject): string {
   if (t.schema) {
-    return `${t.schema}.${tableWithAlias(t)}`
+    return `${sanitizeSQLIdentifier(t.schema)}.${tableWithAlias(t)}`
   }
   return tableWithAlias(t)
 }
 
 function tableWithAlias(t: NeonTableObject): string {
   if (t.alias) {
-    return `${t.table} ${t.alias}`
+    return `${sanitizeSQLIdentifier(t.table)} ${sanitizeSQLIdentifier(t.alias)}`
   }
-  return t.table
+  return sanitizeSQLIdentifier(t.table)
 }
 
 // handle join clause
@@ -90,14 +91,14 @@ export function getColumnsClause(columns: NeonColumnType): string {
 // include table alias if specified
 function columnWithAlias(c: string | NeonColumnObject): string {
   if (typeof c === 'string') {
-    return c
+    return sanitizeSQLIdentifier(c)
   }
 
   if (c.alias) {
-    return `${c.alias}.${c.name}`
+    return `${sanitizeSQLIdentifier(c.alias)}.${sanitizeSQLIdentifier(c.name)}`
   }
 
-  return c.name
+  return sanitizeSQLIdentifier(c.name)
 }
 
 export function getWhereClause(where?: NeonWhereType): string {
@@ -108,6 +109,7 @@ export function getWhereClause(where?: NeonWhereType): string {
 
   if (where) {
     if (typeof where === 'string') {
+      // TODO this leaves backdoor for SQL manipulation
       sqlString += where
     }
     else if (Array.isArray(where)) {
@@ -179,6 +181,7 @@ export function getOrderClause(order?: NeonOrderType): string {
 
   if (order) {
     if (typeof order === 'string') {
+      // TODO this leaves backdoor for SQL manipulation
       sqlString += order
     }
     else if (Array.isArray(order)) {
@@ -221,6 +224,7 @@ export function getHavingClause(having?: NeonWhereType): string {
 
   if (having) {
     if (typeof having === 'string') {
+      // TODO this leaves backdoor for SQL manipulation
       sqlString += having
     }
     else if (Array.isArray(having)) {
@@ -250,7 +254,7 @@ export function getHavingClause(having?: NeonWhereType): string {
 
 export function getLimitClause(limit?: number): string {
   let sqlString = ''
-  if (limit) {
+  if (limit && typeof limit === 'number') {
     sqlString += ` LIMIT ${limit}`
   }
   return sqlString
