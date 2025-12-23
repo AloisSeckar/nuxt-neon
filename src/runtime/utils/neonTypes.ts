@@ -1,6 +1,12 @@
 // NOTE: this is used for re-exporting types declared in `neon.d.ts`
 
+import * as constants from '../types/neon-constants'
 import type * as types from '../types/neon.d.ts'
+
+export const NEON_WHERE_OPERATORS = constants.NEON_WHERE_OPERATORS
+export const NEON_WHERE_RELATIONS = constants.NEON_WHERE_RELATIONS
+export const NEON_JOIN_TYPES = constants.NEON_JOIN_TYPES
+export const NEON_SORT_DIRECTIONS = constants.NEON_SORT_DIRECTIONS
 
 export type NeonSSLModeOption = types.NeonSSLModeOption
 export type NeonError = types.NeonError

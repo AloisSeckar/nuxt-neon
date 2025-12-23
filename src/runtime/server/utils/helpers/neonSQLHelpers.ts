@@ -3,7 +3,10 @@ import type {
   NeonColumnObject, NeonColumnType, NeonWhereObject, NeonWhereType,
 } from '../../../utils/neonTypes'
 import { decodeWhereType } from '../../../utils/neonUtils'
-import { sanitizeSQLIdentifier, sanitizeSQLString } from './sanitizeSQL'
+import {
+  assertNeonJoinType, assertNeonSortDirection, assertNeonWhereOperator,
+  assertNeonWhereRelation, sanitizeSQLIdentifier, sanitizeSQLString,
+} from './sanitizeSQL'
 
 export function getTableName(table: NeonTableType): string {
   if (typeof table === 'string') {
@@ -34,6 +37,7 @@ export function getTableClause(from: NeonFromType): string {
       if (tables) {
         if (t.joinColumn1) {
           const joinClause = getJoinClause(t.joinColumn1!, t.joinColumn2!)
+          assertNeonJoinType(t.joinType)
           tables += ` ${t.joinType || 'INNER'} JOIN ${tableWithSchemaAndAlias(t)} ON ${joinClause}`
         }
         else {
@@ -141,10 +145,13 @@ function formatWhereObject(w: NeonWhereObject, includeRelation: boolean = false)
   let whereSQL = ''
 
   if (includeRelation) {
+    assertNeonWhereRelation(w.relation)
     whereSQL += ` ${w.relation} `
   }
 
   whereSQL += columnWithAlias(w.column)
+
+  assertNeonWhereOperator(w.operator)
   whereSQL += ` ${w.operator} `
 
   if (w.operator.includes('IN')) {
@@ -192,12 +199,14 @@ export function getOrderClause(order?: NeonOrderType): string {
           if (ordering) {
             ordering += `, `
           }
+          assertNeonSortDirection(o.direction)
           ordering += `${columnWithAlias(o.column)} ${o.direction?.toUpperCase() || 'ASC'}`
         })
         sqlString += ordering
       }
     }
     else {
+      assertNeonSortDirection(order.direction)
       sqlString += `${columnWithAlias(order.column)} ${order.direction?.toUpperCase() || 'ASC'}`
     }
   }
@@ -228,6 +237,8 @@ export function getHavingClause(having?: NeonWhereType): string {
       if (having.length > 0) {
         let clauses = ''
         having.forEach((h) => {
+          assertNeonWhereRelation(h.relation)
+          assertNeonWhereOperator(h.operator)
           if (clauses) {
             clauses += ` ${h.relation} ${h.column} ${h.operator} ${formatWhereValue(h.value)}`
           }
@@ -239,6 +250,7 @@ export function getHavingClause(having?: NeonWhereType): string {
       }
     }
     else {
+      assertNeonWhereOperator(having.operator)
       sqlString += `${having.column} ${having.operator} ${formatWhereValue(having.value)}`
     }
   }

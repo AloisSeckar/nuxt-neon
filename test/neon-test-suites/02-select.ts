@@ -124,8 +124,16 @@ describe('nuxt-neon SELECT test suite', () => {
     expect(countIds(dataHtml)).toBe(10)
   })
 
-  test('SELECT - detect SQL injection', async ({ expect }) => {
-    const dataHtml = await getDataHtml('TestSelectInjection')
+  test('SELECT - detect SQL injection in WHERE value', async ({ expect }) => {
+    // NOTE: error in console is expected here - server-side throws error if injection attempt is detected
+    const dataHtml = await getDataHtml('TestSelectInjection1')
+    expect(dataHtml).toContain('rejected as potential SQL injection')
+    expect(countIds(dataHtml)).toBe(0)
+  })
+
+  test('SELECT - detect SQL injection in WHERE operator', async ({ expect }) => {
+    // NOTE: error in console is expected here - server-side throws error if injection attempt is detected
+    const dataHtml = await getDataHtml('TestSelectInjection2')
     expect(dataHtml).toContain('rejected as potential SQL injection')
     expect(countIds(dataHtml)).toBe(0)
   })

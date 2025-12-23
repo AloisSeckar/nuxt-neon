@@ -79,10 +79,10 @@ const { count } = useNeon()
 This is a special wrapper to allow `select count(*) from` query:
 - **from** - definition of table(s) to select from
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonTableObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L45) type which will be parsed into a chain of `JOIN` clauses
+  - or an instance (or array) of [`NeonTableObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L50) type which will be parsed into a chain of `JOIN` clauses
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L70) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L76) type which will be parsed into chain of clauses
 
 It just calls the `select()` wrapper function under the hood, but abstracts users from having to pass `columns = ['count(*)']`.
 
@@ -99,22 +99,22 @@ You can perform `SELECT` operation via this function with following parameters:
   - you can use special `*` for "all columns"
   - you can also use SQL functions (e.g. `count(*)`) 
   - if you use aliases in `from` part, you can to provide them together with the column name (e.g. `t.column`)
-  - or an instance (or array) of [`NeonColumnObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L37) type which can handle `alias` as well
+  - or an instance (or array) of [`NeonColumnObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L42) type which can handle `alias` as well
 - **from** - definition of table(s) to select from
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonTableObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L45) type which will (usually) be parsed into a chain of `JOIN` clauses (`JOIN` type can be specified, defaults to `INNER JOIN`)
+  - or an instance (or array) of [`NeonTableObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L50) type which will (usually) be parsed into a chain of `JOIN` clauses (`JOIN` type can be specified, defaults to `INNER JOIN`)
   - the `JOIN` clause is not required and can be substituted with adequate `WHERE` clause(s) - e.g. `p1.id = p2.id`
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L70) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L76) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column = 1`)
-  - all possible operators are listed [here](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L65)
+  - all possible operators are listed [here](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L69)
   - for `IN` and `NOT IN`, list of comma separated values is expected as `value` (e.g. `1,2,3`)
   - for `BETWEEN`, exactly two comma separated values are expected as `value` (e.g. `1,2`)
   - because of [possible issues with angle brackets](https://github.com/AloisSeckar/nuxt-neon/issues/45), safe aliases `GT`, `GTE`, `LT`, `LTE` exist within `NeonWhereOperator` type for `>`, `>=`, `<`, `<=` operators. When communicating between `useNeon` composable and the backend API endpoints, automatic conversion happens.
 - **order** - _optional_ criteria for ordering results
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonOrderObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L85) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonOrderObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#92) type which will be parsed into chain of clauses
   - if you use aliases in `from` part, you have to provide them together with the column name (e.g. `t.column DESC`)
 - **limit** - _optional_ limit of results, if more results expected (number)
 - **group** - _optional_ definition for GROUP BY aggregation clause
@@ -148,7 +148,7 @@ You can perform `UPDATE` operation via this function with following parameters:
 - **values** - list of key-value pairs to be updated, values are being sanitized before applied to database
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L70) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L76) type which will be parsed into chain of clauses
 
 #### `del()`
 
@@ -162,6 +162,6 @@ You can perform `DELETE` operation via this function with following parameters:
 - **table** - DB table to be deleled from
 - **where** - _optional_ definition of filter conditions
   - can be either a string with custom value (including more complicated)
-  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L70) type which will be parsed into chain of clauses
+  - or an instance (or array) of [`NeonWhereObject`](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/types/neon.d.ts#L76) type which will be parsed into chain of clauses
 
 Returns `'OK'` if query was successfully executed or returned erorr message.

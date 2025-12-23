@@ -1,5 +1,10 @@
 // NOTE: when editing this file, please also update exports in `src/utils/neonTypes.ts`
 
+import type {
+  NEON_WHERE_OPERATORS, NEON_WHERE_RELATIONS,
+  NEON_JOIN_TYPES, NEON_SORT_DIRECTIONS,
+} from './neon-constants'
+
 /**
  * Possible options for Neon driver SSL mode.
  * @see https://neon.tech/docs/connect/connect-securely#connection-modes
@@ -59,13 +64,13 @@ export type NeonTableObject = {
 }
 
 /** Enum-like type to define JOIN type */
-export type NeonJoinType = 'INNER' | 'LEFT' | 'RIGHT' | 'FULL'
+export type NeonJoinType = typeof NEON_JOIN_TYPES[number]
 
 /** Enum-like type to define operation for column-value pair in WHERE clause */
-export type NeonWhereOperator = '=' | '!=' | '>' | 'GT' | '>=' | 'GTE' | '<' | 'LT' | '<=' | 'LTE' | 'LIKE' | 'IN' | 'NOT IN' | 'BETWEEN'
+export type NeonWhereOperator = typeof NEON_WHERE_OPERATORS[number]
 
 /** Enum-like type to define logical relations between more WHERE clauses */
-export type NeonWhereRelation = 'AND' | 'OR'
+export type NeonWhereRelation = typeof NEON_WHERE_RELATIONS[number]
 
 /** Object for defining a WHERE clause. */
 export type NeonWhereObject = {
@@ -80,7 +85,7 @@ export type NeonWhereObject = {
 }
 
 /** Enum-like type to define `ascending` or `descending` sorting */
-export type NeonSortDirection = 'ASC' | 'asc' | 'DESC' | 'desc'
+export type NeonSortDirection = typeof NEON_SORT_DIRECTIONS[number]
 
 /** Object for defining an ORDER BY clause. */
 export type NeonOrderObject = {
