@@ -79,7 +79,7 @@ export function getColumnsClause(columns: NeonColumnType): string {
       sqlString += columns.map(c => columnWithAlias(c as NeonColumnObject)).join(', ')
     }
     else {
-      sqlString += columns.join(', ')
+      sqlString += columns.map(c => columnWithAlias(c as string)).join(', ')
     }
   }
   else {
@@ -91,6 +91,10 @@ export function getColumnsClause(columns: NeonColumnType): string {
 // include table alias if specified
 function columnWithAlias(c: string | NeonColumnObject): string {
   if (typeof c === 'string') {
+    // exception for count(*) or count(column)
+    if (c.match(/^count\([*|[\w]+\)$/)) {
+      return c
+    }
     return sanitizeSQLIdentifier(c)
   }
 

@@ -123,4 +123,10 @@ describe('nuxt-neon SELECT test suite', () => {
     expect(dataHtml).toContain('"id": 10')
     expect(countIds(dataHtml)).toBe(10)
   })
+
+  test('SELECT - detect SQL injection', async ({ expect }) => {
+    const dataHtml = await getDataHtml('TestSelectInjection')
+    expect(dataHtml).toContain('rejected as potential SQL injection')
+    expect(countIds(dataHtml)).toBe(0)
+  })
 })
