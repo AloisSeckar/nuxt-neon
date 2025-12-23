@@ -4,10 +4,7 @@ import type { NeonWhereType, NeonWhereOperator } from './neonTypes'
 // replace ">" and "<" in WHERE clauses with safe values (will be reverted in backend)
 export function encodeWhereType(where?: NeonWhereType) {
   if (where) {
-    if (typeof where === 'string') {
-      where = encodeWhereString(where)
-    }
-    else if (Array.isArray(where)) {
+    if (Array.isArray(where)) {
       where.forEach((w) => {
         w.operator = encodeWhereString(w.operator)
       })
@@ -28,10 +25,7 @@ function encodeWhereString(where?: string) {
 
 export function decodeWhereType(where?: NeonWhereType) {
   if (where) {
-    if (typeof where === 'string') {
-      where = decodeWhereString(where)
-    }
-    else if (Array.isArray(where)) {
+    if (Array.isArray(where)) {
       where.forEach((w) => {
         w.operator = decodeWhereString(w.operator)
       })

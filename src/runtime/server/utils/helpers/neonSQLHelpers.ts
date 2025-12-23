@@ -3,7 +3,7 @@ import type {
   NeonColumnObject, NeonColumnType, NeonWhereObject, NeonWhereType,
 } from '../../../utils/neonTypes'
 import { decodeWhereType } from '../../../utils/neonUtils'
-import { sanitizeSQLIdentifier } from './sanitizeSQL'
+import { sanitizeSQLIdentifier, sanitizeSQLString } from './sanitizeSQL'
 
 export function getTableName(table: NeonTableType): string {
   if (typeof table === 'string') {
@@ -108,11 +108,7 @@ export function getWhereClause(where?: NeonWhereType): string {
   where = decodeWhereType(where)
 
   if (where) {
-    if (typeof where === 'string') {
-      // TODO this leaves backdoor for SQL manipulation
-      sqlString += where
-    }
-    else if (Array.isArray(where)) {
+    if (Array.isArray(where)) {
       if (where.length > 0) {
         let clause = ''
         where.forEach((w) => {
@@ -157,7 +153,7 @@ function formatWhereObject(w: NeonWhereObject, includeRelation: boolean = false)
   else if (w.operator === 'BETWEEN') {
     // exactly two values separated by comma must be passed
     const betweenValues = w.value.toString().split(',')
-    whereSQL += `${escapeIfNeeded(betweenValues[0])} AND ${escapeIfNeeded(betweenValues[1])}`
+    whereSQL += `${formatWhereValue(betweenValues[0]!)} AND ${formatWhereValue(betweenValues[1]!)}`
   }
   else {
     // no special processing for other operators
@@ -170,7 +166,12 @@ function formatWhereObject(w: NeonWhereObject, includeRelation: boolean = false)
 function formatWhereValue(v: string | NeonColumnObject) {
   // plain value from current table
   if (typeof v === 'string') {
-    return escapeIfNeeded(v)
+    // remove surrounding quotes if present (to avoid double-escaping)
+    if (v.startsWith('\'') && v.endsWith('\'')) {
+      v = v.slice(1, -1)
+    }
+    // sanitize rest
+    return sanitizeSQLString(v)
   }
   // column from another table
   return columnWithAlias(v)
@@ -180,11 +181,7 @@ export function getOrderClause(order?: NeonOrderType): string {
   let sqlString = ''
 
   if (order) {
-    if (typeof order === 'string') {
-      // TODO this leaves backdoor for SQL manipulation
-      sqlString += order
-    }
-    else if (Array.isArray(order)) {
+    if (Array.isArray(order)) {
       if (order.length > 0) {
         let ordering = ''
         order.forEach((o) => {
@@ -223,26 +220,22 @@ export function getHavingClause(having?: NeonWhereType): string {
   having = decodeWhereType(having)
 
   if (having) {
-    if (typeof having === 'string') {
-      // TODO this leaves backdoor for SQL manipulation
-      sqlString += having
-    }
-    else if (Array.isArray(having)) {
+    if (Array.isArray(having)) {
       if (having.length > 0) {
         let clauses = ''
         having.forEach((h) => {
           if (clauses) {
-            clauses += ` ${h.relation} ${h.column} ${h.operator} ${escapeIfNeeded(h.value)}`
+            clauses += ` ${h.relation} ${h.column} ${h.operator} ${formatWhereValue(h.value)}`
           }
           else {
-            clauses = `${h.column} ${h.operator} ${escapeIfNeeded(h.value)}`
+            clauses = `${h.column} ${h.operator} ${formatWhereValue(h.value)}`
           }
         })
         sqlString += clauses
       }
     }
     else {
-      sqlString += `${having.column} ${having.operator} ${escapeIfNeeded(having.value)}`
+      sqlString += `${having.column} ${having.operator} ${formatWhereValue(having.value)}`
     }
   }
 
@@ -258,14 +251,4 @@ export function getLimitClause(limit?: number): string {
     sqlString += ` LIMIT ${limit}`
   }
   return sqlString
-}
-
-function escapeIfNeeded(value: unknown) {
-  if (typeof value === 'string' && !value.startsWith('\'')) {
-    value = '\'' + value
-  }
-  if (typeof value === 'string' && !value.endsWith('\'')) {
-    value = value + '\''
-  }
-  return value
 }

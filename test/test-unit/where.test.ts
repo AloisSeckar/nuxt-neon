@@ -7,11 +7,6 @@ describe('`encodeWhereType` utility unit test suite', async () => {
     expect(whereClause).toBe(undefined)
   })
 
-  test('WHERE as raw string', () => {
-    const whereClause = encodeWhereType('a > 20 AND a < 30 AND b >= 10 OR b <= 20')
-    expect(whereClause).toBe('a GT 20 AND a LT 30 AND b GTE 10 OR b LTE 20')
-  })
-
   test('WHERE as single clause object', () => {
     const whereClause1 = encodeWhereType({ column: 'a', operator: '>', value: '10' })
     expect(whereClause1).toEqual({ column: 'a', operator: 'GT', value: '10' })
@@ -45,11 +40,6 @@ describe('`decodeWhereType` utility unit test suite', async () => {
   test('WHERE undefined', () => {
     const whereClause = decodeWhereType(undefined)
     expect(whereClause).toBe(undefined)
-  })
-
-  test('WHERE as raw string', () => {
-    const whereClause = decodeWhereType('a GT 20 AND a LT 30 AND b GTE 10 OR b LTE 20')
-    expect(whereClause).toBe('a > 20 AND a < 30 AND b >= 10 OR b <= 20')
   })
 
   test('WHERE as single clause object', () => {

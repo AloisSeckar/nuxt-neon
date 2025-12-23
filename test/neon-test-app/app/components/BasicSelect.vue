@@ -25,7 +25,7 @@ async function doSelect() {
   result.value = await select<NeonTestData>({
     columns: ['id', 'name', 'value'],
     from: 'playing_with_neon',
-    where: [{ column: 'name', operator: 'LIKE', value: '\'test%\'' }],
+    where: [{ column: 'name', operator: 'LIKE', value: 'test%' }],
     order: [{ column: 'name' }, { column: 'value', direction: 'DESC' }],
     limit: 50,
   }) as NeonTestData[]
