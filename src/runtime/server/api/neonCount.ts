@@ -13,7 +13,7 @@ export default defineEventHandler(async (event): Promise<NeonDataType<number>> =
 
     const endpoints = useRuntimeConfig().public.neonExposeEndpoints === true
     if (!endpoints) {
-      return await getForbiddenError('/api/_neon/count')
+      return getForbiddenError('/api/_neon/count')
     }
 
     const body = await readBody(event)

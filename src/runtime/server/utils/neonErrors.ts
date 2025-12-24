@@ -13,7 +13,7 @@ export {
   formatNeonError,
 }
 
-export async function getForbiddenError(source: string, raw: boolean = false): Promise<NeonError> {
+export function getForbiddenError(source: string, raw: boolean = false): NeonError {
   return {
     name: 'NuxtNeonServerError',
     source,

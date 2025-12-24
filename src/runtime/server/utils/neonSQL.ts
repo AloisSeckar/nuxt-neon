@@ -3,8 +3,8 @@ import type {
   NeonCountQuery, NeonSelectQuery, NeonInsertQuery, NeonUpdateQuery,
   NeonDeleteQuery, NeonTableObject, NeonStatusType, NeonError,
 } from '../../utils/neonTypes'
-import { formatNeonError } from '../../utils/neonErrors'
 import type { NeonDriverResult } from './getNeonClient'
+import { formatNeonError, getForbiddenError } from './neonErrors'
 import {
   getColumnsClause, getGroupByClause, getHavingClause, getLimitClause,
   getOrderClause, getTableClause, getWhereClause, getTableName, isTableWithAlias,
@@ -12,7 +12,6 @@ import {
 import { debugSQLIfAllowed } from './helpers/debugSQL'
 import { sanitizeSQLString } from './helpers/sanitizeSQL'
 import { useRuntimeConfig } from '#imports'
-import { getForbiddenError } from './neonErrors'
 
 type NeonDriver = NeonQueryFunction<boolean, boolean>
 type NeonDriverResponse = Promise<NeonDriverResult<false, false>>
@@ -130,7 +129,7 @@ export async function raw<T>(neon: NeonDriver, sqlString: string): Promise<Array
   if (sqlString !== 'SELECT 1=1 as status') {
     const rawEndpoint = useRuntimeConfig().public.neonExposeRawEndpoint === true
     if (!rawEndpoint) {
-      throw await getForbiddenError('/api/_neon/raw', true)
+      throw getForbiddenError('/api/_neon/raw', true)
     }
   }
   await debugSQLIfAllowed(sqlString)

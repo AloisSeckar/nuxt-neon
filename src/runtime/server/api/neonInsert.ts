@@ -13,7 +13,7 @@ export default defineEventHandler(async (event): Promise<NeonDataType<string>> =
 
     const endpoints = useRuntimeConfig().public.neonExposeEndpoints === true
     if (!endpoints) {
-      return await getForbiddenError('/api/_neon/insert')
+      return getForbiddenError('/api/_neon/insert')
     }
 
     const body = await readBody(event)

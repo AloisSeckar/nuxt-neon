@@ -14,7 +14,7 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
 
     const endpoints = useRuntimeConfig().public.neonExposeEndpoints === true
     if (!endpoints) {
-      return await getForbiddenError('/api/_neon/select')
+      return getForbiddenError('/api/_neon/select')
     }
 
     const body = await readBody(event)
