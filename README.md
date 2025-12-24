@@ -7,7 +7,7 @@
 
 ![nuxt-neon](https://github.com/user-attachments/assets/35d6c6dd-5063-4501-ac2a-86bebec53abf)
 
-A simple [Nuxt v4-compilant module](https://nuxt.com/modules) allowing smooth integration with [Neon database](https://neon.tech/).
+Nuxt Neon is a [Nuxt v4-compilant module](https://nuxt.com/modules) allowing smooth integration with [Neon database](https://neon.tech/).
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
   

@@ -4,7 +4,7 @@ import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-i
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'Nuxt Neon',
-  description: 'A simple Nuxt module allowing smooth integration with Neon database.',
+  description: 'Nuxt module allowing smooth integration with Neon database',
   head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config

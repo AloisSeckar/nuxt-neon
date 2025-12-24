@@ -7,7 +7,7 @@
     height="100"
   >
   <div class="info">
-    This is a simple Nuxt module alowing smooth integration with <a href="https://neon.tech/home">Neon database</a>
+    This is a Nuxt module allowing smooth integration with <a href="https://neon.tech/home">Neon database</a>
   </div>
   <div class="info">
     The module provides `useNeon()` composable with methods + bunch of server-side routes to send SQL queries to the underlaying Neon DB using their <a href="https://neon.tech/docs/serverless/serverless-driver">JS/TS driver</a>

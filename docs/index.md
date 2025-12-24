@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "Nuxt Neon"
   text: ""
-  tagline: Connect Neon serverless database to your Nuxt app
+  tagline: Connect your Nuxt app to Neon serverless database
   actions:
     - theme: brand
       text: How to use
@@ -22,10 +22,10 @@ hero:
 
 features:
   - title: Nuxt Module
-    details: Simple integration to your Nuxt app via Nuxt Module system
+    details: Simple integration to your Nuxt application via the Nuxt Module system
   - title: Secured server-side access
     details: DB connection and queries are handled server-side for maximum security
-  - title: Convenient API for queries
-    details: Instead writing raw SQL queries, use the intuitive API provided by nuxt-neon
+  - title: Convenient object API for queries
+    details: Instead writing raw SQL queries, use the intuitive API provided by this module
 ---
 
