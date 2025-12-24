@@ -117,6 +117,13 @@ describe('nuxt-neon SELECT test suite', () => {
     expect(v3).toBeGreaterThan(v2)
   })
 
+  test('SELECT - HAVING with BETWEEN', async ({ expect }) => {
+    const dataHtml = await getDataHtml('TestSelectHavingBetween')
+    expect(dataHtml).toContain('"name": "a87ff679a2"')
+    expect(dataHtml).toContain('"name": "eccbc87e4b"')
+    expect(countIds(dataHtml)).toBe(2)
+  })
+
   test('SELECT - empty WHERE and ORDER BY', async ({ expect }) => {
     const dataHtml = await getDataHtml('TestSelectWithEmptyConditions')
     expect(dataHtml).toContain('"id": 1')

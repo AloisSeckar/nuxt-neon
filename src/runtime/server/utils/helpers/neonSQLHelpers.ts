@@ -118,16 +118,16 @@ export function getWhereClause(where?: NeonWhereType): string {
   if (where) {
     if (Array.isArray(where)) {
       if (where.length > 0) {
-        let clause = ''
+        let clauses = ''
         where.forEach((w) => {
-          if (clause) {
-            clause += formatWhereObject(w, true)
+          if (clauses) {
+            clauses += formatWhereObject(w, true)
           }
           else {
-            clause = formatWhereObject(w)
+            clauses = formatWhereObject(w)
           }
         })
-        sqlString += clause
+        sqlString += clauses
       }
     }
     else {
@@ -237,21 +237,18 @@ export function getHavingClause(having?: NeonWhereType): string {
       if (having.length > 0) {
         let clauses = ''
         having.forEach((h) => {
-          assertNeonWhereRelation(h.relation)
-          assertNeonWhereOperator(h.operator)
           if (clauses) {
-            clauses += ` ${h.relation} ${h.column} ${h.operator} ${formatWhereValue(h.value)}`
+            clauses += formatWhereObject(h, true)
           }
           else {
-            clauses = `${h.column} ${h.operator} ${formatWhereValue(h.value)}`
+            clauses = formatWhereObject(h)
           }
         })
         sqlString += clauses
       }
     }
     else {
-      assertNeonWhereOperator(having.operator)
-      sqlString += `${having.column} ${having.operator} ${formatWhereValue(having.value)}`
+      sqlString += formatWhereObject(having)
     }
   }
 
