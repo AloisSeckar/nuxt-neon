@@ -20,15 +20,6 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
     }
 
     const body = await readBody(event)
-    const statusQuery = body.query === 'SELECT 1=1 as status'
-
-    if (!statusQuery) {
-      const rawEndpoint = useRuntimeConfig().public.neonExposeRawEndpoint === true
-      if (!rawEndpoint) {
-        return await getForbiddenError('/api/_neon/raw', true)
-      }
-    }
-
     if (debug) {
       console.debug('Request body:', body)
     }

@@ -12,6 +12,7 @@ import {
 import { debugSQLIfAllowed } from './helpers/debugSQL'
 import { sanitizeSQLString } from './helpers/sanitizeSQL'
 import { useRuntimeConfig } from '#imports'
+import { getForbiddenError } from './neonErrors'
 
 type NeonDriver = NeonQueryFunction<boolean, boolean>
 type NeonDriverResponse = Promise<NeonDriverResult<false, false>>
@@ -124,6 +125,14 @@ export async function raw<T>(neon: NeonDriver, sqlString: string): Promise<Array
     console.debug('Neon `raw` server-side wrapper invoked')
   }
 
+  // raw endpoint is disabled by default
+  // simple health check is allowed though
+  if (sqlString !== 'SELECT 1=1 as status') {
+    const rawEndpoint = useRuntimeConfig().public.neonExposeRawEndpoint === true
+    if (!rawEndpoint) {
+      throw await getForbiddenError('/api/_neon/raw', true)
+    }
+  }
   await debugSQLIfAllowed(sqlString)
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
