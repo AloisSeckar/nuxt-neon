@@ -41,35 +41,32 @@ export function testInputString(input: string, allowDots = false): void {
     try {
     // semicolon => SQL injection attempt
       if (input.includes(';')) {
-        throw new Error('Invald input - contains semicolon')
+        throw new Error('contains semicolon')
       }
       // equals => SQL injection attempt
       if (input.includes('=')) {
-        throw new Error('Invald input - contains equals')
+        throw new Error('contains equals sign')
       }
       // comments => SQL injection attempt
       if (input.includes('--') || input.includes('/*') || input.includes('*/')) {
-        throw new Error('Invald input - contains comments')
+        throw new Error('contains comments')
       }
       // dot - schemas and aliases are handled, dots in values are suspicious
       // ignore if told so (explicit internal call for schema.table or table.alias)
       // can be decimal number though
       if (!allowDots) {
         if (input.includes('.') && Number.isNaN(Number(input))) {
-          throw new Error('Invald input - contains dot')
+          throw new Error('contains dot')
         }
       }
       // control characters
       // eslint-disable-next-line no-control-regex
       if (/[\x00-\x1F\x7F]/.test(input)) {
-        throw new Error('Invald input - contains control characters')
+        throw new Error('contains control characters')
       }
     }
     catch (e) {
-      // TODO this should depend on runtime config, but `#imports` currently doesn't work in tests
-      console.debug('testInputString', input, (e as Error).message)
-      //
-      throw new Error(`Value ${input} rejected as potential SQL injection. Report bug in Nuxt Neon module repository if this is a false positive.`)
+      throw new Error(`Value ${input} rejected as potential SQL injection (${(e as Error).message}). Report bug in Nuxt Neon module repository if this is a false positive.`)
     }
   }
 }
