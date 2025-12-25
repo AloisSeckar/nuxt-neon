@@ -1,6 +1,6 @@
 import { useRuntimeConfig } from '#imports'
 import type {
-  NeonFromType, NeonTableType, NeonTableObject, NeonOrderType,
+  NeonFromType, NeonTableType, NeonOrderType,
   NeonColumnObject, NeonColumnType, NeonWhereObject, NeonWhereType,
 } from '../../../utils/neonTypes'
 import {
@@ -16,25 +16,31 @@ import {
 } from './sanitizeSQL'
 
 export function getTableName(table: NeonTableType): string {
+  const allowedTables = useRuntimeConfig().neonAllowedTables.split(',')
   if (typeof table === 'string') {
-    return tableWithAlias({ table })
+    assertAllowedTable(table, allowedTables)
+    return sanitizeSQLIdentifier(table)
   }
-  if (table.schema) {
-    return `${sanitizeSQLIdentifier(table.schema)}.${tableWithAlias(table)}`
+  else {
+    if (table.schema) {
+      const tableWithSchema = `${table.schema}.${table.table}`
+      assertAllowedTable(tableWithSchema, allowedTables)
+      if (table.alias) {
+        return `${sanitizeSQLIdentifier(tableWithSchema)} ${sanitizeSQLIdentifier(table.alias)}`
+      }
+      else {
+        return sanitizeSQLIdentifier(tableWithSchema)
+      }
+    }
+    else {
+      if (table.alias) {
+        return `${sanitizeSQLIdentifier(table.table)} ${sanitizeSQLIdentifier(table.alias)}`
+      }
+      else {
+        return sanitizeSQLIdentifier(table.table)
+      }
+    }
   }
-  return tableWithAlias(table)
-}
-
-function tableWithAlias(t: NeonTableObject): string {
-  let tableName = t.table
-  if (t.alias) {
-    tableName += ` ${t.alias}`
-  }
-
-  const allowedTables = useRuntimeConfig().neonAllowedTables
-  assertAllowedTable(tableName, allowedTables.split(','))
-
-  return sanitizeSQLIdentifier(tableName)
 }
 
 export function isTableWithAlias(table: NeonTableType): boolean {
