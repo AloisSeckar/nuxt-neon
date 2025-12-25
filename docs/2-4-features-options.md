@@ -29,8 +29,8 @@ Following can be set via `defineNuxtConfig`:
 - `neonExposeRawEndpoint` - if true, `raw()` SQL wrapper can be used client-side via exposed API endpoint (**extra discouraged**)
   - `true`
   - `false` (default)
-- `neonAllowedTables` - list of tables allowed for querin g
-  - array of strings (table names)
+- `neonAllowedTables` - list of tables allowed for querying
+  - comma-separated list of table names (eg. `users,products,orders`)
   - `NEON_PUBLIC` (default) - all user tables
   - `NEON_ALL` (discouraged) - all tables including `pg_*` and `information_schema.*` system tables
 
@@ -66,5 +66,5 @@ NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=true
 # extra discouraged
 NUXT_PUBLIC_NEON_EXPOSE_RAW_ENDPOINT=true
 # discouraged
-NUXT_PUBLIC_NEON_ALLOWED_TABLES=[NEON_ALL]
+NUXT_PUBLIC_NEON_ALLOWED_TABLES=NEON_ALL
 ```

@@ -26,12 +26,15 @@ export function getTableName(table: NeonTableType): string {
 }
 
 function tableWithAlias(t: NeonTableObject): string {
-  let tableName = sanitizeSQLIdentifier(t.table)
+  let tableName = t.table
   if (t.alias) {
-    tableName += ` ${sanitizeSQLIdentifier(t.alias)}`
+    tableName += ` ${t.alias}`
   }
-  assertAllowedTable(tableName, useRuntimeConfig().public.neonAllowedTables)
-  return tableName
+
+  const allowedTables = useRuntimeConfig().public.neonAllowedTables
+  assertAllowedTable(tableName, allowedTables.split(','))
+
+  return sanitizeSQLIdentifier(tableName)
 }
 
 export function isTableWithAlias(table: NeonTableType): boolean {

@@ -26,14 +26,14 @@ export interface ModuleOptions {
   /** If true and `neonExposeEndpoints` is also true, API endpoints for `raw` SQL query is exposed from server-side */
   neonExposeRawEndpoint: boolean
   /**
-   * List of allowed table names for queries.
+   * Comma-separated list of allowed table names for queries.
    * Empty array would result into all queries being rejected.
    * For raw string values with schema prefixes (eg. `schema.table`), exact same value must be listed.
    * Special values:
    * - `NEON_ALL` = all tables including system tables are allowed (unsafe)
    * - `NEON_PUBLIC` = all user-defined tables are allowed, `pg_*` and `information_schema.*` tables are rejected (default)
    */
-  neonAllowedTables: string[]
+  neonAllowedTables: string
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -54,7 +54,7 @@ export default defineNuxtModule<ModuleOptions>({
     neonDebugRuntime: false,
     neonExposeEndpoints: false,
     neonExposeRawEndpoint: false,
-    neonAllowedTables: ['NEON_PUBLIC'],
+    neonAllowedTables: 'NEON_PUBLIC',
   },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
