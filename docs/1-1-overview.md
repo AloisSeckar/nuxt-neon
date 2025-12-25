@@ -2,7 +2,7 @@
 
 Nuxt module allowing smooth integration with Neon database
 
-[Neon](https://neon.com/) is a serverless [PostgreSQL](https://www.postgresql.org/) database provider, offering scalable and efficient database solutions for modern applications. They are shipping raw SQL interface via their [serverless driver](https://neon.tech/docs/serverless/serverless-driver) allowing easy integration with various platforms. This module builds upon this driver allowing you to start working with Neon in [Nuxt v4](https://nuxt.com/) application right away.
+[Neon](https://neon.com/) is a serverless [PostgreSQL](https://www.postgresql.org/) database provider, offering scalable and efficient database solutions for modern applications. They are shipping raw SQL interface via their [serverless driver](https://www.npmjs.com/package/@neondatabase/serverless) allowing easy integration with various platforms. This module builds upon this driver allowing you to start working with Neon in [Nuxt v4](https://nuxt.com/) application right away.
 
 ## How to use?
 
@@ -29,13 +29,17 @@ Nuxt Neon will construct a PostgreSQL connection string based on given values:
 `postgresql://${NUXT_NEON_USER}:${NUXT_NEON_PASS}@${NUXT_NEON_HOST}.neon.tech/${NUXT[_PUBLIC]NEON_DB}`
 ```
 
-And use it to create Neon serverless driver instance on the Nuxt server. The instance can be obtained from [the utility class](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/server/utils/getNeonClient.ts) as:
+And use it to create Neon serverless driver instance on the Nuxt server. 
+
+The instance can be obtained from [the utility class](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/server/utils/getNeonClient.ts) as:
 
 ```ts
 const neon = getNeonClient()
 ```
 
 Like that, sensitive connection data are sealed within the Nuxt server. The only public property might be the database name (if you pick the public variant). On the other hand, this means **you cannot use Nuxt Neon in static builds** and deploy without JS runtime.
+
+The driver instance alone is available at your dispose (server-side). Check [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) for the full reference of provided features like the `transaction()` function.
 
 That's it! Your Nuxt app is now connected to a Neon database instance ✨
 

@@ -30,10 +30,33 @@ export function assertNeonJoinType(type?: string): void {
     }
   }
 }
+
 export function assertNeonSortDirection(direction?: string): void {
   if (direction) {
     if (!NEON_SORT_DIRECTIONS.includes(direction as NeonSortDirection)) {
       throw new Error(`Invalid SORT direction '${direction}' rejected as potential SQL injection. Report bug in Nuxt Neon module repository if this is a false positive.`)
     }
+  }
+}
+
+export function assertAllowedTable(table: string, allowedTables: string[]): void {
+  // ALL = everything is allowed (unsafe)
+  if (allowedTables.includes('NEON_ALL')) {
+    return
+  }
+
+  // PUBLIC = all user-defined tables
+  // filter out:
+  // - tables with "pg_" prefix
+  // - tables within "information_schema"
+  if (allowedTables.includes('NEON_PUBLIC')) {
+    if ((!table.includes('pg_') && !table.includes('information_schema.')) || allowedTables.includes(table)) {
+      return
+    }
+  }
+
+  // otherwise - table must be explicitly listed
+  if (!allowedTables.includes(table)) {
+    throw new Error(`Query for table '${table}' rejected as not allowed. Whitelisted tables can be set via \`neon.neonAllowedTables: true\` or \`NUXT_PUBLIC_NEON_ALLOWED_TABLES:\``)
   }
 }

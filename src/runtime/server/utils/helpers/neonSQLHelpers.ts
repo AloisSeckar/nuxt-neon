@@ -1,3 +1,4 @@
+import { useRuntimeConfig } from '#imports'
 import type {
   NeonFromType, NeonTableType, NeonTableObject, NeonOrderType,
   NeonColumnObject, NeonColumnType, NeonWhereObject, NeonWhereType,
@@ -8,6 +9,7 @@ import {
 import {
   assertNeonWhereOperator, assertNeonWhereRelation,
   assertNeonJoinType, assertNeonSortDirection,
+  assertAllowedTable,
 } from './assertSQL'
 import {
   sanitizeSQLIdentifier, sanitizeSQLString,
@@ -15,13 +17,21 @@ import {
 
 export function getTableName(table: NeonTableType): string {
   if (typeof table === 'string') {
-    // return as is (sanitized)
-    return sanitizeSQLIdentifier(table)
+    return tableWithAlias({ table })
   }
-  else {
-    // evaluate schema and alias
-    return tableWithSchemaAndAlias(table)
+  if (table.schema) {
+    return `${sanitizeSQLIdentifier(table.schema)}.${tableWithAlias(table)}`
   }
+  return tableWithAlias(table)
+}
+
+function tableWithAlias(t: NeonTableObject): string {
+  let tableName = sanitizeSQLIdentifier(t.table)
+  if (t.alias) {
+    tableName += ` ${sanitizeSQLIdentifier(t.alias)}`
+  }
+  assertAllowedTable(tableName, useRuntimeConfig().public.neonAllowedTables)
+  return tableName
 }
 
 export function isTableWithAlias(table: NeonTableType): boolean {
@@ -34,7 +44,7 @@ export function isTableWithAlias(table: NeonTableType): boolean {
 export function getTableClause(from: NeonFromType): string {
   let sqlString = ' FROM '
   if (typeof from === 'string') {
-    sqlString += sanitizeSQLIdentifier(from)
+    sqlString += getTableName(from)
   }
   else if (Array.isArray(from)) {
     let tables = ''
@@ -43,37 +53,22 @@ export function getTableClause(from: NeonFromType): string {
         if (t.joinColumn1) {
           const joinClause = getJoinClause(t.joinColumn1!, t.joinColumn2!)
           assertNeonJoinType(t.joinType)
-          tables += ` ${t.joinType || 'INNER'} JOIN ${tableWithSchemaAndAlias(t)} ON ${joinClause}`
+          tables += ` ${t.joinType || 'INNER'} JOIN ${getTableName(t)} ON ${joinClause}`
         }
         else {
-          tables += `, ${tableWithSchemaAndAlias(t)}`
+          tables += `, ${getTableName(t)}`
         }
       }
       else {
-        tables = tableWithSchemaAndAlias(t)
+        tables = getTableName(t)
       }
     })
     sqlString += tables
   }
   else {
-    sqlString += tableWithSchemaAndAlias(from)
+    sqlString += getTableName(from)
   }
   return sqlString
-}
-
-// include schema name if specified
-function tableWithSchemaAndAlias(t: NeonTableObject): string {
-  if (t.schema) {
-    return `${sanitizeSQLIdentifier(t.schema)}.${tableWithAlias(t)}`
-  }
-  return tableWithAlias(t)
-}
-
-function tableWithAlias(t: NeonTableObject): string {
-  if (t.alias) {
-    return `${sanitizeSQLIdentifier(t.table)} ${sanitizeSQLIdentifier(t.alias)}`
-  }
-  return sanitizeSQLIdentifier(t.table)
 }
 
 // handle join clause

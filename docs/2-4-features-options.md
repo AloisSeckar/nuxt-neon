@@ -29,6 +29,10 @@ Following can be set via `defineNuxtConfig`:
 - `neonExposeRawEndpoint` - if true, `raw()` SQL wrapper can be used client-side via exposed API endpoint (**extra discouraged**)
   - `true`
   - `false` (default)
+- `neonAllowedTables` - list of tables allowed for querin g
+  - array of strings (table names)
+  - `NEON_PUBLIC` (default) - all user tables
+  - `NEON_ALL` (discouraged) - all tables including `pg_*` and `information_schema.*` system tables
 
 Example:
 
@@ -42,6 +46,7 @@ export default defineNuxtConfig({
     neonDebugRuntime: true,
     neonExposeEndpoints: true, // discouraged
     neonExposeRawEndpoint: true, // extra discouraged
+    neonAllowedTables: ['NEON_ALL'], // discouraged (system tables will be allowed)
   },
   // other configuration
 })
@@ -60,10 +65,6 @@ NUXT_PUBLIC_NEON_DEBUG_RUNTIME=true
 NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=true
 # extra discouraged
 NUXT_PUBLIC_NEON_EXPOSE_RAW_ENDPOINT=true
+# discouraged
+NUXT_PUBLIC_NEON_ALLOWED_TABLES=[NEON_ALL]
 ```
-
-## Neon driver
-
-Connection to Neon database is handled via dedicated driver maintained by Neon team.
-
-Check [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) for the full reference of provided features like the `transaction()` function.
