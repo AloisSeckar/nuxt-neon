@@ -2,10 +2,15 @@ import type {
   NeonFromType, NeonTableType, NeonTableObject, NeonOrderType,
   NeonColumnObject, NeonColumnType, NeonWhereObject, NeonWhereType,
 } from '../../../utils/neonTypes'
-import { decodeWhereType } from '../../../utils/neonUtils'
 import {
-  assertNeonJoinType, assertNeonSortDirection, assertNeonWhereOperator,
-  assertNeonWhereRelation, sanitizeSQLIdentifier, sanitizeSQLString,
+  decodeWhereType,
+} from '../../../utils/neonUtils'
+import {
+  assertNeonWhereOperator, assertNeonWhereRelation,
+  assertNeonJoinType, assertNeonSortDirection,
+} from './assertSQL'
+import {
+  sanitizeSQLIdentifier, sanitizeSQLString,
 } from './sanitizeSQL'
 
 export function getTableName(table: NeonTableType): string {

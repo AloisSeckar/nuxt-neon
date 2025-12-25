@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest'
 import {
   assertNeonWhereOperator, assertNeonWhereRelation,
   assertNeonJoinType, assertNeonSortDirection,
-} from '../../src/runtime/server/utils/helpers/sanitizeSQL'
+} from '../../src/runtime/server/utils/helpers/assertSQL'
 import {
   NEON_WHERE_OPERATORS, NEON_WHERE_RELATIONS,
   NEON_JOIN_TYPES, NEON_SORT_DIRECTIONS,
