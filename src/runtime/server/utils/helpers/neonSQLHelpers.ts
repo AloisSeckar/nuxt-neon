@@ -31,7 +31,7 @@ function tableWithAlias(t: NeonTableObject): string {
     tableName += ` ${t.alias}`
   }
 
-  const allowedTables = useRuntimeConfig().public.neonAllowedTables
+  const allowedTables = useRuntimeConfig().neonAllowedTables
   assertAllowedTable(tableName, allowedTables.split(','))
 
   return sanitizeSQLIdentifier(tableName)

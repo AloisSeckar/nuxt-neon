@@ -57,6 +57,6 @@ export function assertAllowedTable(table: string, allowedTables: string[]): void
 
   // otherwise - table must be explicitly listed
   if (!allowedTables.includes(table)) {
-    throw new Error(`Query for table '${table}' rejected as not allowed. Whitelisted tables can be set via \`neon.neonAllowedTables: true\` or \`NUXT_PUBLIC_NEON_ALLOWED_TABLES:\``)
+    throw new Error(`Query for table '${table}' rejected as not allowed. Whitelisted tables can be set via \`neon.neonAllowedTables\` or \`NUXT_NEON_ALLOWED_TABLES\``)
   }
 }

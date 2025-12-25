@@ -63,6 +63,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.neonUser = options.neonUser
     nuxt.options.runtimeConfig.neonPass = options.neonPass
     nuxt.options.runtimeConfig.neonDB = options.neonDB
+    nuxt.options.runtimeConfig.neonAllowedTables = options.neonAllowedTables
     nuxt.options.runtimeConfig.public.neonDB = options.neonDB
     nuxt.options.runtimeConfig.public.neonSSLMode = options.neonSSLMode
     nuxt.options.runtimeConfig.public.neonRawWarning = options.neonRawWarning
@@ -70,7 +71,6 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.neonDebugRuntime = options.neonDebugRuntime
     nuxt.options.runtimeConfig.public.neonExposeEndpoints = options.neonExposeEndpoints
     nuxt.options.runtimeConfig.public.neonExposeRawEndpoint = options.neonExposeRawEndpoint
-    nuxt.options.runtimeConfig.public.neonAllowedTables = options.neonAllowedTables
 
     addServerHandler({
       route: '/api/_neon/raw',
