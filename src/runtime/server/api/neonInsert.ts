@@ -28,8 +28,7 @@ export default defineEventHandler(async (event): Promise<NeonDataType<string>> =
     // successful INSERT operation returns []
     if (ret.length === 0) {
       return ['OK']
-    }
-    else {
+    } else {
       console.debug(ret)
       // TODO can we extract more detailed error cause from within the driver response?
       return await getGenericError('/api/_neon/insert', 'INSERT operation failed')

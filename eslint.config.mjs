@@ -15,6 +15,12 @@ export default createConfigForNuxt({
     ],
   },
 })
-  .append(
-    // your custom flat config here...
-  )
+  .append([
+    {
+      rules: {
+        // the default rule forces newline after "else"
+        // I prefer using "} else {" on single row
+        '@stylistic/brace-style': 'off',
+      },
+    },
+  ])

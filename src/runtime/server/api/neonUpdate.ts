@@ -28,8 +28,7 @@ export default defineEventHandler(async (event): Promise<NeonDataType<string>> =
     // successful UPDATE operation returns []
     if (ret.length === 0) {
       return ['OK']
-    }
-    else {
+    } else {
       // TODO can we extract more detailed error cause from within the driver response?
       return await getGenericError('/api/_neon/update', 'UPDATE operation failed')
     }

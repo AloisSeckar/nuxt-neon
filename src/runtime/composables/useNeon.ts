@@ -44,8 +44,7 @@ export function useNeon() {
     const ret = await fetchFromNeonBackend<T>('raw', { query })
     if (isNeonSuccess(ret)) {
       return ret as Array<T>
-    }
-    else {
+    } else {
       return handleNeonError(ret)
     }
   }
@@ -54,8 +53,7 @@ export function useNeon() {
     const ret = await fetchFromNeonBackend<number>('count', { ...query })
     if (isNeonSuccess(ret)) {
       return (ret as Array<number>).at(0) || -1
-    }
-    else {
+    } else {
       return handleNeonError(ret)
     }
   }
@@ -64,8 +62,7 @@ export function useNeon() {
     const ret = await fetchFromNeonBackend<T>('select', { ...query })
     if (isNeonSuccess(ret)) {
       return ret as Array<T>
-    }
-    else {
+    } else {
       return handleNeonError(ret)
     }
   }
@@ -102,8 +99,7 @@ async function callNeonBackend(method: string, body: NeonBodyType): Promise<Neon
   const ret = await fetchFromNeonBackend<string>(method, body)
   if (isNeonSuccess(ret)) {
     return (ret as Array<string>)[0]!
-  }
-  else {
+  } else {
     return handleNeonError(ret)
   }
 }

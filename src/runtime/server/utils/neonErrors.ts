@@ -58,8 +58,7 @@ export async function parseNeonClientError(source: string, err: unknown): Promis
       message,
       sql: await getSQLIfAllowed(),
     }
-  }
-  else {
+  } else {
     console.debug('Received other error object:')
     console.debug(name, message)
 

@@ -20,23 +20,19 @@ export function getTableName(table: NeonTableType): string {
   if (typeof table === 'string') {
     assertAllowedTable(table, allowedTables)
     return sanitizeSQLIdentifier(table)
-  }
-  else {
+  } else {
     if (table.schema) {
       const tableWithSchema = `${table.schema}.${table.table}`
       assertAllowedTable(tableWithSchema, allowedTables)
       if (table.alias) {
         return `${sanitizeSQLIdentifier(tableWithSchema)} ${sanitizeSQLIdentifier(table.alias)}`
-      }
-      else {
+      } else {
         return sanitizeSQLIdentifier(tableWithSchema)
       }
-    }
-    else {
+    } else {
       if (table.alias) {
         return `${sanitizeSQLIdentifier(table.table)} ${sanitizeSQLIdentifier(table.alias)}`
-      }
-      else {
+      } else {
         return sanitizeSQLIdentifier(table.table)
       }
     }
@@ -63,18 +59,15 @@ export function getTableClause(from: NeonFromType): string {
           const joinClause = getJoinClause(t.joinColumn1!, t.joinColumn2!)
           assertNeonJoinType(t.joinType)
           tables += ` ${t.joinType || 'INNER'} JOIN ${getTableName(t)} ON ${joinClause}`
-        }
-        else {
+        } else {
           tables += `, ${getTableName(t)}`
         }
-      }
-      else {
+      } else {
         tables = getTableName(t)
       }
     })
     sqlString += tables
-  }
-  else {
+  } else {
     sqlString += getTableName(from)
   }
   return sqlString
@@ -90,12 +83,10 @@ export function getColumnsClause(columns: NeonColumnType): string {
   if (Array.isArray(columns)) {
     if (columns[0] && (typeof columns[0] === 'object')) {
       sqlString += columns.map(c => columnWithAlias(c as NeonColumnObject)).join(', ')
-    }
-    else {
+    } else {
       sqlString += columns.map(c => columnWithAlias(c as string)).join(', ')
     }
-  }
-  else {
+  } else {
     sqlString += columnWithAlias(columns)
   }
   return sqlString
@@ -131,15 +122,13 @@ export function getWhereClause(where?: NeonWhereType): string {
         where.forEach((w) => {
           if (clauses) {
             clauses += formatWhereObject(w, true)
-          }
-          else {
+          } else {
             clauses = formatWhereObject(w)
           }
         })
         sqlString += clauses
       }
-    }
-    else {
+    } else {
       sqlString += formatWhereObject(where)
     }
   }
@@ -174,8 +163,7 @@ function formatWhereObject(w: NeonWhereObject, includeRelation: boolean = false)
     // exactly two values separated by comma must be passed
     const betweenValues = w.value.toString().split(',')
     whereSQL += `${formatWhereValue(betweenValues[0]!)} AND ${formatWhereValue(betweenValues[1]!)}`
-  }
-  else {
+  } else {
     // no special processing for other operators
     whereSQL += formatWhereValue(w.value)
   }
@@ -213,8 +201,7 @@ export function getOrderClause(order?: NeonOrderType): string {
         })
         sqlString += ordering
       }
-    }
-    else {
+    } else {
       assertNeonSortDirection(order.direction)
       sqlString += `${columnWithAlias(order.column)} ${order.direction?.toUpperCase() || 'ASC'}`
     }
@@ -248,15 +235,13 @@ export function getHavingClause(having?: NeonWhereType): string {
         having.forEach((h) => {
           if (clauses) {
             clauses += formatWhereObject(h, true)
-          }
-          else {
+          } else {
             clauses = formatWhereObject(h)
           }
         })
         sqlString += clauses
       }
-    }
-    else {
+    } else {
       sqlString += formatWhereObject(having)
     }
   }

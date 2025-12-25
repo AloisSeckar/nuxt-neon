@@ -8,8 +8,7 @@ export function encodeWhereType(where?: NeonWhereType) {
       where.forEach((w) => {
         w.operator = encodeWhereString(w.operator)
       })
-    }
-    else {
+    } else {
       where.operator = encodeWhereString(where.operator)
     }
   }
@@ -29,8 +28,7 @@ export function decodeWhereType(where?: NeonWhereType) {
       where.forEach((w) => {
         w.operator = decodeWhereString(w.operator)
       })
-    }
-    else {
+    } else {
       where.operator = decodeWhereString(where.operator)
     }
   }
