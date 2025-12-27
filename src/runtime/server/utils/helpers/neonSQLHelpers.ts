@@ -108,7 +108,7 @@ function columnWithAlias(c: string | NeonColumnObject): string {
   }
 
   if (c.alias) {
-    return `${sanitizeSQLIdentifier(c.alias)}.${sanitizeSQLIdentifier(c.name)}`
+    return sanitizeSQLIdentifier(`${c.alias}.${c.name}`)
   }
 
   return sanitizeSQLIdentifier(c.name)
