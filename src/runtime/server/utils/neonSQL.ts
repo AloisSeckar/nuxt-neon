@@ -1,17 +1,13 @@
 import type { NeonQueryFunction } from '@neondatabase/serverless'
 import type {
-  NeonCountQuery, NeonSelectQuery, NeonInsertQuery, NeonUpdateQuery,
-  NeonDeleteQuery, NeonTableObject, NeonStatusType, NeonError,
+  NeonCountQuery, NeonSelectQuery, NeonInsertQuery, NeonUpdateQuery, NeonDeleteQuery,
+  NeonStatusType, NeonError,
 } from '../../utils/neonTypes'
 import type { NeonDriverResult } from './getNeonClient'
 import { formatNeonError, getForbiddenError } from './neonErrors'
-import {
-  getColumnsClause, getGroupByClause, getHavingClause, getLimitClause,
-  getOrderClause, getTableClause, getWhereClause, getTableName, isTableWithAlias,
-} from './helpers/neonSQLHelpers'
 import { assertAllowedQuery } from './helpers/assertSQL'
+import { getDeleteSQL, getInsertSQL, getSelectSQL, getUpdateSQL } from './helpers/buildSQL'
 import { debugSQLIfAllowed } from './helpers/debugSQL'
-import { sanitizeSQLString } from './helpers/sanitizeSQL'
 import { useRuntimeConfig } from '#imports'
 
 type NeonDriver = NeonQueryFunction<boolean, boolean>
@@ -31,16 +27,7 @@ export async function select<T>(neon: NeonDriver, query: NeonSelectQuery): Promi
     console.debug('Neon `select` server-side wrapper invoked')
   }
 
-  let sqlString = 'SELECT '
-
-  sqlString += getColumnsClause(query.columns)
-  sqlString += getTableClause(query.from)
-  sqlString += getWhereClause(query.where)
-  sqlString += getGroupByClause(query.group)
-  sqlString += getHavingClause(query.having)
-  sqlString += getOrderClause(query.order)
-  sqlString += getLimitClause(query.limit)
-
+  const sqlString = getSelectSQL(query)
   await debugSQLIfAllowed(sqlString)
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
@@ -53,25 +40,7 @@ export async function insert(neon: NeonDriver, query: NeonInsertQuery): NeonDriv
     console.debug('Neon `insert` server-side wrapper invoked')
   }
 
-  // alias is technically not allowed for insert
-  if (isTableWithAlias(query.table)) {
-    throw new Error('Table alias is not allowed for INSERT statement')
-  }
-
-  // data to be inserted
-  const rows = Array.isArray(query.values) ? query.values : [query.values]
-
-  // definition of columns for the insert statement
-  const columns = Object.keys(rows[0])
-  const sqlColumns = columns.join(', ')
-
-  // definition of values for the insert statement
-  const valueTuples = rows.map(row =>
-    '(' + columns.map(col => sanitizeSQLString(row[col])).join(', ') + ')',
-  ).join(', ')
-
-  const sqlString = `INSERT INTO ${getTableName(query.table)} (${sqlColumns}) VALUES ${valueTuples}`
-
+  const sqlString = getInsertSQL(query)
   await debugSQLIfAllowed(sqlString)
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
@@ -83,22 +52,7 @@ export async function update(neon: NeonDriver, query: NeonUpdateQuery): NeonDriv
     console.debug('Neon `update` server-side wrapper invoked')
   }
 
-  let sqlString = `UPDATE ${getTableName(query.table)}`
-
-  // alias has a special syntax in update with "AS"
-  if (isTableWithAlias(query.table)) {
-    const alias = (query.table as NeonTableObject).alias
-    sqlString.replace(` ${alias}`, ` AS ${alias}`)
-  }
-
-  sqlString += ' SET '
-  Object.entries(query.values).forEach(([key, value]) => {
-    sqlString += `${key} = ${sanitizeSQLString(value)},`
-  })
-  sqlString = sqlString.slice(0, -1) // remove last comma
-
-  sqlString += getWhereClause(query.where)
-
+  const sqlString = getUpdateSQL(query)
   await debugSQLIfAllowed(sqlString)
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
@@ -110,10 +64,7 @@ export async function del(neon: NeonDriver, query: NeonDeleteQuery): NeonDriverR
     console.debug('Neon `delete` server-side wrapper invoked')
   }
 
-  let sqlString = `DELETE FROM ${getTableName(query.table)}`
-
-  sqlString += getWhereClause(query.where)
-
+  const sqlString = getDeleteSQL(query)
   await debugSQLIfAllowed(sqlString)
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements

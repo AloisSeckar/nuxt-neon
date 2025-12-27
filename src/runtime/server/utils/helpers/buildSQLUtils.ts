@@ -1,6 +1,6 @@
 import { useRuntimeConfig } from '#imports'
 import type {
-  NeonFromType, NeonTableType, NeonOrderType,
+  NeonFromType, NeonTableType, NeonTableObject, NeonOrderType,
   NeonColumnObject, NeonColumnType, NeonWhereObject, NeonWhereType,
 } from '../../../utils/neonTypes'
 import {
@@ -44,6 +44,11 @@ export function isTableWithAlias(table: NeonTableType): boolean {
     && table !== null
     && typeof table.alias === 'string'
     && table.alias.trim() !== ''
+}
+
+export function fixTableAliasForUpdate(sqlString: string, table: NeonTableType): void {
+  const alias = (table as NeonTableObject).alias
+  sqlString.replace(` ${alias}`, ` AS ${alias}`)
 }
 
 export function getTableClause(from: NeonFromType): string {
