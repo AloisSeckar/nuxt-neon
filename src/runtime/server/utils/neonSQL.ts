@@ -139,7 +139,6 @@ export async function raw<T>(neon: NeonDriver, sqlString: string): Promise<Array
   // simple health check is always allowed
   if (sqlString !== 'SELECT 1=1 as status') {
     const allowedQueries = useRuntimeConfig().neonAllowedQueries?.split(';') || []
-    console.log('asserting', sqlString, allowedQueries)
     assertAllowedQuery(sqlString, allowedQueries)
   }
 

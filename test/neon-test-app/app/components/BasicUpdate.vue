@@ -8,7 +8,7 @@
   >
     Execute update
   </button>
-  <div id="update-data">
+  <div id="update-result">
     Result: {{ result }}
   </div>
 </template>

@@ -8,7 +8,7 @@
   >
     Execute delete
   </button>
-  <div id="delete-data">
+  <div id="delete-result">
     Result: {{ result }}
   </div>
 </template>

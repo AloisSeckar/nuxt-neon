@@ -1,18 +1,5 @@
 import { describe, test } from 'vitest'
-import { createPage, url } from '@nuxt/test-utils/e2e'
-
-async function getDataHtml(pageName: string) {
-  // render in browser
-  const page = await createPage()
-  await page.goto(url(`/${pageName}`), { waitUntil: 'hydration' })
-  // pick div with data and return the inner html
-  const dataDiv = page.locator('#data')
-  return await dataDiv.innerHTML()
-}
-
-function countIds(html: string) {
-  return (html.match(/"id"/g) || []).length
-}
+import { countIds, getDataHtml } from './neon-test-utils'
 
 describe('nuxt-neon SELECT test suite', () => {
   // various test cases defined in /test/neon-test-app/pages/*.vue
@@ -120,6 +107,13 @@ describe('nuxt-neon SELECT test suite', () => {
     expect(v1).toBeGreaterThan(v2)
     expect(v1).toBeGreaterThan(v3)
     expect(v3).toBeGreaterThan(v2)
+  })
+
+  test('SELECT - GROUP BY + HAVING', async ({ expect }) => {
+    const dataHtml = await getDataHtml('TestSelectGroupByHaving')
+    expect(dataHtml).toContain('"value": 0.99077183')
+    expect(dataHtml).toContain('"count": "1"')
+    expect(countIds(dataHtml)).toBe(3)
   })
 
   test('SELECT - HAVING with BETWEEN', async ({ expect }) => {

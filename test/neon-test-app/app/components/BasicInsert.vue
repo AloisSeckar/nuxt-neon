@@ -8,7 +8,7 @@
   >
     Execute insert
   </button>
-  <div id="insert-data">
+  <div id="insert-result">
     Result: {{ result }}
   </div>
 </template>

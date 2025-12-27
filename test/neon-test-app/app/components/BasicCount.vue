@@ -8,7 +8,7 @@
   >
     Execute
   </button>
-  <div id="count-data">
+  <div id="count-result">
     Result: {{ result }}
   </div>
 </template>

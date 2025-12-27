@@ -8,7 +8,7 @@
   >
     Execute
   </button>
-  <div id="select-data">
+  <div id="select-result">
     Result: {{ result }}
   </div>
 </template>

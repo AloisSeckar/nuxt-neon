@@ -1,11 +1,10 @@
 import { describe, test, expect } from 'vitest'
-import { createPage, url } from '@nuxt/test-utils/e2e'
+import { getButtonClickResult, gotoPage } from './neon-test-utils'
 
 describe('nuxt-neon basic test suite', () => {
   test('Neon demo app loaded and DB connected', async () => {
     // render in browser
-    const page = await createPage()
-    await page.goto(url('/TestBasic'), { waitUntil: 'hydration' })
+    const page = await gotoPage('TestBasic')
 
     // title was rendered
     const hasText = await page.getByText('Nuxt Neon TEST APP').isVisible()
@@ -30,8 +29,7 @@ describe('nuxt-neon basic test suite', () => {
   // it should ensure the initial database data are as expected
   test('Initial cleanup was executed', async () => {
     // render in browser
-    const page = await createPage()
-    await page.goto(url('/TestCleanup'), { waitUntil: 'hydration' })
+    const page = await gotoPage('TestCleanup')
     // click the "delete" button and wait for response
     await page.click('#delete-button')
     await page.waitForResponse(response => response.ok())
@@ -39,8 +37,7 @@ describe('nuxt-neon basic test suite', () => {
 
   test('All test components are rendered', async () => {
     // render in browser
-    const page = await createPage()
-    await page.goto(url('/TestBasic'), { waitUntil: 'hydration' })
+    const page = await gotoPage('TestBasic')
 
     // TestRaw component mounted
     const rawTitle = page.locator('#raw')
@@ -74,14 +71,6 @@ describe('nuxt-neon basic test suite', () => {
     const updateButton = page.locator('#update-button')
     expect(updateButton).toBeDefined()
 
-    // TestGroupByHaving component mounted
-    const groupTitle = page.locator('#group')
-    expect(groupTitle).toBeDefined()
-    const groupHtml = await groupTitle.innerHTML()
-    expect(groupHtml).toContain('GROUP BY')
-    const groupButton = page.locator('#group-button')
-    expect(groupButton).toBeDefined()
-
     // TestDelete component mounted
     const deleteTitle = page.locator('#delete')
     expect(deleteTitle).toBeDefined()
@@ -93,16 +82,10 @@ describe('nuxt-neon basic test suite', () => {
 
   test('Basic DATA FETCHING test', async () => {
     // render in browser
-    const page = await createPage()
-    await page.goto(url('/TestBasic'), { waitUntil: 'hydration' })
+    const page = await gotoPage('TestBasic')
 
     // check contents
-    await page.click('#raw-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/raw') && response.ok(),
-    )
-    const dataDiv = page.locator('#raw-data')
-    const innerHTML = await dataDiv.innerHTML()
+    const innerHTML = await getButtonClickResult(page, 'raw')
     expect(innerHTML).toContain('"id"')
     expect(innerHTML).toContain('"name"')
     expect(innerHTML).toContain('"custom_value"')
@@ -110,121 +93,53 @@ describe('nuxt-neon basic test suite', () => {
 
   test('Basic CRUD test', async () => {
     // render in browser
-    const page = await createPage()
-    await page.goto(url('/TestBasic'), { waitUntil: 'hydration' })
+    const page = await gotoPage('TestBasic')
 
     // go through full SELECT-INSERT-UPDATE-DELETE cycle
 
     // DELETE - extra delete to make sure record didn't hang in there
-    // TODO replace with test-specific text key for each test
-    await page.click('#delete-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/delete') && response.ok(),
-    )
+    await getButtonClickResult(page, 'delete')
 
     // SELECT - no record with "test" should be in DB
-    await page.click('#select-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/select') && response.ok(),
-    )
-    const selectData = page.locator('#select-data')
-    let selectHTML = await selectData.innerHTML()
+    let selectHTML = await getButtonClickResult(page, 'select')
     expect(selectHTML).toContain('[]')
 
     // COUNT - should return 0 now
-    await page.click('#count-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/count') && response.ok(),
-    )
-    const countData = page.locator('#count-data')
-    let countHTML = await countData.innerHTML()
+    let countHTML = await getButtonClickResult(page, 'count')
     expect(countHTML).toContain('0')
 
     // INSERT - new "test" record should be inserted
-    await page.click('#insert-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/insert') && response.ok(),
-    )
-    const insertData = page.locator('#insert-data')
-    const insertHTML = await insertData.innerHTML()
+    const insertHTML = await getButtonClickResult(page, 'insert')
     expect(insertHTML).toContain('OK')
 
     // SELECT - should contain data with value "0" now
-    await page.click('#select-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/select') && response.ok(),
-    )
-    selectHTML = await selectData.innerHTML()
+    selectHTML = await getButtonClickResult(page, 'select')
     expect(selectHTML).toContain('id')
     expect(selectHTML).toContain('0')
 
     // COUNT - should return 1 now
-    await page.click('#count-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/count') && response.ok(),
-    )
-    countHTML = await countData.innerHTML()
+    countHTML = await getButtonClickResult(page, 'count')
     expect(countHTML).toContain('1')
 
-    // GROUP BY - should comntain no data
-    await page.click('#group-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/select') && response.ok(),
-    )
-    const groupData = page.locator('#group-data')
-    let groupHtml = await groupData.innerHTML()
-    expect(groupHtml).toContain('[]')
-
     // UPDATE - value should be changed to "1"
-    await page.click('#update-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/update') && response.ok(),
-    )
-    const updateData = page.locator('#update-data')
-    const updateHTML = await updateData.innerHTML()
+    const updateHTML = await getButtonClickResult(page, 'update')
     expect(updateHTML).toContain('OK')
 
     // SELECT - should contain data with value "1" now
-    await page.click('#select-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/select') && response.ok(),
-    )
-    selectHTML = await selectData.innerHTML()
+    selectHTML = await getButtonClickResult(page, 'select')
     expect(selectHTML).toContain('id')
     expect(selectHTML).toContain('1')
 
-    // GROUP BY - should contain 1 record
-    await page.click('#group-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/select') && response.ok(),
-    )
-    groupHtml = await groupData.innerHTML()
-    expect(groupHtml).toContain('count')
-    expect(groupHtml).toContain('1')
-
     // DELETE - test record should be deleted
-    await page.click('#delete-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/delete') && response.ok(),
-    )
-    const deleteData = page.locator('#delete-data')
-    const deleteHTML = await deleteData.innerHTML()
+    const deleteHTML = await getButtonClickResult(page, 'delete')
     expect(deleteHTML).toContain('OK')
 
     // SELECT - should contain no "test" data again
-    await page.click('#select-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/select') && response.ok(),
-    )
-    selectHTML = await selectData.innerHTML()
+    selectHTML = await getButtonClickResult(page, 'select')
     expect(selectHTML).toContain('[]')
 
     // COUNT - should return 0 again
-    await page.click('#count-button')
-    await page.waitForResponse(response =>
-      response.url().includes('/api/_neon/count') && response.ok(),
-    )
-    countHTML = await countData.innerHTML()
+    countHTML = await getButtonClickResult(page, 'count')
     expect(countHTML).toContain('0')
   }, 10000) // this occasionally times out for no apparent reason (usually on the first run)
 })

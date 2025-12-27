@@ -24,7 +24,6 @@
   <BasicCount />
   <BasicInsert />
   <BasicUpdate />
-  <BasicGroupByHaving />
   <BasicDelete />
   <BasicRaw />
 </template>
@@ -34,7 +33,6 @@ import { useNeon } from '#imports'
 
 import BasicCount from '../components/BasicCount.vue'
 import BasicDelete from '../components/BasicDelete.vue'
-import BasicGroupByHaving from '../components/BasicGroupByHaving.vue'
 import BasicInsert from '../components/BasicInsert.vue'
 import BasicRaw from '../components/BasicRaw.vue'
 import BasicSelect from '../components/BasicSelect.vue'

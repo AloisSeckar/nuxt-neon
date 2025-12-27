@@ -1,6 +1,6 @@
 <template>
   <h3 id="group">
-    GROUP BY + HAVING
+    SELECT with GROUP BY + HAVING
   </h3>
   <div>
     <pre>const { select } = useNeon()</pre>
@@ -12,7 +12,7 @@
     Execute select with group by + having
   </button>
   &nbsp;<pre style="display:inline">(SELECT value, count(id) FROM playing_with_neon GROUP BY value HAVING value >= 1 ORDER BY value DESC)</pre>
-  <div id="group-data">
+  <div id="group-result">
     Result: {{ result }}
   </div>
 </template>
