@@ -8,6 +8,7 @@ export default defineNuxtConfig({
   /* @ts-expect-error Neon config CAN be passed like this but TS currently doesn't pick it up at this place */
   neon: {
     neonDB: 'elrh-neon',
+    neonDBPublic: 'elrh-neon',
     neonRawWarning: false,
     neonExposeEndpoints: true,
     neonExposeRawEndpoint: true,

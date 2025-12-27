@@ -11,8 +11,10 @@ export interface ModuleOptions {
   neonUser: string
   /** Neon database password (your password) */
   neonPass: string
-  /** Neon database name (your database name) */
+  /** Neon database name (your database name) - stored server-side */
   neonDB: string
+  /** Neon database name (your database name) - exposed to client-side */
+  neonDBPublic: string
   /** SSL mode in connection = `sslmode` driver option (`require` by default) */
   neonSSLMode: NeonSSLModeOption
   /** Display warning when `raw()` wrapper is used (`true` by default) */
@@ -54,6 +56,7 @@ export default defineNuxtModule<ModuleOptions>({
     neonUser: '',
     neonPass: '',
     neonDB: '',
+    neonDBPublic: '',
     neonSSLMode: 'require',
     neonRawWarning: true,
     neonDebugSQL: false,
@@ -72,7 +75,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.neonDB = options.neonDB
     nuxt.options.runtimeConfig.neonAllowedTables = options.neonAllowedTables
     nuxt.options.runtimeConfig.neonAllowedQueries = options.neonAllowedQueries
-    nuxt.options.runtimeConfig.public.neonDB = options.neonDB
+    nuxt.options.runtimeConfig.public.neonDB = options.neonDBPublic
     nuxt.options.runtimeConfig.public.neonSSLMode = options.neonSSLMode
     nuxt.options.runtimeConfig.public.neonRawWarning = options.neonRawWarning
     nuxt.options.runtimeConfig.public.neonDebugSQL = options.neonDebugSQL
