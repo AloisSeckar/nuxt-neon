@@ -7,5 +7,5 @@ describe('nuxt-neon update test suite', () => {
   test('UPDATE - with schema and alias', async ({ expect }) => {
     const updateHTML = await getActionResult('TestUpdateSchemaAlias', 'update')
     expect(updateHTML).toContain('OK')
-  }, 10000) // first test in suite always needs longer timeout
+  })
 })

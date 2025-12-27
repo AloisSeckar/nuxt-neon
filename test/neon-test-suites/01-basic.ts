@@ -23,7 +23,7 @@ describe('nuxt-neon basic test suite', () => {
     expect(statusHTML).toContain('"database":"elrh-neon"')
     expect(statusHTML).toContain('"status":"OK"')
     expect(statusHTML).toContain('"debugInfo":""')
-  }, 10000) // first test in suite often needs longer timeout
+  })
 
   // this was added to prevent https://github.com/AloisSeckar/nuxt-neon/issues/39
   // it should ensure the initial database data are as expected
@@ -78,7 +78,7 @@ describe('nuxt-neon basic test suite', () => {
     expect(deleteHtml).toContain('DELETE')
     const deleteButton = page.locator('#delete-button')
     expect(deleteButton).toBeDefined()
-  }, 10000) // longer timeout to avoid unnecessary failures
+  })
 
   test('Basic DATA FETCHING test', async () => {
     // render in browser
@@ -89,7 +89,7 @@ describe('nuxt-neon basic test suite', () => {
     expect(innerHTML).toContain('"id"')
     expect(innerHTML).toContain('"name"')
     expect(innerHTML).toContain('"custom_value"')
-  }, 10000) // longer timeout to avoid unnecessary failures
+  })
 
   test('Basic CRUD test', async () => {
     // render in browser
@@ -141,5 +141,5 @@ describe('nuxt-neon basic test suite', () => {
     // COUNT - should return 0 again
     countHTML = await getButtonClickResult(page, 'count')
     expect(countHTML).toContain('0')
-  }, 10000) // this occasionally times out for no apparent reason (usually on the first run)
+  })
 })

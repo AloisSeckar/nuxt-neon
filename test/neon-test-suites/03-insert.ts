@@ -7,7 +7,7 @@ describe('nuxt-neon INSERT test suite', () => {
   test('INSERT - single', async ({ expect }) => {
     const insertHTML = await getActionResult('TestInsertSingle', 'insert')
     expect(insertHTML).toContain('OK')
-  }, 10000) // first test in suite always needs longer timeout
+  })
 
   test('INSERT - multiple', async ({ expect }) => {
     const insertHTML = await getActionResult('TestInsertMultiple', 'insert')
