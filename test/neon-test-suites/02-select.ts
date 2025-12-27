@@ -146,7 +146,7 @@ describe('nuxt-neon SELECT test suite', () => {
 
   test('SELECT - detect pg_* table access attempt', async ({ expect }) => {
     // NOTE: error in console is expected here - server-side throws error if trying to read system table without permission
-    const dataHtml = await getDataHtml('TestSelectISystemTable')
+    const dataHtml = await getDataHtml('TestSelectSystemTable')
     expect(dataHtml).toContain('rejected as not allowed')
     expect(countIds(dataHtml)).toBe(0)
   })

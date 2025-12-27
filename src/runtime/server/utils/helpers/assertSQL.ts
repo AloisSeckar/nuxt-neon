@@ -3,6 +3,7 @@ import {
   NEON_WHERE_OPERATORS, NEON_WHERE_RELATIONS,
 } from '../../../utils/neonTypes'
 import type {
+  NeonFromType,
   NeonJoinType, NeonSortDirection,
   NeonWhereOperator, NeonWhereRelation,
 } from '../../../utils/neonTypes'
@@ -39,7 +40,24 @@ export function assertNeonSortDirection(direction?: string): void {
   }
 }
 
-export function assertAllowedTable(table: string, allowedTables: string[]): void {
+export function assertAllowedTable(table: NeonFromType, allowedTables: string[]): void {
+  let tableName: string
+  if (typeof table === 'string') {
+    // string - test as-is
+    tableName = table
+  } else if (Array.isArray(table)) {
+    // array of table objects - check each one recursively
+    table.forEach(t => assertAllowedTable(t, allowedTables))
+    return
+  } else {
+    // table object - test with or without schema
+    if (table.schema) {
+      tableName = `${table.schema}.${table.table}`
+    } else {
+      tableName = table.table
+    }
+  }
+
   // ALL = everything is allowed (unsafe)
   if (allowedTables.includes('NEON_ALL')) {
     return
@@ -50,14 +68,14 @@ export function assertAllowedTable(table: string, allowedTables: string[]): void
   // - tables with "pg_" prefix
   // - tables within "information_schema"
   if (allowedTables.includes('NEON_PUBLIC')) {
-    if ((!table.includes('pg_') && !table.includes('information_schema.')) || allowedTables.includes(table)) {
+    if ((!tableName.includes('pg_') && !tableName.includes('information_schema.')) || allowedTables.includes(tableName)) {
       return
     }
   }
 
   // otherwise - table must be explicitly listed
-  if (!allowedTables.includes(table)) {
-    throw new Error(`Query for table '${table}' rejected as not allowed. Whitelisted tables can be set via \`neon.neonAllowedTables\` or \`NUXT_NEON_ALLOWED_TABLES\``)
+  if (!allowedTables.includes(tableName)) {
+    throw new Error(`Query for table '${tableName}' rejected as not allowed. Whitelisted tables can be set via \`neon.neonAllowedTables\` or \`NUXT_NEON_ALLOWED_TABLES\``)
   }
 }
 

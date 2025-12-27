@@ -1,4 +1,3 @@
-import { useRuntimeConfig } from '#imports'
 import type {
   NeonFromType, NeonTableType, NeonTableObject, NeonOrderType,
   NeonColumnObject, NeonColumnType, NeonWhereObject, NeonWhereType,
@@ -9,21 +8,17 @@ import {
 import {
   assertNeonWhereOperator, assertNeonWhereRelation,
   assertNeonJoinType, assertNeonSortDirection,
-  assertAllowedTable,
 } from './assertSQL'
 import {
   sanitizeSQLIdentifier, sanitizeSQLString,
 } from './sanitizeSQL'
 
 export function getTableName(table: NeonTableType): string {
-  const allowedTables = useRuntimeConfig().neonAllowedTables.split(',')
   if (typeof table === 'string') {
-    assertAllowedTable(table, allowedTables)
     return sanitizeSQLIdentifier(table)
   } else {
     if (table.schema) {
       const tableWithSchema = `${table.schema}.${table.table}`
-      assertAllowedTable(tableWithSchema, allowedTables)
       if (table.alias) {
         return `${sanitizeSQLIdentifier(tableWithSchema)} ${sanitizeSQLIdentifier(table.alias)}`
       } else {

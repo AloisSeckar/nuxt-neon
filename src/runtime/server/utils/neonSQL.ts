@@ -5,7 +5,7 @@ import type {
 } from '../../utils/neonTypes'
 import type { NeonDriverResult } from './getNeonClient'
 import { formatNeonError, getForbiddenError } from './neonErrors'
-import { assertAllowedQuery } from './helpers/assertSQL'
+import { assertAllowedQuery, assertAllowedTable } from './helpers/assertSQL'
 import { getDeleteSQL, getInsertSQL, getSelectSQL, getUpdateSQL } from './helpers/buildSQL'
 import { debugSQLIfAllowed } from './helpers/debugSQL'
 import { useRuntimeConfig } from '#imports'
@@ -27,6 +27,7 @@ export async function select<T>(neon: NeonDriver, query: NeonSelectQuery): Promi
     console.debug('Neon `select` server-side wrapper invoked')
   }
 
+  assertAllowedTable(query.from, getAllowedTables())
   const sqlString = getSelectSQL(query)
   await debugSQLIfAllowed(sqlString)
 
@@ -40,6 +41,7 @@ export async function insert(neon: NeonDriver, query: NeonInsertQuery): NeonDriv
     console.debug('Neon `insert` server-side wrapper invoked')
   }
 
+  assertAllowedTable(query.table, getAllowedTables())
   const sqlString = getInsertSQL(query)
   await debugSQLIfAllowed(sqlString)
 
@@ -52,6 +54,7 @@ export async function update(neon: NeonDriver, query: NeonUpdateQuery): NeonDriv
     console.debug('Neon `update` server-side wrapper invoked')
   }
 
+  assertAllowedTable(query.table, getAllowedTables())
   const sqlString = getUpdateSQL(query)
   await debugSQLIfAllowed(sqlString)
 
@@ -64,6 +67,7 @@ export async function del(neon: NeonDriver, query: NeonDeleteQuery): NeonDriverR
     console.debug('Neon `delete` server-side wrapper invoked')
   }
 
+  assertAllowedTable(query.table, getAllowedTables())
   const sqlString = getDeleteSQL(query)
   await debugSQLIfAllowed(sqlString)
 
@@ -129,4 +133,8 @@ export async function isOk(neon: NeonDriver): Promise<boolean> {
   }
 
   return (await neonStatus(neon)).status === 'OK'
+}
+
+function getAllowedTables(): string[] {
+  return useRuntimeConfig().neonAllowedTables?.split(',') || []
 }
