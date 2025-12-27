@@ -17,6 +17,11 @@ function countIds(html: string) {
 describe('nuxt-neon SELECT test suite', () => {
   // various test cases defined in /test/neon-test-app/pages/*.vue
 
+  test('SELECT - wildcard (all columns)', async ({ expect }) => {
+    const dataHtml = await getDataHtml('TestSelectWildcard')
+    expect(countIds(dataHtml)).toBe(10)
+  })
+
   test('SELECT - simple JOIN', async ({ expect }) => {
     const dataHtml = await getDataHtml('TestSelectJoin')
     expect(dataHtml).toContain('id')

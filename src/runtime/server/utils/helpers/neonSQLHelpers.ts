@@ -95,10 +95,15 @@ export function getColumnsClause(columns: NeonColumnType): string {
 // include table alias if specified
 function columnWithAlias(c: string | NeonColumnObject): string {
   if (typeof c === 'string') {
-    // exception for count(*) or count(column)
+    // exception for '*' (all columns)
+    if (c === '*') {
+      return c
+    }
+    // exception for 'count(*)' or 'count(column)'
     if (c.match(/^count\([*|[\w]+\)$/)) {
       return c
     }
+    // return sanitized value
     return sanitizeSQLIdentifier(c)
   }
 
