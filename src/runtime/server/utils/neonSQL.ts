@@ -9,6 +9,7 @@ import {
   getColumnsClause, getGroupByClause, getHavingClause, getLimitClause,
   getOrderClause, getTableClause, getWhereClause, getTableName, isTableWithAlias,
 } from './helpers/neonSQLHelpers'
+import { assertAllowedQuery } from './helpers/assertSQL'
 import { debugSQLIfAllowed } from './helpers/debugSQL'
 import { sanitizeSQLString } from './helpers/sanitizeSQL'
 import { useRuntimeConfig } from '#imports'
@@ -125,7 +126,7 @@ export async function raw<T>(neon: NeonDriver, sqlString: string): Promise<Array
   }
 
   // raw endpoint is disabled by default
-  // simple health check is allowed though
+  // simple health check is always allowed
   if (sqlString !== 'SELECT 1=1 as status') {
     const rawEndpoint = useRuntimeConfig().public.neonExposeRawEndpoint === true
     if (!rawEndpoint) {
@@ -133,6 +134,14 @@ export async function raw<T>(neon: NeonDriver, sqlString: string): Promise<Array
     }
   }
   await debugSQLIfAllowed(sqlString)
+
+  // only allow white-listed queries
+  // simple health check is always allowed
+  if (sqlString !== 'SELECT 1=1 as status') {
+    const allowedQueries = useRuntimeConfig().neonAllowedQueries?.split(';') || []
+    console.log('asserting', sqlString, allowedQueries)
+    assertAllowedQuery(sqlString, allowedQueries)
+  }
 
   // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
   const results = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })

@@ -62,4 +62,13 @@ Because we generally want `unit` test to run (and fail if necessary) before `e2e
     "test": "pnpm test:unit && pnpm test:e2e",
   }
 }
+
+To run tests, you need minimal `/test/neon-test-app/.env` file with Neon connection settings:
+
+```env
+NUXT_NEON_HOST=<your-neon-host>
+NUXT_NEON_USER=<your-neon-username>
+NUXT_NEON_PASS=<your-neon-password>
 ```
+
+Due to current test implementation, database must be named `elrh-neon` and you can populate it using SQL scripts in `/data` folder.

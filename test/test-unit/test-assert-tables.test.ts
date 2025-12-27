@@ -4,7 +4,7 @@ import { assertAllowedTable } from '../../src/runtime/server/utils/helpers/asser
 const ERROR_MSG = 'rejected as not allowed'
 
 describe('Unit tests for `assertAllowedTable` guard', async () => {
-  test('Should reject any anything if nothing is allowed', () => {
+  test('Should reject anything if nothing is allowed', () => {
     expect(() => assertAllowedTable('custom', [])).toThrowError(new RegExp(ERROR_MSG))
     expect(() => assertAllowedTable('pg_database', [])).toThrowError(new RegExp(ERROR_MSG))
   })

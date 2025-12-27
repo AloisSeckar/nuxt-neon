@@ -34,6 +34,12 @@ export interface ModuleOptions {
    * - `NEON_PUBLIC` = all user-defined tables are allowed, `pg_*` and `information_schema.*` tables are rejected (default)
    */
   neonAllowedTables: string
+  /**
+   * Semicolon-separated list of allowed raw SQL queries.
+   * Empty array would result into all raw queries being rejected (except health-check).
+   * This option is only relevant if `neonExposeRawEndpoint` is set to `true`.
+   */
+  neonAllowedQueries?: string
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -55,6 +61,7 @@ export default defineNuxtModule<ModuleOptions>({
     neonExposeEndpoints: false,
     neonExposeRawEndpoint: false,
     neonAllowedTables: 'NEON_PUBLIC',
+    neonAllowedQueries: undefined,
   },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
@@ -64,6 +71,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.neonPass = options.neonPass
     nuxt.options.runtimeConfig.neonDB = options.neonDB
     nuxt.options.runtimeConfig.neonAllowedTables = options.neonAllowedTables
+    nuxt.options.runtimeConfig.neonAllowedQueries = options.neonAllowedQueries
     nuxt.options.runtimeConfig.public.neonDB = options.neonDB
     nuxt.options.runtimeConfig.public.neonSSLMode = options.neonSSLMode
     nuxt.options.runtimeConfig.public.neonRawWarning = options.neonRawWarning

@@ -103,9 +103,9 @@ describe('nuxt-neon basic test suite', () => {
     )
     const dataDiv = page.locator('#raw-data')
     const innerHTML = await dataDiv.innerHTML()
-    expect(innerHTML).toContain('id')
-    expect(innerHTML).toContain('name')
-    expect(innerHTML).toContain('custom_value')
+    expect(innerHTML).toContain('"id"')
+    expect(innerHTML).toContain('"name"')
+    expect(innerHTML).toContain('"custom_value"')
   }, 10000) // longer timeout to avoid unnecessary failures
 
   test('Basic CRUD test', async () => {

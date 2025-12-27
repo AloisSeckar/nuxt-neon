@@ -33,6 +33,10 @@ Following can be set via `defineNuxtConfig`:
   - comma-separated list of table names (eg. `users,products,orders`)
   - `NEON_PUBLIC` (default) - all user tables
   - `NEON_ALL` (discouraged) - all tables including `pg_*` and `information_schema.*` system tables
+- `neonAllowedQueries` - list of allowed raw SQL queries (only relevant if `neonExposeRawEndpoint` is `true`)
+  - semicolon-separated list of raw SQL queries (eg. `SELECT * FROM users;SELECT * FROM products`)
+  - `undefined` (default) - no raw queries are allowed
+  - `NEON_ALL` (discouraged) - any valid SQL query can be executed
 
 Example:
 
@@ -44,9 +48,10 @@ export default defineNuxtConfig({
     neonRawWarning: false,
     neonDebugSQL: true,
     neonDebugRuntime: true,
-    neonExposeEndpoints: true, // discouraged
-    neonExposeRawEndpoint: true, // extra discouraged
+    neonExposeEndpoints: true, // discouraged (allows direct SQL calls from client-side)
+    neonExposeRawEndpoint: true, // extra discouraged (allows raw SQL queries from client-side)
     neonAllowedTables: ['NEON_ALL'], // discouraged (system tables will be allowed)
+    neonAllowedQueries: ['NEON_ALL'], // extra discouraged (any valid SQL query can be executed)
   },
   // other configuration
 })
@@ -67,4 +72,6 @@ NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=true
 NUXT_PUBLIC_NEON_EXPOSE_RAW_ENDPOINT=true
 # discouraged
 NUXT_NEON_ALLOWED_TABLES=NEON_ALL
+# extra discouraged
+NUXT_NEON_ALLOWED_QUERIES=NEON_ALL
 ```

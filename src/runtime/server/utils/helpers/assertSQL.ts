@@ -60,3 +60,15 @@ export function assertAllowedTable(table: string, allowedTables: string[]): void
     throw new Error(`Query for table '${table}' rejected as not allowed. Whitelisted tables can be set via \`neon.neonAllowedTables\` or \`NUXT_NEON_ALLOWED_TABLES\``)
   }
 }
+
+export function assertAllowedQuery(query: string, allowedQueries: string[]): void {
+  // ALL = everything is allowed (unsafe)
+  if (allowedQueries.includes('NEON_ALL')) {
+    return
+  }
+
+  // otherwise - table must be explicitly listed
+  if (!allowedQueries.includes(query)) {
+    throw new Error(`Query '${query}' rejected as not allowed. Whitelisted queries can be set via \`neon.neonAllowedQueries\` or \`NUXT_NEON_ALLOWED_QUERIES\``)
+  }
+}
