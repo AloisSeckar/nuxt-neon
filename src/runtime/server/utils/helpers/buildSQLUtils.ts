@@ -226,8 +226,17 @@ export function getOrderClause(order?: NeonOrderType): string {
 export function getGroupByClause(group?: NeonColumnType): string {
   let sqlString = ''
   if (group) {
-    sqlString = ' GROUP BY '
-    sqlString += getColumnsClause(group)
+    if (Array.isArray(group)) {
+      if (group.length > 0) {
+        sqlString += getColumnsClause(group)
+      }
+    } else {
+      sqlString += columnWithAlias(group)
+    }
+  }
+
+  if (sqlString) {
+    sqlString = ' GROUP BY ' + sqlString
   }
   return sqlString
 }
