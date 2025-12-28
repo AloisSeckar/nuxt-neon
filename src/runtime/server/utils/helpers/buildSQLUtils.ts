@@ -100,8 +100,13 @@ function columnWithAlias(c: string | NeonColumnObject): string {
       return c
     }
     // exception for 'count(*)' or 'count(column)'
-    if (c.match(/^count\([*|[\w]+\)$/)) {
-      return c
+    const m = c.match(/^count\(([*|[\w]+)\)$/)
+    if (m && m[1]) {
+      if (m[1] === '*') {
+        return c
+      } else {
+        return `count(${sanitizeSQLIdentifier(m[1])})`
+      }
     }
     // return sanitized value
     return sanitizeSQLIdentifier(c)
