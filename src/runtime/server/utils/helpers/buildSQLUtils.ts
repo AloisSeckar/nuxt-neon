@@ -41,9 +41,9 @@ export function isTableWithAlias(table: NeonTableType): boolean {
     && table.alias.trim() !== ''
 }
 
-export function fixTableAliasForUpdate(sqlString: string, table: NeonTableType): void {
+export function fixTableAliasForUpdate(sqlString: string, table: NeonTableType): string {
   const alias = (table as NeonTableObject).alias
-  sqlString.replace(` ${alias}`, ` AS ${alias}`)
+  return sqlString.replace(`"${alias}"`, `AS "${alias}"`)
 }
 
 export function getTableClause(from: NeonFromType): string {

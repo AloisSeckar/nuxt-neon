@@ -47,7 +47,7 @@ export function getUpdateSQL(query: NeonUpdateQuery): string {
 
   // alias has a special syntax in update with "AS"
   if (isTableWithAlias(query.table)) {
-    fixTableAliasForUpdate(sqlString, query.table)
+    sqlString = fixTableAliasForUpdate(sqlString, query.table)
   }
 
   sqlString += ' SET '
