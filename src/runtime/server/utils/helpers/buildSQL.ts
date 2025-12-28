@@ -31,8 +31,9 @@ export function getInsertSQL(query: NeonInsertQuery): string {
   const rows = Array.isArray(query.values) ? query.values : [query.values]
 
   // definition of columns for the insert statement
+  // columns in insert must be double-quoted
   const columns = Object.keys(rows[0])
-  const sqlColumns = columns.map(col => sanitizeSQLString(col)).join(', ')
+  const sqlColumns = columns.map(col => `"${sanitizeSQLString(col).slice(1, -1)}"`).join(', ')
 
   // definition of values for the insert statement
   const valueTuples = rows.map(row =>
@@ -52,8 +53,8 @@ export function getUpdateSQL(query: NeonUpdateQuery): string {
 
   sqlString += ' SET '
   Object.entries(query.values).forEach(([key, value]) => {
-    const sanitizedKey = '"' + sanitizeSQLString(key).slice(1, -1) + '"' // columns in update must be double-quoted
-    sqlString += `${sanitizedKey} = ${sanitizeSQLString(value)}, `
+    // columns in update must be double-quoted
+    sqlString += `"${sanitizeSQLString(key).slice(1, -1)}" = ${sanitizeSQLString(value)}, `
   })
   sqlString = sqlString.slice(0, -2) // remove last comma and space
 
