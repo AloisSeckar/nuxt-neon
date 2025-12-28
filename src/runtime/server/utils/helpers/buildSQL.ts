@@ -32,7 +32,7 @@ export function getInsertSQL(query: NeonInsertQuery): string {
 
   // definition of columns for the insert statement
   const columns = Object.keys(rows[0])
-  const sqlColumns = columns.join(', ')
+  const sqlColumns = columns.map(col => sanitizeSQLString(col)).join(', ')
 
   // definition of values for the insert statement
   const valueTuples = rows.map(row =>
