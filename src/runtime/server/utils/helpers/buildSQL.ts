@@ -52,9 +52,10 @@ export function getUpdateSQL(query: NeonUpdateQuery): string {
 
   sqlString += ' SET '
   Object.entries(query.values).forEach(([key, value]) => {
-    sqlString += `${key} = ${sanitizeSQLString(value)},`
+    const sanitizedKey = '"' + sanitizeSQLString(key).slice(1, -1) + '"' // columns in update must be double-quoted
+    sqlString += `${sanitizedKey} = ${sanitizeSQLString(value)}, `
   })
-  sqlString = sqlString.slice(0, -1) // remove last comma
+  sqlString = sqlString.slice(0, -2) // remove last comma and space
 
   sqlString += getWhereClause(query.where)
 
