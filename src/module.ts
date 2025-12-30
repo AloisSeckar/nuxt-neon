@@ -17,8 +17,6 @@ export interface ModuleOptions {
   neonDBPublic: string
   /** SSL mode in connection = `sslmode` driver option (`require` by default) */
   neonSSLMode: NeonSSLModeOption
-  /** Display warning when `raw()` wrapper is used (`true` by default) */
-  neonRawWarning: boolean
   /** If true, the SQL query is captured and attached to error response */
   neonDebugSQL: boolean
   /** If true, extra runtime information is captured and logged */
@@ -58,7 +56,6 @@ export default defineNuxtModule<ModuleOptions>({
     neonDB: '',
     neonDBPublic: '',
     neonSSLMode: 'require',
-    neonRawWarning: true,
     neonDebugSQL: false,
     neonDebugRuntime: false,
     neonExposeEndpoints: false,
@@ -77,7 +74,6 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.neonAllowedQueries = options.neonAllowedQueries
     nuxt.options.runtimeConfig.public.neonDB = options.neonDBPublic
     nuxt.options.runtimeConfig.public.neonSSLMode = options.neonSSLMode
-    nuxt.options.runtimeConfig.public.neonRawWarning = options.neonRawWarning
     nuxt.options.runtimeConfig.public.neonDebugSQL = options.neonDebugSQL
     nuxt.options.runtimeConfig.public.neonDebugRuntime = options.neonDebugRuntime
     nuxt.options.runtimeConfig.public.neonExposeEndpoints = options.neonExposeEndpoints

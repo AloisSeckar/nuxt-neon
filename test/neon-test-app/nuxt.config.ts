@@ -9,7 +9,6 @@ export default defineNuxtConfig({
   neon: {
     neonDB: 'elrh-neon',
     neonDBPublic: 'elrh-neon',
-    neonRawWarning: false,
     neonExposeEndpoints: true,
     neonExposeRawEndpoint: true,
     neonAllowedTables: 'playing_with_neon,playing_with_neon_2,playing_with_neon_3,neon2.playing_with_neon',

@@ -67,9 +67,7 @@ Returns the result of the query (Neon client returns `[]` for INSERT, UPDATE and
 
 **SECURITY WARNING**: the value of `query` cannot be sanitized before being applied to the database, so make sure you **NEVER allow unchecked user input via `raw` handler**. This method is implemented to allow bypassing edge cases that cannot be covered by following wrappers that ensure input security more.
 
-Since this method is potentially unsafe, a warning will display by default when it is called. If you are 100% sure what you are doing, you can disable the warning by setting `neon.neonRawWarning: false`.
-
-As additional you must explicitly allow queries that can be executed like this via module option `neonAllowedQueries` or runtime config variable `NUXT_PUBLIC_NEON_ALLOWED_QUERIES`. If the executed query is not in the white-list, it will be rejected with error message.
+As additional security measure you must explicitly allow queries that can be executed like this via module option `neonAllowedQueries` or runtime config variable `NUXT_PUBLIC_NEON_ALLOWED_QUERIES`. If the executed query is not in the white-list, it will be rejected with error message.
 
 #### `count()`
 

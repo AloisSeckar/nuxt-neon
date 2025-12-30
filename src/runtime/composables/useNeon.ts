@@ -7,7 +7,6 @@ import {
   NEON_ENDPOINTS_DISABLED, NEON_RAW_ENDPOINT_DISABLED,
   formatNeonError, handleNeonError, isNeonSuccess,
 } from '../utils/neonErrors'
-import { NEON_RAW_WARNING, displayRawWarning } from '../utils/neonWarnings'
 import { useRuntimeConfig } from '#imports'
 import { encodeWhereType } from '../utils/neonUtils'
 
@@ -38,9 +37,6 @@ export function useNeon() {
   }
 
   const raw = async <T> (query: string): Promise<NeonDataType<T>> => {
-    if (displayRawWarning() && query !== 'SELECT 1=1 as status') {
-      console.warn(NEON_RAW_WARNING)
-    }
     const ret = await fetchFromNeonBackend<T>('raw', { query })
     if (isNeonSuccess(ret)) {
       return ret as Array<T>

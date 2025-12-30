@@ -2,7 +2,6 @@ import type { H3Event, EventHandlerRequest } from 'h3'
 import type { NeonDataType } from '../../utils/neonTypes'
 import { getNeonClient } from '../utils/getNeonClient'
 import { getForbiddenError, parseNeonClientError } from '../utils/neonErrors'
-import { NEON_RAW_WARNING, displayRawWarning } from '../../utils/neonWarnings'
 import { raw } from '../utils/neonSQL'
 import { defineEventHandler, readBody, useRuntimeConfig } from '#imports'
 
@@ -24,12 +23,6 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
     }
 
     const neon = getNeonClient()
-
-    // warning about this method being potentially unsafe
-    // skip warning for a harmless health-check triggered by neonStatus() function
-    if (displayRawWarning() && body.query !== 'SELECT 1=1 as status') {
-      console.warn(NEON_RAW_WARNING)
-    }
 
     // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
     return await raw(neon, body.query)
