@@ -4,8 +4,12 @@ Nuxt Neon can be configured by overriding the default options values using key `
 
 ## Existing options
 
-Following can be set via `defineNuxtConfig`:
+Following can be set via `neon` key in `nuxt.config.ts`:
 
+- `neonDB` - Neon database name (your database name) - WILL BE exposed to client-side
+  - string (eg. `my_database`)
+  - this will allow to disclose your database name on client side, which you might or might not want to do
+  - when building Nuxt connection string, module **always** uses `NUXT_NEON_DB` env value and **NOT** this
 - `neonSSLMode` - allows setting [secure connection mode](https://neon.tech/docs/connect/connect-securely) when constructing the DB connection string by adding `sslmode` parameter to URL. Values can be:
   - `require` (default)
   - `verify-ca`
@@ -29,21 +33,21 @@ Following can be set via `defineNuxtConfig`:
 - `neonAllowedTables` - list of tables allowed for querying
   - comma-separated list of table names (eg. `users,products,orders`)
   - `NEON_PUBLIC` (default) - all user tables
-  - `NEON_ALL` (discouraged) - all tables including `pg_*` and `information_schema.*` system tables
+  - `NEON_ALL` (**discouraged**) - all tables including `pg_*` and `information_schema.*` system tables
 - `neonAllowedQueries` - list of allowed raw SQL queries (only relevant if `neonExposeRawEndpoint` is `true`)
   - semicolon-separated list of raw SQL queries (eg. `SELECT * FROM users;SELECT * FROM products`)
   - `undefined` (default) - no raw queries are allowed
-  - `NEON_ALL` (discouraged) - any valid SQL query can be executed
+  - `NEON_ALL` (**extra discouraged**) - any valid SQL query can be executed
 
 Example:
 
-```ts
-// nuxt.config.ts
+```ts [nuxt.config.ts]
 export default defineNuxtConfig({
   neon: {
     neonSSLMode: 'verify-full',
     neonDebugSQL: true,
     neonDebugRuntime: true,
+    neonDB: 'my_public_database', // this will be available at client-side!
     neonExposeEndpoints: true, // discouraged (allows direct SQL calls from client-side)
     neonExposeRawEndpoint: true, // extra discouraged (allows raw SQL queries from client-side)
     neonAllowedTables: ['NEON_ALL'], // discouraged (system tables will be allowed)
@@ -57,16 +61,18 @@ export default defineNuxtConfig({
 
 Module options can also be passed as Nuxt runtime config variables in `.env` file, eg.:
 
-```
+```sh [.env]
 NUXT_PUBLIC_NEON_SSL_MODE=verify-full
 NUXT_PUBLIC_NEON_DEBUG_SQL=true
 NUXT_PUBLIC_NEON_DEBUG_RUNTIME=true
+# available at client
+NUXT_PUBLIC_NEON_DB=my_public_database
 # discouraged
 NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=true
-# extra discouraged
+# extra discouraged!
 NUXT_PUBLIC_NEON_EXPOSE_RAW_ENDPOINT=true
 # discouraged
 NUXT_NEON_ALLOWED_TABLES=NEON_ALL
-# extra discouraged
+# extra discouraged!
 NUXT_NEON_ALLOWED_QUERIES=NEON_ALL
 ```

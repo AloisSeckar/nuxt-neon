@@ -6,22 +6,38 @@ Nuxt module allowing smooth integration with Neon database
 
 ## How to use?
 
-Install the module to your Nuxt application via [Nuxt DevTools](https://devtools.nuxt.com/guide/features#modules) or manually with one command:
+Install the module to your Nuxt application via [Nuxt DevTools](https://devtools.nuxt.com/guide/features#modules) or manually with command:
 
-```bash
+::: code-group
+```sh [pnpm]
+pnpx nuxi module add nuxt-neon
+```
+
+```sh [npm]
 npx nuxi module add nuxt-neon
 ```
 
-Provide connection details to your Neon DB instance through a set of Nuxt [runtime config variables](https://nuxt.com/docs/4.x/guide/going-further/runtime-config):
-- `NUXT_NEON_HOST`
-- `NUXT_NEON_USER`
-- `NUXT_NEON_PASS`
-- `NUXT_NEON_DB`
+```sh [yarn]
+yarn dlx nuxi module add nuxt-neon
+```
 
-For database name, you can alternatively set:
-- `NUXT_PUBLIC_NEON_DB`
+```sh [bun]
+$ bunx nuxi module add nuxt-neon
+```
 
-The latter will allow to disclose your database name on client side, which you might or might not want to do. If both env variables are set, `NUXT_NEON_DB` is always used for the actual connection string, but value of `NUXT_PUBLIC_NEON_DB` becomes available on client side.
+```sh [deno]
+$ deno run --allow-run npm:npx nuxi module add nuxt-neon
+```
+:::
+
+Provide connection details to your Neon DB instance through a set of Nuxt private [runtime config variables](https://nuxt.com/docs/4.x/guide/going-further/runtime-config):
+
+```sh [.env]
+NUXT_NEON_HOST=your-neon-host
+NUXT_NEON_USER=your-neon-user
+NUXT_NEON_PASS=your-neon-password
+NUXT_NEON_DB=your-neon-database
+```
 
 Nuxt Neon will construct a PostgreSQL connection string based on given values:
 
@@ -37,7 +53,7 @@ The instance can be obtained from [the utility class](https://github.com/AloisSe
 const neon = getNeonClient()
 ```
 
-Like that, sensitive connection data are sealed within the Nuxt server. The only public property might be the database name (if you pick the public variant). On the other hand, this means **you cannot use Nuxt Neon in static builds** and deploy without JS runtime.
+Like that, sensitive connection data are sealed within the Nuxt server. On the other hand, this means **you cannot use Nuxt Neon in static builds** and deploy without JS runtime.
 
 The driver instance alone is available at your dispose (server-side). Check [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) for the full reference of provided features like the `transaction()` function.
 

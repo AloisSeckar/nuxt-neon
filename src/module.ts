@@ -5,16 +5,8 @@ import type { NeonSSLModeOption } from './runtime/utils/neonTypes'
 // Module options TypeScript interface definition
 
 export interface ModuleOptions {
-  /** Neon database host server (`neon_hostname`) */
-  neonHost: string
-  /** Neon database user (your account) */
-  neonUser: string
-  /** Neon database password (your password) */
-  neonPass: string
-  /** Neon database name (your database name) - stored server-side */
+  /** Neon database name (your database name) - WILL BE exposed to client-side */
   neonDB: string
-  /** Neon database name (your database name) - exposed to client-side */
-  neonDBPublic: string
   /** SSL mode in connection = `sslmode` driver option (`require` by default) */
   neonSSLMode: NeonSSLModeOption
   /** If true, the SQL query is captured and attached to error response */
@@ -50,11 +42,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   // Default configuration options of the Nuxt module
   defaults: {
-    neonHost: '',
-    neonUser: '',
-    neonPass: '',
     neonDB: '',
-    neonDBPublic: '',
     neonSSLMode: 'require',
     neonDebugSQL: false,
     neonDebugRuntime: false,
@@ -66,13 +54,13 @@ export default defineNuxtModule<ModuleOptions>({
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    nuxt.options.runtimeConfig.neonHost = options.neonHost
-    nuxt.options.runtimeConfig.neonUser = options.neonUser
-    nuxt.options.runtimeConfig.neonPass = options.neonPass
-    nuxt.options.runtimeConfig.neonDB = options.neonDB
+    nuxt.options.runtimeConfig.neonHost = '' // pass via .env file
+    nuxt.options.runtimeConfig.neonUser = '' // pass via .env file
+    nuxt.options.runtimeConfig.neonPass = '' // pass via .env file
+    nuxt.options.runtimeConfig.neonDB = '' // pass via .env file
     nuxt.options.runtimeConfig.neonAllowedTables = options.neonAllowedTables
     nuxt.options.runtimeConfig.neonAllowedQueries = options.neonAllowedQueries
-    nuxt.options.runtimeConfig.public.neonDB = options.neonDBPublic
+    nuxt.options.runtimeConfig.public.neonDB = options.neonDB
     nuxt.options.runtimeConfig.public.neonSSLMode = options.neonSSLMode
     nuxt.options.runtimeConfig.public.neonDebugSQL = options.neonDebugSQL
     nuxt.options.runtimeConfig.public.neonDebugRuntime = options.neonDebugRuntime
