@@ -47,13 +47,13 @@
     "@nuxt/eslint-config": "1.12.1",
     "@nuxt/module-builder": "1.0.2",
     "@nuxt/schema": "4.2.2",
-    "@types/node": "25.0.2",
+    "@types/node": "25.0.3",
     "changelogen": "0.6.2",
     "eslint": "9.39.2",
     "nuxt": "4.2.2",
     "nuxt-spec": "0.1.16",
     "typescript": "5.9.3",
-    "vue-tsc": "3.1.8"
+    "vue-tsc": "3.2.1"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -62,5 +62,5 @@
       "unrs-resolver"
     ]
   },
-  "packageManager": "pnpm@10.25.0"
+  "packageManager": "pnpm@10.26.2"
 }
