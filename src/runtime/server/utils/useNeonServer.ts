@@ -21,6 +21,10 @@ function getAllowedTables(): string[] {
 }
 
 export const useNeonServer = () => {
+  if (import.meta.client) {
+    throw new Error('useNeonServer can only be used within Nuxt server-side context')
+  }
+
   // separate wrapper instead of forcing users to pass 'count(*)' as column name
   const count = async (query: NeonCountQuery, neon: NeonDriver = getDefaultNeonDriver()): NeonDriverResponse => {
     if (useRuntimeConfig().public.neonDebugRuntime === true) {

@@ -2,6 +2,10 @@ import { neon, type NeonQueryFunction } from '@neondatabase/serverless'
 import { useRuntimeConfig } from '#imports'
 
 export const useNeonDriver = () => {
+  if (import.meta.client) {
+    throw new Error('useNeonDriver can only be used within Nuxt server-side context')
+  }
+
   let neonClient: NeonQueryFunction<boolean, boolean> | null = null
   if (neonClient === null) {
     if (useRuntimeConfig().public.neonDebugRuntime === true) {
