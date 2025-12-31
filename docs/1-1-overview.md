@@ -30,7 +30,7 @@ $ deno run --allow-run npm:npx nuxi module add nuxt-neon
 ```
 :::
 
-Provide connection details to your Neon DB instance through a set of Nuxt private [runtime config variables](https://nuxt.com/docs/4.x/guide/going-further/runtime-config):
+Provide connection details via env variables:
 
 ```sh [.env]
 NUXT_NEON_HOST=your-neon-host
@@ -39,25 +39,16 @@ NUXT_NEON_PASS=your-neon-password
 NUXT_NEON_DB=your-neon-database
 ```
 
-Nuxt Neon will construct a PostgreSQL connection string based on given values:
-
-```ts
-`postgresql://${NUXT_NEON_USER}:${NUXT_NEON_PASS}@${NUXT_NEON_HOST}.neon.tech/${NUXT[_PUBLIC]NEON_DB}`
-```
-
-And use it to create Neon serverless driver instance on the Nuxt server. 
-
-The instance can be obtained from [the utility class](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/server/utils/getNeonClient.ts) as:
+Obtain the [Neon serverless driver instance](https://neon.tech/docs/serverless/serverless-driver) on the Nuxt server with:
 
 ```ts
 const neon = getNeonClient()
 ```
 
-Like that, sensitive connection data are sealed within the Nuxt server. On the other hand, this means **you cannot use Nuxt Neon in static builds** and deploy without JS runtime.
-
-The driver instance alone is available at your dispose (server-side). Check [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) for the full reference of provided features like the `transaction()` function.
-
 That's it! Your Nuxt app is now connected to a Neon database instance ✨
+
+> [!TIP]
+> Note that Nuxt Neon module requires Nitro server runtime to work. Therefore, it cannot be used in static builds.
 
 ## More info
 
