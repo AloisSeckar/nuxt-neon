@@ -120,7 +120,7 @@ export const useNeonServer = () => {
   }
 
   // health check probe
-  const neonStatus = async (neon: NeonDriver, anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusType> => {
+  const neonStatus = async (anonymous: boolean = true, debug: boolean = false, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonStatusType> => {
     if (useRuntimeConfig().public.neonDebugRuntime === true) {
       console.debug('Neon `neonStatus` server-side health check invoked')
     }
@@ -144,12 +144,12 @@ export const useNeonServer = () => {
   }
 
   // simple true/false health check
-  const isOk = async (neon: NeonDriver): Promise<boolean> => {
+  const isOk = async (neon: NeonDriver = getDefaultNeonDriver()): Promise<boolean> => {
     if (useRuntimeConfig().public.neonDebugRuntime === true) {
       console.debug('Neon `isOk` server-side health check invoked')
     }
 
-    return (await neonStatus(neon)).status === 'OK'
+    return (await neonStatus(true, false, neon)).status === 'OK'
   }
 
   return {
