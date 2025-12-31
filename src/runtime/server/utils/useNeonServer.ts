@@ -1,14 +1,12 @@
 import type { NeonQueryFunction } from '@neondatabase/serverless'
 import type {
   NeonCountQuery, NeonSelectQuery, NeonInsertQuery, NeonUpdateQuery, NeonDeleteQuery,
-  NeonStatusType, NeonError,
-} from '../../utils/neonTypes'
-import { formatNeonError, getForbiddenError } from './neonErrors'
+  NeonStatusType, NeonError, NeonDriverResult,
+} from '../../shared/types/neon'
 import { assertAllowedQuery, assertAllowedTable } from './helpers/assertSQL'
 import { getDeleteSQL, getInsertSQL, getSelectSQL, getUpdateSQL } from './helpers/buildSQL'
 import { debugSQLIfAllowed } from './helpers/debugSQL'
-import { useRuntimeConfig } from '#imports'
-import { type NeonDriverResult, useNeonDriver } from './useNeonDriver'
+import { formatNeonError, getForbiddenError, useRuntimeConfig, useNeonDriver } from '#imports'
 
 type NeonDriver = NeonQueryFunction<boolean, boolean>
 type NeonDriverResponse = Promise<NeonDriverResult<false, false>>

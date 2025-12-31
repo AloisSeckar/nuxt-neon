@@ -6,7 +6,7 @@ import {
 import {
   NEON_WHERE_OPERATORS, NEON_WHERE_RELATIONS,
   NEON_JOIN_TYPES, NEON_SORT_DIRECTIONS,
-} from '../../src/runtime/utils/neonTypes'
+} from '../../src/runtime/shared/types/neon-constants'
 
 const ERROR_MSG = 'rejected as potential SQL injection'
 

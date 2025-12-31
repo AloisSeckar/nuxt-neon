@@ -1,10 +1,11 @@
+// cannot reference from '#imports' in runtime server utils
 import type {
   NeonFromType, NeonTableType, NeonTableObject, NeonOrderType,
   NeonColumnObject, NeonColumnType, NeonWhereObject, NeonWhereType,
-} from '../../../utils/neonTypes'
+} from '../../../shared/types/neon'
 import {
   decodeWhereType,
-} from '../../../utils/neonUtils'
+} from '../../../shared/utils/neonUtils'
 import {
   assertNeonWhereOperator, assertNeonWhereRelation,
   assertNeonJoinType, assertNeonSortDirection,

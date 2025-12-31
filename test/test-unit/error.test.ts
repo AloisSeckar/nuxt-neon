@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest'
-import { isNeonSuccess, isNeonError, formatNeonError } from '../../src/runtime/utils/neonErrors'
-import type { NeonError } from '../../src/runtime/utils/neonTypes'
+import { isNeonSuccess, isNeonError, formatNeonError } from '../../src/runtime/shared/utils/neonErrors'
+import type { NeonError } from '../../src/runtime/shared/types/neon'
 
 describe('nuxt-neon error handling features test', async () => {
   // valid data object

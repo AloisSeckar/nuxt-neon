@@ -1,4 +1,4 @@
-import type { NeonError } from '../utils/neonTypes'
+import type { NeonError } from '../types/neon'
 
 /**
  * By default, API endpoints are disabled for security reasons.

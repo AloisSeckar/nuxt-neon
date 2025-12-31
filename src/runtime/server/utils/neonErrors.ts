@@ -1,17 +1,8 @@
-// server-side re-export of NeonError-related utils
-
-import type { NeonError } from '../../utils/neonTypes'
+import type { NeonError } from '../../shared/types/neon'
 import {
   NEON_RAW_ENDPOINT_DISABLED, NEON_ENDPOINTS_DISABLED,
-  isNeonSuccess, isNeonError, formatNeonError,
-} from '../../utils/neonErrors'
-import { useRuntimeConfig, useStorage } from '#imports'
-
-export {
-  isNeonSuccess,
-  isNeonError,
-  formatNeonError,
-}
+  useRuntimeConfig, useStorage,
+} from '#imports'
 
 export function getForbiddenError(source: string, raw: boolean = false): NeonError {
   return {

@@ -1,9 +1,15 @@
-// NOTE: when editing this file, please also update exports in `src/utils/neonTypes.ts`
-
 import type {
   NEON_WHERE_OPERATORS, NEON_WHERE_RELATIONS,
   NEON_JOIN_TYPES, NEON_SORT_DIRECTIONS,
 } from './neon-constants'
+
+import type { FullQueryResults, NeonQueryPromise, QueryRows } from '@neondatabase/serverless'
+
+/**
+ * Type based on Neon serverless driver's `query` method that is used to perform the DB calls
+ *  @see https://neon.com/docs/serverless/serverless-driver
+ */
+export type NeonDriverResult<ArrayMode extends boolean, FullQuery extends boolean> = NeonQueryPromise<ArrayMode, FullQuery, FullQuery extends true ? FullQueryResults<ArrayMode> : QueryRows<ArrayMode>>
 
 /**
  * Possible options for Neon driver SSL mode.

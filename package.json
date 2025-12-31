@@ -32,9 +32,10 @@
     "test": "pnpm test:unit && pnpm test:e2e",
     "test:unit": "vitest run test/test-unit",
     "test:e2e": "vitest run test/test-e2e",
-    "test:types": "pnpm test:types:client && pnpm test:types:server",
-    "test:types:client": "vue-tsc --noEmit",
-    "test:types:server": "cd src/runtime/server && vue-tsc --noEmit"
+    "test:types": "pnpm test:types:dts && pnpm test:types:server && pnpm test:types:client",
+    "test:types:dts": "tsc -p tsconfig.dts.json --noEmit",
+    "test:types:server": "cd src/runtime/server && vue-tsc --noEmit",
+    "test:types:client": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@neondatabase/serverless": "1.0.2",

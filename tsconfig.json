@@ -1,14 +1,15 @@
 {
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "typeRoots": ["./node_modules/@types", "./src/runtime/types"]
+    "typeRoots": ["./node_modules/@types", "./src/runtime/shared/types"]
   },
   "include": [
-    "**/*.ts",
-    "**/*.vue",
+    "./src/**/*",
+    "./playground/**/*",
+    "./test/**/*",
   ],
   "exclude": [
-    "src/runtime/server/**/*",
+    "./src/runtime/server/**/*",
     "dist",
     "node_modules",
   ]

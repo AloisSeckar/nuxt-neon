@@ -1,6 +1,12 @@
-import { addImports, addPlugin, addServerHandler, addServerImports, addTypeTemplate, createResolver, defineNuxtModule } from '@nuxt/kit'
+import {
+  addImportsDir, addPlugin, addServerHandler, addServerImportsDir,
+  addTypeTemplate, createResolver, defineNuxtModule,
+} from '@nuxt/kit'
 import commonjs from 'vite-plugin-commonjs'
-import type { NeonSSLModeOption } from './runtime/utils/neonTypes'
+
+// type must be referenced from .ts file
+// (import directly from neon.d.ts doesn't work)
+import type { NeonSSLModeOption } from './runtime/shared/utils/neonUtils'
 
 // Module options TypeScript interface definition
 
@@ -92,65 +98,15 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolver.resolve('runtime/server/api/neonDelete'),
     })
 
-    addImports([
-      // main client-side composable exposing SQL wrapper methods and health checks
-      {
-        name: 'useNeonClient',
-        as: 'useNeonClient',
-        from: resolver.resolve('runtime/composables/useNeonClient'),
-      },
-      // error-handling utilities
-      {
-        name: 'isNeonSuccess',
-        as: 'isNeonSuccess',
-        from: resolver.resolve('runtime/utils/neonErrors'),
-      },
-      {
-        name: 'isNeonError',
-        as: 'isNeonError',
-        from: resolver.resolve('runtime/utils/neonErrors'),
-      },
-      {
-        name: 'formatNeonError',
-        as: 'formatNeonError',
-        from: resolver.resolve('runtime/utils/neonErrors'),
-      },
-    ])
+    addImportsDir(resolver.resolve('runtime/composables'))
+    addImportsDir(resolver.resolve('runtime/shared/utils'))
 
-    addServerImports([
-      // composable creating Neon DB driver instance
-      {
-        name: 'useNeonDriver',
-        as: 'useNeonDriver',
-        from: resolver.resolve('runtime/server/utils/useNeonDriver'),
-      },
-      // main server-side composable exposing SQL wrapper methods and health checks
-      {
-        name: 'useNeonServer',
-        as: 'useNeonServer',
-        from: resolver.resolve('runtime/server/utils/useNeonServer'),
-      },
-      // error-handling utilities
-      {
-        name: 'isNeonSuccess',
-        as: 'isNeonSuccess',
-        from: resolver.resolve('runtime/server/utils/neonErrors'),
-      },
-      {
-        name: 'isNeonError',
-        as: 'isNeonError',
-        from: resolver.resolve('runtime/server/utils/neonErrors'),
-      },
-      {
-        name: 'formatNeonError',
-        as: 'formatNeonError',
-        from: resolver.resolve('runtime/server/utils/neonErrors'),
-      },
-    ])
+    addServerImportsDir(resolver.resolve('runtime/server/utils'))
+    addServerImportsDir(resolver.resolve('runtime/shared/utils'))
 
     // export types
     addTypeTemplate({
-      src: resolver.resolve('runtime/types/neon.d.ts'),
+      src: resolver.resolve('runtime/shared/types/neon.d.ts'),
       filename: 'types/neon.d.ts',
     })
 

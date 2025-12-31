@@ -2,13 +2,12 @@ import type {
   NeonBodyType, NeonDataType, NeonEditType, NeonStatusType, NeonError,
   NeonCountQuery, NeonCountType, NeonSelectQuery, NeonInsertQuery,
   NeonUpdateQuery, NeonDeleteQuery, NeonWhereType,
-} from '../utils/neonTypes'
+} from '../shared/types/neon'
 import {
   NEON_ENDPOINTS_DISABLED, NEON_RAW_ENDPOINT_DISABLED,
-  formatNeonError, handleNeonError, isNeonSuccess,
-} from '../utils/neonErrors'
-import { useRuntimeConfig } from '#imports'
-import { encodeWhereType } from '../utils/neonUtils'
+  encodeWhereType, formatNeonError, handleNeonError,
+  isNeonSuccess, useRuntimeConfig,
+} from '#imports'
 
 export const useNeonClient = () => {
   const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusType> => {

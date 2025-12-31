@@ -1,4 +1,7 @@
 {
   "extends": "../../../.nuxt/tsconfig.server.json",
-  "include": ["./**/*"]
+  "compilerOptions": {
+    "typeRoots": ["../shared/types"]
+  },
+  "include": ["./**/*", "../shared/**/*"],
 }

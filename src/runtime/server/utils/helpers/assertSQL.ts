@@ -1,12 +1,13 @@
+// cannot reference from '#imports' due to unit tests!
 import {
   NEON_JOIN_TYPES, NEON_SORT_DIRECTIONS,
   NEON_WHERE_OPERATORS, NEON_WHERE_RELATIONS,
-} from '../../../utils/neonTypes'
+} from '../../../shared/types/neon-constants'
 import type {
   NeonFromType,
   NeonJoinType, NeonSortDirection,
   NeonWhereOperator, NeonWhereRelation,
-} from '../../../utils/neonTypes'
+} from '../../../shared/types/neon'
 
 export function assertNeonWhereOperator(operator?: string): void {
   if (operator) {

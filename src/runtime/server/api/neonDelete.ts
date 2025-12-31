@@ -1,6 +1,8 @@
-import type { NeonDataType } from '../../utils/neonTypes'
-import { getForbiddenError, getGenericError, parseNeonClientError } from '../utils/neonErrors'
-import { defineEventHandler, readBody, useNeonServer, useRuntimeConfig } from '#imports'
+import type { NeonDataType } from '../../shared/types/neon'
+import {
+  defineEventHandler, getForbiddenError, getGenericError, parseNeonClientError,
+  readBody, useNeonServer, useRuntimeConfig,
+} from '#imports'
 
 export default defineEventHandler(async (event): Promise<NeonDataType<string>> => {
   try {

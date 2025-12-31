@@ -1,7 +1,9 @@
 import type { H3Event, EventHandlerRequest } from 'h3'
-import type { NeonDataType } from '../../utils/neonTypes'
-import { getForbiddenError, parseNeonClientError } from '../utils/neonErrors'
-import { defineEventHandler, readBody, useNeonServer, useRuntimeConfig } from '#imports'
+import type { NeonDataType } from '../../shared/types/neon'
+import {
+  defineEventHandler, getForbiddenError, parseNeonClientError,
+  readBody, useNeonServer, useRuntimeConfig,
+} from '#imports'
 
 export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>): Promise<NeonDataType<T>> => {
   try {

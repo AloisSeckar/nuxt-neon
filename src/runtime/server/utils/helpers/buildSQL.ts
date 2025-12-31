@@ -1,6 +1,7 @@
+// cannot reference from '#imports' in runtime server utils
 import type {
   NeonInsertQuery, NeonSelectQuery, NeonUpdateQuery, NeonDeleteQuery,
-} from '../../../utils/neonTypes'
+} from '../../../shared/types/neon'
 import {
   getTableName, isTableWithAlias, fixTableAliasForUpdate, getTableClause, getColumnsClause,
   getWhereClause, getOrderClause, getGroupByClause, getHavingClause, getLimitClause,
@@ -32,12 +33,12 @@ export function getInsertSQL(query: NeonInsertQuery): string {
 
   // definition of columns for the insert statement
   // columns in insert must be double-quoted
-  const columns = Object.keys(rows[0])
+  const columns = Object.keys(rows[0]!)
   const sqlColumns = columns.map(col => `"${sanitizeSQLString(col).slice(1, -1)}"`).join(', ')
 
   // definition of values for the insert statement
   const valueTuples = rows.map(row =>
-    '(' + columns.map(col => sanitizeSQLString(row[col])).join(', ') + ')',
+    '(' + columns.map(col => sanitizeSQLString(row[col]!)).join(', ') + ')',
   ).join(', ')
 
   return `INSERT INTO ${getTableName(query.table)} (${sqlColumns}) VALUES ${valueTuples}`
