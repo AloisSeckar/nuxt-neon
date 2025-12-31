@@ -8,7 +8,7 @@
 To obtain the instance of [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver), you can use:
 
 ```ts
-const neon = getNeonClient()
+const { neon } = useNeonDriver()
 ```
 
 This instance needs to be passed as the first parameter to following health check utils:

@@ -42,7 +42,7 @@ NUXT_NEON_DB=your-neon-database
 Obtain the [Neon serverless driver instance](https://neon.tech/docs/serverless/serverless-driver) on the Nuxt server with:
 
 ```ts
-const neon = getNeonClient()
+const { neon } = useNeonDriver()
 ```
 
 That's it! Your Nuxt app is now connected to a Neon database instance ✨

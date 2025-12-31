@@ -3,18 +3,19 @@ import type {
   NeonCountQuery, NeonSelectQuery, NeonInsertQuery, NeonUpdateQuery, NeonDeleteQuery,
   NeonStatusType, NeonError,
 } from '../../utils/neonTypes'
-import type { NeonDriverResult } from './getNeonClient'
 import { formatNeonError, getForbiddenError } from './neonErrors'
 import { assertAllowedQuery, assertAllowedTable } from './helpers/assertSQL'
 import { getDeleteSQL, getInsertSQL, getSelectSQL, getUpdateSQL } from './helpers/buildSQL'
 import { debugSQLIfAllowed } from './helpers/debugSQL'
-import { getNeonClient, useRuntimeConfig } from '#imports'
+import { useRuntimeConfig } from '#imports'
+import { type NeonDriverResult, useNeonDriver } from './useNeonDriver'
 
 type NeonDriver = NeonQueryFunction<boolean, boolean>
 type NeonDriverResponse = Promise<NeonDriverResult<false, false>>
 
 function getDefaultNeonDriver(): NeonDriver {
-  return getNeonClient()
+  const { neon } = useNeonDriver()
+  return neon
 }
 
 // separate wrapper instead of forcing users to pass 'count(*)' as column name

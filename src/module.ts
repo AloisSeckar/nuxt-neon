@@ -118,11 +118,11 @@ export default defineNuxtModule<ModuleOptions>({
     ])
 
     addServerImports([
-      // SQL client instance
+      // Neon DB driver instance
       {
-        name: 'getNeonClient',
-        as: 'getNeonClient',
-        from: resolver.resolve('runtime/server/utils/getNeonClient'),
+        name: 'useNeonDriver',
+        as: 'useNeonDriver',
+        from: resolver.resolve('runtime/server/utils/useNeonDriver'),
       },
       // wrapper methods
       {
