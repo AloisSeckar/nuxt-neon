@@ -1,7 +1,4 @@
-import type { NeonWhereType, NeonWhereOperator, NeonSSLModeOption } from '../types/neon'
-
-// workaround so this type can be referenced in module.ts
-export type { NeonSSLModeOption }
+import type { NeonWhereType, NeonWhereOperator } from '../types/neon'
 
 // fix for https://github.com/AloisSeckar/nuxt-neon/issues/45
 // replace ">" and "<" in WHERE clauses with safe values (will be reverted in backend)

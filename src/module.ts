@@ -3,13 +3,12 @@ import {
   addTypeTemplate, createResolver, defineNuxtModule,
 } from '@nuxt/kit'
 import commonjs from 'vite-plugin-commonjs'
+import type { NeonSSLModeOption } from './runtime/shared/types/neon'
 
-// type must be referenced from .ts file
-// (import directly from neon.d.ts doesn't work)
-import type { NeonSSLModeOption } from './runtime/shared/utils/neonUtils'
+// re-export types
+export type * from './runtime/shared/types/neon'
 
 // Module options TypeScript interface definition
-
 export interface ModuleOptions {
   /** Neon database name (your database name) - WILL BE exposed to client-side */
   neonDB: string
@@ -99,14 +98,16 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     addImportsDir(resolver.resolve('runtime/composables'))
+    addImportsDir(resolver.resolve('runtime/sharded/types'))
     addImportsDir(resolver.resolve('runtime/shared/utils'))
 
     addServerImportsDir(resolver.resolve('runtime/server/utils'))
+    addServerImportsDir(resolver.resolve('runtime/shared/types'))
     addServerImportsDir(resolver.resolve('runtime/shared/utils'))
 
     // export types
     addTypeTemplate({
-      src: resolver.resolve('runtime/shared/types/neon.d.ts'),
+      src: resolver.resolve('runtime/types/neon.d.ts'),
       filename: 'types/neon.d.ts',
     })
 
