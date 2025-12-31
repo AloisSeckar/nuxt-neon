@@ -1,5 +1,4 @@
 import type { NeonDataType } from '../../utils/neonTypes'
-import { getNeonClient } from '../utils/getNeonClient'
 import { getForbiddenError, getGenericError, parseNeonClientError } from '../utils/neonErrors'
 import { insert } from '../utils/neonSQL'
 import { defineEventHandler, readBody, useRuntimeConfig } from '#imports'
@@ -21,9 +20,7 @@ export default defineEventHandler(async (event): Promise<NeonDataType<string>> =
       console.debug('Request body:', body)
     }
 
-    const neon = getNeonClient()
-
-    const ret = await insert(neon, { ...body })
+    const ret = await insert({ ...body })
 
     // successful INSERT operation returns []
     if (ret.length === 0) {

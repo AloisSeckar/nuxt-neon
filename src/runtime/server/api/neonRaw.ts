@@ -1,6 +1,5 @@
 import type { H3Event, EventHandlerRequest } from 'h3'
 import type { NeonDataType } from '../../utils/neonTypes'
-import { getNeonClient } from '../utils/getNeonClient'
 import { getForbiddenError, parseNeonClientError } from '../utils/neonErrors'
 import { raw } from '../utils/neonSQL'
 import { defineEventHandler, readBody, useRuntimeConfig } from '#imports'
@@ -22,10 +21,8 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
       console.debug('Request body:', body)
     }
 
-    const neon = getNeonClient()
-
     // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-    return await raw(neon, body.query)
+    return await raw(body.query)
   }
   catch (err) {
     return await parseNeonClientError('/api/_neon/raw', err)

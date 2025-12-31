@@ -8,21 +8,25 @@ import { formatNeonError, getForbiddenError } from './neonErrors'
 import { assertAllowedQuery, assertAllowedTable } from './helpers/assertSQL'
 import { getDeleteSQL, getInsertSQL, getSelectSQL, getUpdateSQL } from './helpers/buildSQL'
 import { debugSQLIfAllowed } from './helpers/debugSQL'
-import { useRuntimeConfig } from '#imports'
+import { getNeonClient, useRuntimeConfig } from '#imports'
 
 type NeonDriver = NeonQueryFunction<boolean, boolean>
 type NeonDriverResponse = Promise<NeonDriverResult<false, false>>
 
+function getDefaultNeonDriver(): NeonDriver {
+  return getNeonClient()
+}
+
 // separate wrapper instead of forcing users to pass 'count(*)' as column name
-export async function count(neon: NeonDriver, query: NeonCountQuery): NeonDriverResponse {
+export async function count(query: NeonCountQuery, neon: NeonDriver = getDefaultNeonDriver()): NeonDriverResponse {
   if (useRuntimeConfig().public.neonDebugRuntime === true) {
     console.debug('Neon `count` server-side wrapper invoked')
   }
 
-  return await select(neon, { ...query, columns: ['count(*)'] })
+  return await select({ ...query, columns: ['count(*)'] }, neon)
 }
 
-export async function select<T>(neon: NeonDriver, query: NeonSelectQuery): Promise<Array<T>> {
+export async function select<T>(query: NeonSelectQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<Array<T>> {
   if (useRuntimeConfig().public.neonDebugRuntime === true) {
     console.debug('Neon `select` server-side wrapper invoked')
   }
@@ -36,7 +40,7 @@ export async function select<T>(neon: NeonDriver, query: NeonSelectQuery): Promi
   return results as Array<T>
 }
 
-export async function insert(neon: NeonDriver, query: NeonInsertQuery): NeonDriverResponse {
+export async function insert(query: NeonInsertQuery, neon: NeonDriver = getDefaultNeonDriver()): NeonDriverResponse {
   if (useRuntimeConfig().public.neonDebugRuntime === true) {
     console.debug('Neon `insert` server-side wrapper invoked')
   }
@@ -49,7 +53,7 @@ export async function insert(neon: NeonDriver, query: NeonInsertQuery): NeonDriv
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function update(neon: NeonDriver, query: NeonUpdateQuery): NeonDriverResponse {
+export async function update(query: NeonUpdateQuery, neon: NeonDriver = getDefaultNeonDriver()): NeonDriverResponse {
   if (useRuntimeConfig().public.neonDebugRuntime === true) {
     console.debug('Neon `update` server-side wrapper invoked')
   }
@@ -62,7 +66,7 @@ export async function update(neon: NeonDriver, query: NeonUpdateQuery): NeonDriv
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function del(neon: NeonDriver, query: NeonDeleteQuery): NeonDriverResponse {
+export async function del(query: NeonDeleteQuery, neon: NeonDriver = getDefaultNeonDriver()): NeonDriverResponse {
   if (useRuntimeConfig().public.neonDebugRuntime === true) {
     console.debug('Neon `delete` server-side wrapper invoked')
   }
@@ -75,7 +79,7 @@ export async function del(neon: NeonDriver, query: NeonDeleteQuery): NeonDriverR
   return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
 }
 
-export async function raw<T>(neon: NeonDriver, sqlString: string): Promise<Array<T>> {
+export async function raw<T>(sqlString: string, neon: NeonDriver = getDefaultNeonDriver()): Promise<Array<T>> {
   if (useRuntimeConfig().public.neonDebugRuntime === true) {
     console.debug('Neon `raw` server-side wrapper invoked')
   }
@@ -111,7 +115,7 @@ export async function neonStatus(neon: NeonDriver, anonymous: boolean = true, de
 
   let error = ''
   try {
-    const ret = await raw(neon, 'SELECT 1=1 as status')
+    const ret = await raw('SELECT 1=1 as status', neon)
     if (!Array.isArray(ret)) {
       error = formatNeonError(ret as NeonError)
     }
