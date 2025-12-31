@@ -93,7 +93,7 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     addImports([
-      // main client-side composable exposing SQL client and wrapper methods
+      // main client-side composable exposing SQL wrapper methods and health checks
       {
         name: 'useNeonClient',
         as: 'useNeonClient',
@@ -118,42 +118,17 @@ export default defineNuxtModule<ModuleOptions>({
     ])
 
     addServerImports([
-      // Neon DB driver instance
+      // composable creating Neon DB driver instance
       {
         name: 'useNeonDriver',
         as: 'useNeonDriver',
         from: resolver.resolve('runtime/server/utils/useNeonDriver'),
       },
-      // wrapper methods
+      // main server-side composable exposing SQL wrapper methods and health checks
       {
-        name: 'raw',
-        as: 'raw',
-        from: resolver.resolve('runtime/server/utils/neonSQL'),
-      },
-      {
-        name: 'count',
-        as: 'count',
-        from: resolver.resolve('runtime/server/utils/neonSQL'),
-      },
-      {
-        name: 'select',
-        as: 'select',
-        from: resolver.resolve('runtime/server/utils/neonSQL'),
-      },
-      {
-        name: 'insert',
-        as: 'insert',
-        from: resolver.resolve('runtime/server/utils/neonSQL'),
-      },
-      {
-        name: 'update',
-        as: 'update',
-        from: resolver.resolve('runtime/server/utils/neonSQL'),
-      },
-      {
-        name: 'del',
-        as: 'del',
-        from: resolver.resolve('runtime/server/utils/neonSQL'),
+        name: 'useNeonServer',
+        as: 'useNeonServer',
+        from: resolver.resolve('runtime/server/utils/useNeonServer'),
       },
       // error-handling utilities
       {
