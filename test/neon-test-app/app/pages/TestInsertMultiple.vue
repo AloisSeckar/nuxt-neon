@@ -22,9 +22,9 @@ VALUES
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useNeon } from '#imports'
+import { useNeonClient } from '#imports'
 
-const { insert } = useNeon()
+const { insert } = useNeonClient()
 
 // INSERT with only multiple values (parameter is Record<string, string>[])
 

@@ -3,7 +3,7 @@
     SELECT with GROUP BY + HAVING
   </h3>
   <div>
-    <pre>const { select } = useNeon()</pre>
+    <pre>const { select } = useNeonClient()</pre>
   </div>
   <button
     id="group-button"
@@ -19,9 +19,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useNeon } from '#imports'
+import { useNeonClient } from '#imports'
 
-const { select } = useNeon()
+const { select } = useNeonClient()
 
 const result = ref({})
 async function doSelect() {

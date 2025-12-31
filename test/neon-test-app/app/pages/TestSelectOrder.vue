@@ -15,9 +15,9 @@ ORDER BY
 </template>
 
 <script setup lang="ts">
-import { useAsyncData, useNeon } from '#imports'
+import { useAsyncData, useNeonClient } from '#imports'
 
-const { select } = useNeon()
+const { select } = useNeonClient()
 
 // simple JOIN of two tables via ID
 // using NeonColumnObject to define joining columns

@@ -16,9 +16,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { NeonTestData } from '../utils/types'
-import { useNeon } from '#imports'
+import { useNeonClient } from '#imports'
 
-const { select } = useNeon()
+const { select } = useNeonClient()
 
 const result = ref([] as NeonTestData[])
 async function doSelect() {

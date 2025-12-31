@@ -15,9 +15,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useNeon } from '#imports'
+import { useNeonClient } from '#imports'
 
-const { del } = useNeon()
+const { del } = useNeonClient()
 
 const result = ref('')
 async function doDelete() {

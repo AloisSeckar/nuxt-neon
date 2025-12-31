@@ -18,9 +18,9 @@ WHERE
 </template>
 
 <script setup lang="ts">
-import { useAsyncData, useNeon } from '#imports'
+import { useAsyncData, useNeonClient } from '#imports'
 
-const { select } = useNeon()
+const { select } = useNeonClient()
 
 // testing "join tables w/o JOIN (#28)"
 

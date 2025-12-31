@@ -15,9 +15,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useNeon } from '#imports'
+import { useNeonClient } from '#imports'
 
-const { count } = useNeon()
+const { count } = useNeonClient()
 
 const result = ref(-2) // initial state for test
 async function doCount() {

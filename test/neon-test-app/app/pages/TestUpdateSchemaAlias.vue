@@ -22,9 +22,9 @@ WHERE
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useNeon } from '#imports'
+import { useNeonClient } from '#imports'
 
-const { update } = useNeon()
+const { update } = useNeonClient()
 
 // UPDATE with
 // this test relies on TestInsertSchema that inserts the value with given id

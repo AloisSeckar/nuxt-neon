@@ -15,9 +15,9 @@ WHERE
 </template>
 
 <script setup lang="ts">
-import { useAsyncData, useNeon } from '#imports'
+import { useAsyncData, useNeonClient } from '#imports'
 
-const { raw } = useNeon()
+const { raw } = useNeonClient()
 
 // test disallowed raw SQL query being passed to raw endpoint
 // query should fail at validation

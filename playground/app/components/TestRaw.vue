@@ -1,7 +1,7 @@
 <template>
   <h3>Raw SQL Queries</h3>
   <div>
-    <pre>const { raw } = useNeon()</pre>
+    <pre>const { raw } = useNeonClient()</pre>
   </div>
   <button @click="doRaw">
     Execute raw query
@@ -16,9 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, useNeon } from '#imports'
+import { ref, useNeonClient } from '#imports'
 
-const { raw } = useNeon()
+const { raw } = useNeonClient()
 
 const result = ref({})
 async function doRaw() {

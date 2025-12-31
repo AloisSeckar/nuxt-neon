@@ -4,15 +4,15 @@ TODO add detailed description for client-side wrappers
 
 Once enabled, you can use following client-side features:
 
-#### `useNeon` composable
+#### `useNeonClient` composable
 
-This module exposes `useNeon()` composable on the client side. Currently two health check probes and six SQL wrappers are available:
+This module exposes `useNeonClient()` composable on the client side. Currently two health check probes and six SQL wrappers are available:
 
 ```ts
 // health check probes
-const { isOk, neonStatus } = useNeon()
+const { isOk, neonStatus } = useNeonClient()
 // SQL wrappers
-const { raw, count, select, insert, update, del } = useNeon()
+const { raw, count, select, insert, update, del } = useNeonClient()
 ```
 
 #### Health checks
@@ -21,14 +21,14 @@ Current status of the connection can be quickly checked by calling async functio
 
 ```ts
 // async (): Promise<boolean>
-const { isOk } = useNeon()
+const { isOk } = useNeonClient()
 ```
 
 The return value `true/false` is based on more complex probe function `neonStatus` which is also available:
 
 ```ts
 // async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusResult>
-const { neonStatus } = useNeon()
+const { neonStatus } = useNeonClient()
 ```
 
 The test is performed by firing a `SELECT 1=1` query to the current Neon database.
@@ -58,7 +58,7 @@ This module offers SQL client-side wrappers that communicate with Nuxt server-si
 
 ```ts
 // async <T> (query: string): Promise<Array<T> | NeonError>
-const { raw } = useNeon()
+const { raw } = useNeonClient()
 ```
 
 This wrapper allows you to perform **ANY** SQL directly.
@@ -73,7 +73,7 @@ As additional security measure you must explicitly allow queries that can be exe
 
 ```ts
 // async (from: string | NeonTableObject | NeonTableObject[], where?: string | NeonWhereObject | NeonWhereObject[]): Promise<number | NeonError>
-const { count } = useNeon()
+const { count } = useNeonClient()
 ```
 
 This is a special wrapper to allow `select count(*) from` query:
@@ -90,7 +90,7 @@ It just calls the `select()` wrapper function under the hood, but abstracts user
 
 ```ts
 // async <T> (columns: string | string[] | NeonColumnObject | NeonColumnObject[], from: string | NeonTableObject | NeonTableObject[], where?: string | NeonWhereObject | NeonWhereObject[], order?: string | NeonOrderObject | NeonOrderObject[], limit?: number, group?: string | string[] | NeonColumnObject | NeonColumnObject[], having?: string | NeonWhereObject | NeonWhereObject[]): Promise<Array<T> | NeonError>
-const { select } = useNeon()
+const { select } = useNeonClient()
 ```
 
 You can perform `SELECT` operation via this function with following parameters:
@@ -126,7 +126,7 @@ Returns the result of the SELECT query (Neon client returns `[]` for empty set) 
 
 ```ts
 // async (table: string | NeonTableObject, values: Record<string, string> | Record<string, string>[]): Promise<string | NeonError>
-const { insert } = useNeon()
+const { insert } = useNeonClient()
 ```
 
 You can perform `INSERT` operation via this with following parameters:
@@ -141,7 +141,7 @@ Currently, `INSERT` is limited to one row at the time.
 
 ```ts
 // sync (table: string | NeonTableObject, values: Record<string, string>, where?: string | NeonWhereObject | NeonWhereObject[]): Promise<string | NeonError>
-const { update } = useNeon()
+const { update } = useNeonClient()
 ```
 You can perform `UPDATE` operation via this function with following parameters:
 - **table** - DB table to be updated
@@ -156,7 +156,7 @@ You can perform `UPDATE` operation via this function with following parameters:
 
 ```ts
 // async (table: string | NeonTableObject, where?: string | NeonWhereObject | NeonWhereObject[]): Promise<string | NeonError>
-const { del } = useNeon()
+const { del } = useNeonClient()
 ```
 You can perform `DELETE` operation via this function with following parameters:
 - **table** - DB table to be deleled from

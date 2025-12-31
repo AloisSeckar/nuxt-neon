@@ -1,7 +1,7 @@
 <template>
   <h3>GROUP BY + HAVING</h3>
   <div>
-    <pre>const { select } = useNeon()</pre>
+    <pre>const { select } = useNeonClient()</pre>
   </div>
   <button @click="doSelect">
     Execute select with group by + having
@@ -13,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, useNeon } from '#imports'
+import { ref, useNeonClient } from '#imports'
 
-const { select } = useNeon()
+const { select } = useNeonClient()
 
 const result = ref({})
 async function doSelect() {

@@ -95,9 +95,9 @@ export default defineNuxtModule<ModuleOptions>({
     addImports([
       // main client-side composable exposing SQL client and wrapper methods
       {
-        name: 'useNeon',
-        as: 'useNeon',
-        from: resolver.resolve('runtime/composables/useNeon'),
+        name: 'useNeonClient',
+        as: 'useNeonClient',
+        from: resolver.resolve('runtime/composables/useNeonClient'),
       },
       // error-handling utilities
       {

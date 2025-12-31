@@ -20,9 +20,9 @@ WHERE
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useNeon } from '#imports'
+import { useNeonClient } from '#imports'
 
-const { del } = useNeon()
+const { del } = useNeonClient()
 
 // this tests deleting with schema and alias defined
 // it also cleanups after related insert/update test suite runs

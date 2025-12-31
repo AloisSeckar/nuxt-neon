@@ -17,9 +17,9 @@ HAVING
 </template>
 
 <script setup lang="ts">
-import { useAsyncData, useNeon } from '#imports'
+import { useAsyncData, useNeonClient } from '#imports'
 
-const { select } = useNeon()
+const { select } = useNeonClient()
 
 // test HAVING clause being trated same as WHERE clauses
 // with specific behvior for BETWEEN operator

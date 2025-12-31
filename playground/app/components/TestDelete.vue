@@ -1,7 +1,7 @@
 <template>
   <h3>DELETE</h3>
   <div>
-    <pre>const { del } = useNeon()</pre>
+    <pre>const { del } = useNeonClient()</pre>
   </div>
   <button @click="doDelete">
     Execute delete
@@ -13,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, useNeon } from '#imports'
+import { ref, useNeonClient } from '#imports'
 
-const { del } = useNeon()
+const { del } = useNeonClient()
 
 const result = ref({})
 async function doDelete() {

@@ -1,7 +1,7 @@
 <template>
   <h3>COUNT</h3>
   <div>
-    <pre>const { count } = useNeon()</pre>
+    <pre>const { count } = useNeonClient()</pre>
   </div>
   <button @click="doCount">
     Execute count
@@ -13,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, useNeon } from '#imports'
+import { ref, useNeonClient } from '#imports'
 
-const { count } = useNeon()
+const { count } = useNeonClient()
 
 const result = ref({})
 async function doCount() {

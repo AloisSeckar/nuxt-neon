@@ -10,7 +10,7 @@
     This is a Nuxt module allowing smooth integration with <a href="https://neon.tech/home">Neon database</a>
   </div>
   <div class="info">
-    The module provides `useNeon()` composable with methods + bunch of server-side routes to send SQL queries to the underlaying Neon DB using their <a href="https://neon.tech/docs/serverless/serverless-driver">JS/TS driver</a>
+    The module provides `useNeonClient()` composable with methods + bunch of server-side routes to send SQL queries to the underlaying Neon DB using their <a href="https://neon.tech/docs/serverless/serverless-driver">JS/TS driver</a>
   </div>
   <div class="info">
     The connection string is constructed server-side using four Nuxt runtime variables:
@@ -24,10 +24,10 @@
   <h2>Features</h2>
   <h3>Health check probes</h3>
   <div class="info">
-    <pre class="neon-code">const { isOk } = useNeon()</pre> <br> <pre class="neon-result">{{ connectionOpen }}</pre>
+    <pre class="neon-code">const { isOk } = useNeonClient()</pre> <br> <pre class="neon-result">{{ connectionOpen }}</pre>
   </div>
   <div class="info">
-    <pre class="neon-code">const { neonStatus } = useNeon()</pre> <br> <pre class="neon-result">{{ dbStatus }}</pre>
+    <pre class="neon-code">const { neonStatus } = useNeonClient()</pre> <br> <pre class="neon-result">{{ dbStatus }}</pre>
   </div>
   <h3>SQL Wrappers</h3>
   <TestSelect />
@@ -44,9 +44,9 @@
 </template>
 
 <script setup lang="ts">
-import { useNeon } from '#imports'
+import { useNeonClient } from '#imports'
 
-const { neonStatus, isOk } = useNeon()
+const { neonStatus, isOk } = useNeonClient()
 const dbStatus = await neonStatus(false, true) // consider disclosing in prod (see docs)
 const connectionOpen = await isOk()
 </script>

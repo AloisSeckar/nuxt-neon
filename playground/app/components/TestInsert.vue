@@ -1,7 +1,7 @@
 <template>
   <h3>INSERT</h3>
   <div>
-    <pre>const { insert } = useNeon()</pre>
+    <pre>const { insert } = useNeonClient()</pre>
   </div>
   <button @click="doInsert">
     Execute insert
@@ -13,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, useNeon } from '#imports'
+import { ref, useNeonClient } from '#imports'
 
-const { insert } = useNeon()
+const { insert } = useNeonClient()
 
 const result = ref({})
 async function doInsert() {

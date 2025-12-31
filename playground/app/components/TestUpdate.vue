@@ -1,7 +1,7 @@
 <template>
   <h3>UPDATE</h3>
   <div>
-    <pre>const { update } = useNeon()</pre>
+    <pre>const { update } = useNeonClient()</pre>
   </div>
   <button @click="doUpdate">
     Execute update
@@ -13,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, useNeon } from '#imports'
+import { ref, useNeonClient } from '#imports'
 
-const { update } = useNeon()
+const { update } = useNeonClient()
 
 const result = ref({})
 async function doUpdate() {

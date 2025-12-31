@@ -10,7 +10,7 @@ import {
 import { useRuntimeConfig } from '#imports'
 import { encodeWhereType } from '../utils/neonUtils'
 
-export function useNeon() {
+export const useNeonClient = () => {
   const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusType> => {
     const dbName = useRuntimeConfig().public.neonDB as string
 

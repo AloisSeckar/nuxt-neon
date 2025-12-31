@@ -1,7 +1,7 @@
 <template>
   <h2>Health check probes</h2>
   <div>
-    <pre>const { isOk } = useNeon()</pre>
+    <pre>const { isOk } = useNeonClient()</pre>
     <div
       id="connection"
       style="display: inline"
@@ -10,7 +10,7 @@
     </div>
   </div>
   <div>
-    <pre>const { neonStatus } = useNeon()</pre>
+    <pre>const { neonStatus } = useNeonClient()</pre>
     <div
       id="status"
       style="display: inline"
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { useNeon } from '#imports'
+import { useNeonClient } from '#imports'
 
 import BasicCount from '../components/BasicCount.vue'
 import BasicDelete from '../components/BasicDelete.vue'
@@ -38,7 +38,7 @@ import BasicRaw from '../components/BasicRaw.vue'
 import BasicSelect from '../components/BasicSelect.vue'
 import BasicUpdate from '../components/BasicUpdate.vue'
 
-const { neonStatus, isOk } = useNeon()
+const { neonStatus, isOk } = useNeonClient()
 
 const dbStatus = await neonStatus(false, true)
 const connectionOpen = await isOk()
