@@ -6,7 +6,7 @@
 > [!WARNING]
 > By default, calling Neon directly from front-end via API endpoints or SQL wrappers is **disabled** and **will throw an error** if invoked. 
 > 
-> It requires an explicit opt-in via module option `neonExposeEndpoints: true` or runtime config variable `NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=true` to be allowed.
+> It requires an explicit opt-in via a [module option](2-5-features-options.md#neonexposeendpoints) to be allowed. 
 
 Once enabled, you can use pretty much the same health checks and SQL wrappers as on the server side accessible via `useNeonClient()` composable. The only difference is that the client-side variants aren't accepting `NeonDriver` instance as parameter (the connection is only proxied via server-side API endpoints).
 

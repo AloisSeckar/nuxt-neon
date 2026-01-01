@@ -31,6 +31,7 @@ export default defineConfig({
           { text: 'Client side', link: '/2-3-features-client' },
           { text: 'Shared features', link: '/2-4-features-shared' },
           { text: 'Module options', link: '/2-5-features-options' },
+          { text: 'Neon SQL API', link: '/2-6-features-types' },
         ],
       },
       {

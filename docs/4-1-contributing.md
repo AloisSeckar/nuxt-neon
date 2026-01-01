@@ -57,11 +57,12 @@ Because we generally want `unit` test to run (and fail if necessary) before `e2e
 ```json [package.json]
 {
   "scripts": {
+    "test": "pnpm test:unit && pnpm test:e2e",
     "test:unit": "vitest run test/test-unit",
     "test:e2e": "vitest run test/test-e2e",
-    "test": "pnpm test:unit && pnpm test:e2e",
   }
 }
+```
 
 To run tests, you need minimal `/test/neon-test-app/.env` file with Neon connection settings:
 
@@ -72,3 +73,28 @@ NUXT_NEON_PASS=<your-neon-password>
 ```
 
 Due to current test implementation, database must be named `elrh-neon` and you can populate it using SQL scripts in `/data` folder.
+
+Running `pnpm test` must pass before any change is accepted.
+
+### Type tests
+
+There are extra tests to check type definitions via `vue-tsc`.
+
+There are three separate type test variants:
+
+```json [package.json]
+{
+  "scripts": {
+    "test:types": "pnpm test:types:server && pnpm test:types:client && pnpm test:types:module",
+    "test:types:server": "cd src/runtime/server && vue-tsc --noEmit",
+    "test:types:client": "vue-tsc --noEmit",
+    "test:types:module": "tsc --noEmit --module esnext --moduleResolution bundler --skipLibCheck test/neon-types/test-types.ts",
+  }
+}
+```
+
+- `test:types:server` - Checks types within `src/runtime/server` directory - which is the core of the module. Due to current architectural constraints it cannot be tested together with client types (the contents of `#import` alias is different for server and client context).
+- `test:types:client` - Checks types across the rest of the project including `/playground` and `/test` folders.
+- `test:types:module` - Checks availability of direct imports from `nuxt-neon` module as they would appear to end users.
+
+Running `pnpm test:types` must pass before any change is accepted.
