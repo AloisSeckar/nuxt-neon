@@ -40,7 +40,7 @@ const status: NeonStatusType = await neonStatus()
 
 Check [server-side `neonStatus`](2-2-features-server.md#isok) for more details.
 
-Unlike the server counter-part, it returns `useRuntimeConfig().public.neonDB` as `database` value (which may be empty or set to something else than the actual DB name used for connection at server-side). Also, `debugInfo` is only populated when `useRuntimeConfig().public.neonDebugRuntime` is set to `true` to aviod accidental leakage of implementation detail. It is advised only to use this option during development and debugging.
+Unlike the server counter-part, it returns `useRuntimeConfig().public.neonDB` as `database` value (which may be empty or set to something else than the actual DB name used for connection at server-side). Also, `debugInfo` is only populated when `useRuntimeConfig().public.neonDebugRuntime` is set to `true` to avoid accidental leakage of implementation detail. It is advised only to use this option during development and debugging.
 
 ## SQL Wrappers
 

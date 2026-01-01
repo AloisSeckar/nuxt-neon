@@ -52,6 +52,6 @@ That's it! Your Nuxt app is now connected to a Neon database instance ✨
 
 ## More info
 
-- Continue to the [features](/2-1-features) for summary of what else is available.
+- Continue to the [features](/2-1-features) for a summary of what else is available.
 - See [changelog](/3-1-changelog.html) to display the latest changes.
 - Visit [contributing guide](/4-1-contributing.html) if you want to help with development.

@@ -16,7 +16,7 @@ NUXT_NEON_PASS=your-neon-password
 NUXT_NEON_DB=your-neon-database
 ```
 
-Nuxt Neon uses them to costruct a PostgreSQL connection string:
+Nuxt Neon uses them to construct a PostgreSQL connection string:
 
 ```ts
 `postgresql://${NUXT_NEON_USER}:${NUXT_NEON_PASS}@${NUXT_NEON_HOST}.neon.tech/${NUXT[_PUBLIC]NEON_DB}`
@@ -235,7 +235,7 @@ The Neon driver will throw an error, if the query fails.
 > [!CAUTION]
 > This will allow running **ANY** valid SQL queries against your database. Be careful with this.
 
-This special wrapper is meant as an escape hatch for running raw SQL queries that are currently supported by other wrappers. You are encouraged to [open a new issue](https://github.com/AloisSeckar/nuxt-neon/issues) with your needs. Using `raw` wrapper should be only temporary solution until the fix is delivered. **NEVER allow unchecked user input via `raw` handler**.
+This special wrapper is meant as an escape hatch for running raw SQL queries that are not currently supported by other wrappers. You are encouraged to [open a new issue](https://github.com/AloisSeckar/nuxt-neon/issues) with your needs. Using `raw` wrapper should be only temporary solution until the fix is delivered. **NEVER allow unchecked user input via `raw` handler**.
 
 > [!WARNING]
 > By default, the `raw` function is **disabled** and **will throw an error** if invoked. 

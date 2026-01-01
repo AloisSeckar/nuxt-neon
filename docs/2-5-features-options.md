@@ -75,7 +75,7 @@ NUXT_NEON_ALLOWED_TABLES='products,orders'
 
 ### `neonAllowedQueries`
 
-Semicolon-separatedlist of SQL queries allowed to be executed via [`raw`](2-2-features-server.md#raw) SQL wrapper.
+Semicolon-separated list of SQL queries allowed to be executed via [`raw`](2-2-features-server.md#raw) SQL wrapper.
 
 **Possible values:**
 

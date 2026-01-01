@@ -2,9 +2,9 @@
 
 The Neon SQL API provides a convenient object-oriented way to interact with your Neon database without writing raw SQL queries. It is used for passing arguments into [SQL wrappers](2-2-features-server.md#sql-wrappers) for `SELECT`, `INSERT`, `UPDATE`, and `DELETE` functions.
 
-Passed-in values are checked and sanitized to prevent SQL injection attacks before being used to construct the respectrive SQL query.
+Passed-in values are checked and sanitized to prevent SQL injection attacks before being used to construct the respective SQL query.
 
-In case you'll encounter a situation that is not supported by current API, you are encouraged to [open an issue](https://github.com/AloisSeckar/nuxt-neon/issues) with new feature request. Meanwhile, you can fallback to using [`raw` wrapper](2-2-features-server.md#raw).
+In case you'll encounter a situation that is not supported by the current API, you are encouraged to [open an issue](https://github.com/AloisSeckar/nuxt-neon/issues) with a new feature request. Meanwhile, you can fall back to using [`raw` wrapper](2-2-features-server.md#raw).
 
 Up-to-date definition of all types can be found in the [`neon.ts` file](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/shared/types/neon.ts).
 
