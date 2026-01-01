@@ -29,6 +29,8 @@ export default defineConfig({
           { text: 'Index', link: '/2-1-features' },
           { text: 'Server side', link: '/2-2-features-server' },
           { text: 'Client side', link: '/2-3-features-client' },
+          { text: 'Shared features', link: '/2-4-features-shared' },
+          { text: 'Module options', link: '/2-5-features-options' },
         ],
       },
       {
