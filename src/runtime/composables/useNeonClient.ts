@@ -10,8 +10,9 @@ import {
 } from '#imports'
 
 export const useNeonClient = () => {
-  const neonStatus = async (anonymous: boolean = true, debug: boolean = false): Promise<NeonStatusType> => {
+  const neonStatus = async (): Promise<NeonStatusType> => {
     const dbName = useRuntimeConfig().public.neonDB as string
+    const debug = useRuntimeConfig().public.neonDebugRuntime as boolean
 
     let error = ''
     try {
@@ -25,7 +26,7 @@ export const useNeonClient = () => {
     }
 
     return {
-      database: anonymous ? '' : dbName,
+      database: dbName,
       status: error ? 'ERR' : 'OK',
       debugInfo: debug ? error : '',
     }

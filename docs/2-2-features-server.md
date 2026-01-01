@@ -61,8 +61,6 @@ For more advanced status monitoring, you can use `neonStatus`:
 
 ```ts
 // async (
-//   anonymous: boolean = true, 
-//   debug: boolean = false
 //   neon: NeonDriver = getDefaultNeonDriver()
 // ): Promise<NeonStatusType>
 const { neonStatus } = useNeonServer()
@@ -78,14 +76,10 @@ type NeonStatusType = {
 
 The test is performed by firing a `SELECT 1=1` query to the current Neon database.
 
-The function takes two optional parameters:
-- `anonymous: boolean = true` - if set to `false`, it will disclose database name (`useRuntimeConfig().public.neonDB` value)
-- `debug: boolean = false` - if set to `true`, if will append the root cause returned by Neon driver when error occured [**WARNING**: may expose sensitive data! Use with caution]
-
-Value returned is a `NeonStatusResult` promise:
-- `database: string` - name of the Neon database (hidden, if `anonymous = true`)
+Value returned is a `NeonStatusType` promise:
+- `database: string` - name of the Neon database - `useRuntimeConfig().neonDB` value
 - `status: 'OK' | 'ERR'` - `OK` if connection works, `ERR` if error occured
-- `debug?: string` - Neon driver error, if `status = 'ERR'` and `debug = true`
+- `debug?: string` - the error message returned from unsuccessful query attempt
 
 ## SQL wrappers
 

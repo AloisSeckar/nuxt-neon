@@ -25,6 +25,39 @@ export const useNeonServer = () => {
     throw new Error('useNeonServer can only be used within Nuxt server-side context')
   }
 
+  // health check probe
+  const neonStatus = async (neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonStatusType> => {
+    if (useRuntimeConfig().public.neonDebugRuntime === true) {
+      console.debug('Neon `neonStatus` server-side health check invoked')
+    }
+
+    let error = ''
+    try {
+      const ret = await raw('SELECT 1=1 as status', neon)
+      if (!Array.isArray(ret)) {
+        error = formatNeonError(ret as NeonError)
+      }
+    }
+    catch (err) {
+      error = (err as Error).message
+    }
+
+    return {
+      database: useRuntimeConfig().neonDB,
+      status: error ? 'ERR' : 'OK',
+      debugInfo: error,
+    }
+  }
+
+  // simple true/false health check
+  const isOk = async (neon: NeonDriver = getDefaultNeonDriver()): Promise<boolean> => {
+    if (useRuntimeConfig().public.neonDebugRuntime === true) {
+      console.debug('Neon `isOk` server-side health check invoked')
+    }
+
+    return (await neonStatus(neon)).status === 'OK'
+  }
+
   // separate wrapper instead of forcing users to pass 'count(*)' as column name
   const count = async (query: NeonCountQuery, neon: NeonDriver = getDefaultNeonDriver()): NeonDriverResponse => {
     if (useRuntimeConfig().public.neonDebugRuntime === true) {
@@ -119,40 +152,10 @@ export const useNeonServer = () => {
     return results as Array<T>
   }
 
-  // health check probe
-  const neonStatus = async (anonymous: boolean = true, debug: boolean = false, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonStatusType> => {
-    if (useRuntimeConfig().public.neonDebugRuntime === true) {
-      console.debug('Neon `neonStatus` server-side health check invoked')
-    }
-
-    let error = ''
-    try {
-      const ret = await raw('SELECT 1=1 as status', neon)
-      if (!Array.isArray(ret)) {
-        error = formatNeonError(ret as NeonError)
-      }
-    }
-    catch (err) {
-      error = (err as Error).message
-    }
-
-    return {
-      database: anonymous ? '' : useRuntimeConfig().public.neonDB,
-      status: error ? 'ERR' : 'OK',
-      debugInfo: debug ? error : '',
-    }
-  }
-
-  // simple true/false health check
-  const isOk = async (neon: NeonDriver = getDefaultNeonDriver()): Promise<boolean> => {
-    if (useRuntimeConfig().public.neonDebugRuntime === true) {
-      console.debug('Neon `isOk` server-side health check invoked')
-    }
-
-    return (await neonStatus(true, false, neon)).status === 'OK'
-  }
-
   return {
+    // health check probes
+    neonStatus,
+    isOk,
     // SQL wrappers
     raw,
     count,
@@ -160,8 +163,5 @@ export const useNeonServer = () => {
     insert,
     update,
     del,
-    // health check probes
-    neonStatus,
-    isOk,
   }
 }

@@ -40,6 +40,6 @@ import BasicUpdate from '../components/BasicUpdate.vue'
 
 const { neonStatus, isOk } = useNeonClient()
 
-const dbStatus = await neonStatus(false, true)
+const dbStatus = await neonStatus()
 const connectionOpen = await isOk()
 </script>
