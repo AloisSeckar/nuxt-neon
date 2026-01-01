@@ -54,7 +54,7 @@ export default defineNuxtModule<ModuleOptions>({
     neonExposeEndpoints: false,
     neonExposeRawEndpoint: false,
     neonAllowedTables: 'NEON_PUBLIC',
-    neonAllowedQueries: undefined,
+    neonAllowedQueries: '',
   },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
@@ -113,11 +113,11 @@ export default defineNuxtModule<ModuleOptions>({
 
     // 'sqlstring' only exists as a CommonJS module
     // this should allow it being consumed in ESM runtimes
-    nuxt.options.vite ??= {}
-    nuxt.options.vite.plugins ??= []
+    nuxt.options.vite ||= {}
+    nuxt.options.vite.plugins ||= []
     nuxt.options.vite.plugins.push(commonjs())
-    nuxt.options.vite.optimizeDeps ??= {}
-    nuxt.options.vite.optimizeDeps.include ??= []
+    nuxt.options.vite.optimizeDeps ||= {}
+    nuxt.options.vite.optimizeDeps.include ||= []
     nuxt.options.vite.optimizeDeps.include.push('sqlstring')
 
     // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
