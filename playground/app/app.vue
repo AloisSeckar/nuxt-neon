@@ -47,7 +47,7 @@
 import { useNeonClient } from '#imports'
 
 const { neonStatus, isOk } = useNeonClient()
-const dbStatus = await neonStatus(false, true) // consider disclosing in prod (see docs)
+const dbStatus = await neonStatus()
 const connectionOpen = await isOk()
 </script>
 
