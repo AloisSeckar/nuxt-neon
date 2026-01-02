@@ -18,8 +18,10 @@ export default defineBuildConfig({
       }
     },
     // tsconfig.json is not relevant to be shipped
-    'build:done': async () => {
-      await rm(resolve('dist/runtime/server/tsconfig.json'), { force: true })
+    'build:done': async (ctx) => {
+      if (ctx.options.stub === false) {
+        await rm(resolve('dist/runtime/server/tsconfig.json'), { force: true })
+      }
     },
   },
 })
