@@ -63,13 +63,13 @@ For more advanced status monitoring, you can use `neonStatus`:
 ```ts
 // async (
 //   neon: NeonDriver = getDefaultNeonDriver()
-// ): Promise<NeonStatusType>
+// ): Promise<NeonStatusResponse>
 
 const { neonStatus } = useNeonServer()
 
-const status: NeonStatusType = await neonStatus()
+const status: NeonStatusResponse = await neonStatus()
 
-type NeonStatusType = {
+type NeonStatusResponse = {
   database: string,
   status: 'OK' | 'ERROR',
   debugInfo?: string,
@@ -78,7 +78,7 @@ type NeonStatusType = {
 
 The test is performed by firing a `SELECT 1=1` query to the current Neon database.
 
-Value returned is a `NeonStatusType` promise:
+Value returned is a `NeonStatusResponse` promise:
 - `database: string` - name of the Neon database - `useRuntimeConfig().neonDB` value
 - `status: 'OK' | 'ERR'` - `OK` if connection works, `ERR` if error occured
 - `debug?: string` - the error message returned from unsuccessful query attempt
@@ -98,11 +98,11 @@ For invoking `SELECT` queries you can use:
 // async (
 //   query: NeonSelectQuery, 
 //   neon: NeonDriver = getDefaultNeonDriver()
-// ): Promise<Array<T>>
+// ): Promise<NeonDataResponse<T>>
 
 const { select } = useNeonServer()
 
-const result: Array<T> = await select<T>(query)
+const result: NeonDataResponse<T> = await select<T>(query)
 
 type NeonSelectQuery = {
   columns: NeonColumnType
@@ -113,13 +113,15 @@ type NeonSelectQuery = {
   group?: NeonColumnType
   having?: NeonWhereType
 }
+
+type NeonDataResponse<T> = Array<T> | NeonError
 ```
 
 The function returns an array of objects extracted from the database based on the SQL `SELECT` query constructed from the passed `query` object. The type signature allows generic parameter `T` to be passed in according to your needs. 
 
 For type definition of `NeonSelectQuery` refer to [type definition page](2-6-features-types.md#neonselectquery).
 
-The Neon driver will throw an error, if the query fails.
+If anything fails, the wrapper will construct `NeonError` object with relevant info.
 
 ### `count`
 
@@ -129,7 +131,7 @@ For simplified `COUNT` query (only `COUNT(*)` is supported) you can use:
 // async (
 //   query: NeonCountQuery,
 //   neon: NeonDriver = getDefaultNeonDriver()
-// ): Promise<number>
+// ): Promise<NeonCountResponse>
 
 const { count } = useNeonServer()
 
@@ -139,13 +141,15 @@ type NeonCountQuery = {
   table: NeonTableType
   where?: NeonWhereType
 }
+
+type NeonCountResponse = number | NeonError
 ```
 
 This just calls the `select()` wrapper function under the hood, but abstracts users from having to pass `columns = ['count(*)']` and automatically extracts the count value from the response. This wrapper exists solely for convenience for the most straightforward use-case. For more complex scenarios, please use the `select` wrapper with more flexible API directly.
 
 For type definition of `NeonCountQuery` refer to [type definition page](2-6-features-types.md#neoncountquery).
 
-The Neon driver will throw an error, if the query fails.
+If anything fails, the wrapper will construct `NeonError` object with relevant info.
 
 ### `insert`
 
@@ -155,25 +159,27 @@ For invoking `INSERT` queries you can use:
 // async (
 //   query: NeonInsertQuery,
 //   neon: NeonDriver = getDefaultNeonDriver()
-// ): NeonDriverResponse
+// ): NeonEditResponse
 
 const { insert } = useNeonServer()
 
-const result: NeonDriverResponse = await insert()
+const result: NeonEditResponse = await insert(query)
 
 type NeonInsertQuery = {
   table: NeonTableType
   values: NeonInsertType
 }
+
+type NeonEditResponse = 'OK' | NeonError  
 ```
 
 Currently, `INSERT` is limited to one row at the time.
 
-Successful `INSERT` query only returns `[]` (an empty array) as response. 
+Successful `INSERT` query only returns `[]` (an empty array) as response which is translated into `'OK'` result. 
 
 For type definition of `NeonInsertQuery` refer to [type definition page](2-6-features-types.md#neoninsertquery).
 
-The Neon driver will throw an error, if the query fails.
+If anything fails, the wrapper will construct `NeonError` object with relevant info.
 
 ### `update`
 
@@ -183,24 +189,26 @@ For invoking `UPDATE` queries you can use:
 // async (
 //   query: NeonUpdateQuery,
 //   neon: NeonDriver = getDefaultNeonDriver()
-// ): NeonDriverResponse
+// ): NeonEditResponse
 
 const { update } = useNeonServer()
 
-const result: NeonDriverResponse = await update()
+const result: NeonEditResponse = await update(query)
 
 type NeonUpdateQuery = {
   table: NeonTableType
   values: NeonUpdateType
   where?: NeonWhereType
 }
+
+type NeonEditResponse = 'OK' | NeonError
 ```
 
-Successful `UPDATE` query only returns `[]` (an empty array) as response.
+Successful `UPDATE` query only returns `[]` (an empty array) as response which is translated into `'OK'` result. 
 
 For type definition of `NeonUpdateQuery` refer to [type definition page](2-6-features-types.md#neonupdatequery).
 
-The Neon driver will throw an error, if the query fails.
+If anything fails, the wrapper will construct `NeonError` object with relevant info.
 
 ### `del`
 
@@ -212,23 +220,25 @@ For invoking `DELETE` queries you can use:
 // async (
 //   query: NeonDeleteQuery,
 //   neon: NeonDriver = getDefaultNeonDriver()
-// ): NeonDriverResponse
+// ): NeonEditResponse
 
 const { del } = useNeonServer()
 
-const result: NeonDriverResponse = await del()
+const result: NeonDriverResponse = await del(query)
 
 type NeonDeleteQuery = {
   table: NeonTableType
   where?: NeonWhereType
 }
+
+type NeonEditResponse = 'OK' | NeonError
 ```
 
-Successful `DELETE` query only returns `[]` (an empty array) as response.
+Successful `DELETE` query only returns `[]` (an empty array) as response which is translated into `'OK'` result. 
 
 For type definition of `NeonDeleteQuery` refer to [type definition page](2-6-features-types.md#neondeletequery).
 
-The Neon driver will throw an error, if the query fails.
+If anything fails, the wrapper will construct `NeonError` object with relevant info.
 
 ### `raw`
 
@@ -251,9 +261,15 @@ If the wrapper is allowed, you can execute (allowed) raw queries using:
 // async (
 //   query: string, 
 //   neon: NeonDriver = getDefaultNeonDriver()
-// ): Promise<Array<T>>
+// ): Promise<NeonDataResponse<T>>
 
 const { raw } = useNeonServer()
 
-const result: Array<T> = await raw<T>('SELECT * FROM users')
+const result: NeonDataResponse<T> = await raw<T>('SELECT * FROM users')
+
+type NeonDataResponse<T> = Array<T> | NeonError
 ```
+
+The result is returned as an array of objects, which is the standard response of the serverless driver. The type signature allows generic parameter `T` to be passed in according to your needs. 
+
+If anything fails, the wrapper will construct `NeonError` object with relevant info.

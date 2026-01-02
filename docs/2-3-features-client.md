@@ -32,10 +32,10 @@ Check [server-side `isOk`](2-2-features-server.md#isok) for more details.
 More detailed DB status check:
 
 ```ts
-// async (): Promise<NeonStatusType>
+// async (): Promise<NeonStatusResponse>
 const { neonStatus } = useNeonClient()
 
-const status: NeonStatusType = await neonStatus()
+const status: NeonStatusResponse = await neonStatus()
 ```
 
 Check [server-side `neonStatus`](2-2-features-server.md#isok) for more details.
@@ -49,12 +49,22 @@ Unlike the server counter-part, it returns `useRuntimeConfig().public.neonDB` as
 ```ts
 // async (
 //   query: NeonSelectQuery
-// ): Promise<NeonDataType<T>>
+// ): Promise<NeonDataResponse<T>>
 const { select } = useNeonClient()
 
-const result: NeonDataType<T> = await select<T>()
+const result: NeonDataResponse<T> = await select<T>(query)
 
-type NeonDataType<T> = Array<T> | NeonError
+type NeonSelectQuery = {
+  columns: NeonColumnType
+  from: NeonFromType
+  where?: NeonWhereType
+  order?: NeonOrderType
+  limit?: number
+  group?: NeonColumnType
+  having?: NeonWhereType
+}
+
+type NeonDataResponse<T> = Array<T> | NeonError
 ```
 
 Check [server-side `select`](2-2-features-server.md#select) for more details.
@@ -64,12 +74,17 @@ Check [server-side `select`](2-2-features-server.md#select) for more details.
 ```ts
 // async (
 //   query: NeonCountQuery
-// ): Promise<NeonCountType>
+// ): Promise<NeonCountResponse>
 const { count } = useNeonClient()
 
-const totalCount: NeonCountType = await count()
+const totalCount: NeonCountResponse = await count(query)
 
-type NeonCountType = number | NeonError
+type NeonCountQuery = {
+  table: NeonTableType
+  where?: NeonWhereType
+}
+
+type NeonCountResponse = number | NeonError
 ```
 
 Check [server-side `count`](2-2-features-server.md#count) for more details.
@@ -79,12 +94,17 @@ Check [server-side `count`](2-2-features-server.md#count) for more details.
 ```ts
 // async (
 //   query: NeonInsertQuery
-// ): NeonEditType 
+// ): NeonEditResponse 
 const { insert } = useNeonClient()
 
-const result: NeonEditType = await insert()
+const result: NeonEditResponse = await insert(query)
 
-type NeonEditType = string | NeonError
+type NeonInsertQuery = {
+  table: NeonTableType
+  values: NeonInsertType
+}
+
+type NeonEditResponse = 'OK' | NeonError
 ```
 
 Check [server-side `insert`](2-2-features-server.md#insert) for more details.
@@ -94,12 +114,18 @@ Check [server-side `insert`](2-2-features-server.md#insert) for more details.
 ```ts
 // async (
 //   query: NeonUpdateQuery
-// ): NeonEditType
+// ): NeonEditResponse
 const { update } = useNeonClient()
 
-const result: NeonEditType = await update()
+const result: NeonEditResponse = await update(query)
 
-type NeonEditType = string | NeonError
+type NeonUpdateQuery = {
+  table: NeonTableType
+  values: NeonUpdateType
+  where?: NeonWhereType
+}
+
+type NeonEditResponse = 'OK' | NeonError
 ```
 
 Check [server-side `update`](2-2-features-server.md#update) for more details.
@@ -109,12 +135,17 @@ Check [server-side `update`](2-2-features-server.md#update) for more details.
 ```ts
 // async (
 //   query: NeonDeleteQuery
-// ): NeonEditType
+// ): NeonEditResponse
 const { del } = useNeonClient()
 
-const result: NeonEditType = await del()
+const result: NeonEditResponse = await del(query)
 
-type NeonEditType = string | NeonError
+type NeonDeleteQuery = {
+  table: NeonTableType
+  where?: NeonWhereType
+}
+
+type NeonEditResponse = 'OK' | NeonError
 ```
 
 Check [server-side `del`](2-2-features-server.md#del) for more details.
@@ -124,12 +155,12 @@ Check [server-side `del`](2-2-features-server.md#del) for more details.
 ```ts
 // async (
 //   query: string
-// ): Promise<NeonDataType<T>>
+// ): Promise<NeonDataResponse<T>>
 const { raw } = useNeonClient()
 
-const result: NeonDataType<T> = await raw<T>('SELECT * FROM users')
+const result: NeonDataResponse<T> = await raw<T>('SELECT * FROM users')
 
-type NeonDataType<T> = Array<T> | NeonError
+type NeonDataResponse<T> = Array<T> | NeonError
 ```
 
 Check [server-side `raw`](2-2-features-server.md#raw) for more details.
