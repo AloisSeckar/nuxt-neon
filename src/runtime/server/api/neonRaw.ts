@@ -1,11 +1,11 @@
 import type { H3Event, EventHandlerRequest } from 'h3'
-import type { NeonDataType } from '../../shared/types/neon'
+import type { NeonDataResponse } from '../../shared/types/neon'
 import {
   defineEventHandler, getForbiddenError, parseNeonError,
   readBody, useNeonServer, useRuntimeConfig,
 } from '#imports'
 
-export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>): Promise<NeonDataType<T>> => {
+export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>): Promise<NeonDataResponse<T>> => {
   try {
     const debug = useRuntimeConfig().public.neonDebugRuntime === true
     if (debug) {

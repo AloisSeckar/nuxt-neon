@@ -1,6 +1,7 @@
 import type {
   NeonCountQuery, NeonSelectQuery, NeonInsertQuery, NeonUpdateQuery, NeonDeleteQuery,
-  NeonStatusType, NeonDataType, NeonError, NeonDriver,
+  NeonCountResponse, NeonDataResponse, NeonEditResponse, NeonStatusResponse,
+  NeonDriver, NeonError,
 } from '../../shared/types/neon'
 import { assertAllowedQuery, assertAllowedTable } from './helpers/assertSQL'
 import { getDeleteSQL, getInsertSQL, getSelectSQL, getUpdateSQL } from './helpers/buildSQL'
@@ -22,7 +23,7 @@ export const useNeonServer = () => {
   }
 
   // health check probe
-  const neonStatus = async (neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonStatusType> => {
+  const neonStatus = async (neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonStatusResponse> => {
     if (useRuntimeConfig().public.neonDebugRuntime === true) {
       console.debug('Neon `neonStatus` server-side health check invoked')
     }
@@ -55,7 +56,7 @@ export const useNeonServer = () => {
   }
 
   // SELECT wrapper
-  const select = async <T>(query: NeonSelectQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataType<T>> => {
+  const select = async <T>(query: NeonSelectQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataResponse<T>> => {
     try {
       if (useRuntimeConfig().public.neonDebugRuntime === true) {
         console.debug('Neon `select` server-side wrapper invoked')
@@ -74,7 +75,7 @@ export const useNeonServer = () => {
   }
 
   // separate wrapper for COUNT instead of forcing users to pass 'count(*)' as column name in SELECT
-  const count = async (query: NeonCountQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataType<number>> => {
+  const count = async (query: NeonCountQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonCountResponse> => {
     try {
       if (useRuntimeConfig().public.neonDebugRuntime === true) {
         console.debug('Neon `count` server-side wrapper invoked')
@@ -85,14 +86,14 @@ export const useNeonServer = () => {
 
       // extract only the number
       // or return -1 if response cannot be parsed
-      return [countData?.at(0)?.count || -1]
+      return countData?.at(0)?.count || -1
     } catch (err) {
       return await parseNeonError('useNeonServer().count', err)
     }
   }
 
   // INSERT wrapper
-  const insert = async (query: NeonInsertQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataType<string>> => {
+  const insert = async (query: NeonInsertQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonEditResponse> => {
     try {
       if (useRuntimeConfig().public.neonDebugRuntime === true) {
         console.debug('Neon `insert` server-side wrapper invoked')
@@ -106,7 +107,7 @@ export const useNeonServer = () => {
       const ret = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
       // successful INSERT operation returns []
       if (ret.length === 0) {
-        return ['OK']
+        return 'OK'
       } else {
         console.debug(ret)
         // TODO can we extract more detailed error cause from within the driver response?
@@ -118,7 +119,7 @@ export const useNeonServer = () => {
   }
 
   // UPDATE wrapper
-  const update = async (query: NeonUpdateQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataType<string>> => {
+  const update = async (query: NeonUpdateQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonEditResponse> => {
     try {
       if (useRuntimeConfig().public.neonDebugRuntime === true) {
         console.debug('Neon `update` server-side wrapper invoked')
@@ -133,7 +134,7 @@ export const useNeonServer = () => {
 
       // successful UPDATE operation returns []
       if (ret.length === 0) {
-        return ['OK']
+        return 'OK'
       } else {
       // TODO can we extract more detailed error cause from within the driver response?
         return await getGenericError('useNeonServer().update', 'UPDATE operation failed')
@@ -144,7 +145,7 @@ export const useNeonServer = () => {
   }
 
   // DELETE wrapper
-  const del = async (query: NeonDeleteQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataType<string>> => {
+  const del = async (query: NeonDeleteQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonEditResponse> => {
     try {
       if (useRuntimeConfig().public.neonDebugRuntime === true) {
         console.debug('Neon `delete` server-side wrapper invoked')
@@ -159,7 +160,7 @@ export const useNeonServer = () => {
 
       // successful DELETE operation returns []
       if (ret.length === 0) {
-        return ['OK']
+        return 'OK'
       } else {
         console.debug(ret)
         // TODO can we extract more detailed error cause from within the driver response?
@@ -171,7 +172,7 @@ export const useNeonServer = () => {
   }
 
   // raw SQL wrapper
-  const raw = async <T>(sqlString: string, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataType<T>> => {
+  const raw = async <T>(sqlString: string, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataResponse<T>> => {
     try {
       if (useRuntimeConfig().public.neonDebugRuntime === true) {
         console.debug('Neon `raw` server-side wrapper invoked')

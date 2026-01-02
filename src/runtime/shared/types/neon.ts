@@ -109,10 +109,10 @@ export type NeonOrderObject = {
 
 // consolidated types
 
-export type NeonDataType<T> = Array<T> | NeonError
-export type NeonCountType = number | NeonError
-export type NeonEditType = string | NeonError
-export type NeonStatusType = NeonStatusResult
+export type NeonDataResponse<T> = Array<T> | NeonError
+export type NeonCountResponse = number | NeonError
+export type NeonEditResponse = 'OK' | NeonError
+export type NeonStatusResponse = NeonStatusResult
 
 export type NeonColumnType = string | string[] | NeonColumnObject | NeonColumnObject[]
 export type NeonTableType = string | NeonTableObject

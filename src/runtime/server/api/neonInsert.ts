@@ -1,10 +1,10 @@
-import type { NeonDataType } from '../../shared/types/neon'
+import type { NeonEditResponse } from '../../shared/types/neon'
 import {
   defineEventHandler, getForbiddenError, parseNeonError,
   readBody, useNeonServer, useRuntimeConfig,
 } from '#imports'
 
-export default defineEventHandler(async (event): Promise<NeonDataType<string>> => {
+export default defineEventHandler(async (event): Promise<NeonEditResponse> => {
   try {
     const debug = useRuntimeConfig().public.neonDebugRuntime === true
     if (debug) {

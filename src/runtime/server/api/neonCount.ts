@@ -1,10 +1,10 @@
-import type { NeonDataType } from '../../shared/types/neon'
+import type { NeonCountResponse } from '../../shared/types/neon'
 import {
   defineEventHandler, getForbiddenError, parseNeonError,
   readBody, useNeonServer, useRuntimeConfig,
 } from '#imports'
 
-export default defineEventHandler(async (event): Promise<NeonDataType<number>> => {
+export default defineEventHandler(async (event): Promise<NeonCountResponse> => {
   try {
     const debug = useRuntimeConfig().public.neonDebugRuntime === true
     if (debug) {
