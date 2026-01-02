@@ -2,6 +2,53 @@
 
 Overview of the newest features in Nuxt Neon module.
 
+## v0.8.0
+
+`2026-01-02`
+
+> [!TIP]
+> **Version 8** is a major overhaul with number of breaking changes mostly focused on improved security, better TS support and codebase architecture. All those **78 commits** since last release feel like the project was completely re-written. But it was necessary and for the better, hopefully.
+
+Please refer to the new [documentation site](https://nuxt-neon.netlify.app/) for detailed info about current API and usage. When in doubt, feel free to open issue with questions.
+
+- BREAKING CHANGE: instance of `neon` driver is now obtained from `useNeonDriver()` composable-like instead of `getNeonClient()` function ([#56](https://github.com/AloisSeckar/nuxt-neon/issues/56))
+- BREAKING CHANGE: server-side functions are now obtained from `useNeonServer()` composable-like instead of direct imports from `/server/utils/neonSQL.ts` ([#56](https://github.com/AloisSeckar/nuxt-neon/issues/56))
+- BREAKING CHANGE: client-side functions are now obtained from `useNeonClient()` composable instead of `useNeon()` ([#56](https://github.com/AloisSeckar/nuxt-neon/issues/56))
+- BREAKING CHANGE: client-side SQL wrappers and API endpoints are disabled by default until explicitly enabled via `neonEnableEndpoints` module option ([#51](https://github.com/AloisSeckar/nuxt-neon/issues/51))
+- BREAKING CHANGE: `raw` SQL wrapper is disabled by default until explicitly enabled via `neonEnableRawEndpoint` module option ([#51](https://github.com/AloisSeckar/nuxt-neon/issues/51))
+- BREAKING CHANGE: even when `raw` wrapper is allowed, raw SQL queries must be white-listed via `neonAllowedQueries` module option ([#58](https://github.com/AloisSeckar/nuxt-neon/issues/58))
+- BREAKING CHANGE: in `WHERE` clauses, `condition` was renamed to `operator` and `operator` to `relation` for better clarity ([#47](https://github.com/AloisSeckar/nuxt-neon/issues/47))
+- BREAKING CHANGE: `WHERE`, `GROUP BY` and `HAVING` cannot be provided with plain strings to prevent SQL injections ([#59](https://github.com/AloisSeckar/nuxt-neon/issues/59))
+- BREAKING CHANGE: instance of `neon` driver was made optional in server-side functions ([#68](https://github.com/AloisSeckar/nuxt-neon/issues/68))
+- BREAKING CHANGE: disallow configuring DB connection via module options (`.env` must be used)
+- BREAKING CHANGE: dropped now obsolete `neonRawWarning` module option
+- BREAKING CHANGE: `neonStatus` health check doesn't accept options anymore and its behavior is now based on module options (check docs for details)
+- feat: tables can be (dis)allowed for querying via `neonAllowedTables` module option ([#52](https://github.com/AloisSeckar/nuxt-neon/issues/52))
+- feat: `raw` SQL wrappers were made available on server-side (still must be enabled via configuration) ([#53](https://github.com/AloisSeckar/nuxt-neon/issues/53)) 
+- feat: `isOk` and `neonStatus` health checks were made available on server-side ([#54](https://github.com/AloisSeckar/nuxt-neon/issues/54))
+- feat: SQL sanitization was improved to prevent more SQL injections ([#8](https://github.com/AloisSeckar/nuxt-neon/issues/8))
+- feat: added more runtime checks to reject SQL injection attempts ([#60](https://github.com/AloisSeckar/nuxt-neon/issues/60))
+- feat: added more runtime checks to reject invalid payloads ([#63](https://github.com/AloisSeckar/nuxt-neon/issues/63))
+- fix: make client-side and server-side SQL wrappers behavior more consistent ([#70](https://github.com/AloisSeckar/nuxt-neon/issues/70))
+- fix: correct error handling in server-side SQL wrappers ([#69](https://github.com/AloisSeckar/nuxt-neon/issues/69))
+- fix: respect `neonDB` and `public.neonDB` module option correctly ([#66](https://github.com/AloisSeckar/nuxt-neon/issues/66))
+- fix: server-side `select` and `raw` can use generic type hint for return type ([#42](https://github.com/AloisSeckar/nuxt-neon/issues/42))
+- fix: allow `*` in `SELECT` ([#65](https://github.com/AloisSeckar/nuxt-neon/issues/65))
+- fix: treat values for `BETWEEN` operator properly ([#49](https://github.com/AloisSeckar/nuxt-neon/issues/49))
+- fix: treat values for `HAVING` clause properly ([#64](https://github.com/AloisSeckar/nuxt-neon/issues/64))
+- fix: sanitize `count(col)` in `SELECT` properly
+- fix: ignore empty `GROUP BY` clause array
+- fix: sanitize column names in `INSERT` and `UPDATE` statements properly
+- fix: treat table alias in `UPDATE` statements properly
+- refactor: couple of TS tweaks to support better type inference
+- refactor: codebase updated to follow Nuxt v4 structure better
+- docs: new Vitepress-based [documentation site](https://nuxt-neon.netlify.app/) created ([#52](https://github.com/AloisSeckar/nuxt-neon/issues/52)) and filled ([#57](https://github.com/AloisSeckar/nuxt-neon/issues/57))
+- test: consolidate test apps into one for speed-up ([#48](https://github.com/AloisSeckar/nuxt-neon/issues/48))
+- test: fix flakiness via correct data initialization ([#39](https://github.com/AloisSeckar/nuxt-neon/issues/39))
+- test: added numerous unit tests for SQL builder functions ([#38](https://github.com/AloisSeckar/nuxt-neon/issues/38))
+- build: bump `nuxt-spec` to `0.1.16`
+- build: output should be minified now (roughly 20% smaller bundle size)
+
 ## v0.7.1
 
 `2025-12-14`
@@ -35,13 +82,13 @@ Overview of the newest features in Nuxt Neon module.
 `2025-06-01`
 
 - feat: allow debugging faulty SQL queries
-- fix: export types definition propely via neon.d.ts
+- fix: export types definition properly via neon.d.ts
 
 ## v0.6.0
 
 `2025-05-20`
 
-- BREAKING CHANGE: switched to options-object pattern for SQL wrappers (all wrapper calls needs to be updated - encapsulate all params in an object and add respective keys)
+- BREAKING CHANGE: switched to options-object pattern for SQL wrappers (all wrapper calls need to be updated - encapsulate all params in an object and add respective keys)
 - feat: TS types for params and return types of SQL wrappers were consolidated and logically re-named
 - feat: it is now possible to INSERT more than 1 row at once
 - feat: allow GROUP BY and HAVING clauses in SELECT wrapper
@@ -62,7 +109,7 @@ Overview of the newest features in Nuxt Neon module.
 
 - BREAKING CHANGE: changed `insert` wrapper signature to match `update`
 - BREAKING CHANGE: dropped `sslMode` and `rawWarning` config in favor of `neonSSLMode` and `neonRawWarning`
-- feat: re-typed SQL wrappers including supporting genercis
+- feat: re-typed SQL wrappers including supporting generics
 - feat: allow to pick DB schema in FROM clauses
 - feat: better error handling using custom `NeonError`
 
