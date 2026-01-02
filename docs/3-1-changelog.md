@@ -4,7 +4,7 @@ Overview of the newest features in Nuxt Neon module.
 
 ## v0.7.1
 
-2025-12-14
+`2025-12-14`
 
 - feat: add more debug logging options on server-side ([#40](https://github.com/AloisSeckar/nuxt-neon/issues/40))
 - feat: support `IN`, `NOT IN` and `BETWEEN` operators in WHERE clauses ([#43](https://github.com/AloisSeckar/nuxt-neon/issues/43))
@@ -15,7 +15,7 @@ Overview of the newest features in Nuxt Neon module.
 
 ## v0.7.0
 
-2025-09-20
+`2025-09-20`
 
 - BREAKING: updated to `Nuxt v4`
 - BREAKING: changed column definition for WHERE and ORDER BY clauses to align with rest of the API
@@ -25,21 +25,21 @@ Overview of the newest features in Nuxt Neon module.
 
 ## v0.6.2
 
-2025-06-04
+`2025-06-04`
 
 - fix: remove incorrect `Promise` from type definitions
 - build: bump Nuxt to `3.17.5` + update other deps
 
 ## v0.6.1
 
-2025-06-01
+`2025-06-01`
 
 - feat: allow debugging faulty SQL queries
 - fix: export types definition propely via neon.d.ts
 
 ## v0.6.0
 
-2025-05-20
+`2025-05-20`
 
 - BREAKING CHANGE: switched to options-object pattern for SQL wrappers (all wrapper calls needs to be updated - encapsulate all params in an object and add respective keys)
 - feat: TS types for params and return types of SQL wrappers were consolidated and logically re-named
@@ -58,7 +58,7 @@ Overview of the newest features in Nuxt Neon module.
 
 ## v0.5.0
 
-2025-05-09
+`2025-05-09`
 
 - BREAKING CHANGE: changed `insert` wrapper signature to match `update`
 - BREAKING CHANGE: dropped `sslMode` and `rawWarning` config in favor of `neonSSLMode` and `neonRawWarning`
@@ -68,7 +68,7 @@ Overview of the newest features in Nuxt Neon module.
 
 ## v0.4.3
 
-2025-05-07
+`2025-05-07`
 
 - feat: auto-quote values of WHERE clauses
 - feat: allow single value in COLUMN, WHERE and ORDER BY
@@ -76,13 +76,13 @@ Overview of the newest features in Nuxt Neon module.
 
 ## v0.4.2
 
-2025-05-05
+`2025-05-05`
 
 - fix: update Neon serverless driver calls to match its `v1.0.0`
 
 ## v0.4.1
 
-2025-05-04
+`2025-05-04`
 
 - feat: improved typing for WHERE and ORDER queries
 - feat: types should be properly exported
@@ -90,7 +90,7 @@ Overview of the newest features in Nuxt Neon module.
 
 ## v0.4.0
 
-2025-02-23
+`2025-02-23`
 
 - BREAKING CHANGE: syntax for `select`, `insert`, `update`, `delete` SQL wrappers' params changed to improve behavior and security
 - feat: new `count` SQL wrapper added
@@ -104,14 +104,14 @@ Overview of the newest features in Nuxt Neon module.
 
 ## v0.3.1
 
-2025-02-06
+`2025-02-06`
 
 - feat: expose server-side utils (`getNeonClient` and SQL wrappers)
 - docs: README.md updated to reflect current changes
 
 ## v0.3.0
 
-2025-02-02
+`2025-02-02`
 
 - BREAKING CHANGE: module was re-designed and direct Neon DB communication was hidden behind Nuxt server-side API routes
 - feat: direct access to `neonClient` on server-side was dropped
@@ -123,45 +123,45 @@ Overview of the newest features in Nuxt Neon module.
 
 ## v0.2.5
 
-2024-12-25
+`2024-12-25`
 
 - build: bump Nuxt to `3.15.0` + update other deps
 - fix: set internal logging from `info` to `debug`
 
 ## v0.2.4
 
-2024-12-05
+`2024-12-05`
 
 - fix: resolve `sqlstring` with `vite-plugin-commonjs`
 
 ## v0.2.3
 
-2024-12-05
+`2024-12-05`
 
 - fix: handle `sqlstring` CommonJS import for ESM re-use
 
 ## v0.2.2
 
-2024-12-05
+`2024-12-05`
 
 - fix: wrap `sqlstring` CommonJS import for ESM re-use
 
 ## v0.2.1
 
-2024-12-05
+`2024-12-05`
 
 - fix: handle `sqlstring` CommonJS import for ESM re-use
 
 ## v0.2.0
 
-2024-12-05
+`2024-12-05`
 
 - feat: `select`, `insert`, `update` and `delete` SQL wrapper
 - build: tech update (2024-12-02)
 
 ## v0.1.2
 
-2024-09-29
+`2024-09-29`
 
 - feat: `sslMode` option added
 - feat: `nuxtStatus` health check function added
@@ -169,12 +169,12 @@ Overview of the newest features in Nuxt Neon module.
 
 ## v0.1.1
 
-2024-09-28
+`2024-09-28`
 
 - fix: correctly export Neon dependency
 
 ## v0.1.0
 
-2024-09-28
+`2024-09-28`
 
 - basic Nuxt2Neon integration provided
