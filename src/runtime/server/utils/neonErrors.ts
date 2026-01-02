@@ -23,7 +23,7 @@ export async function getGenericError(source: string, message: string): Promise<
   }
 }
 
-export async function parseNeonClientError(source: string, err: unknown): Promise<NeonError> {
+export async function parseNeonError(source: string, err: unknown): Promise<NeonError> {
   const error = err as Error
   const name = error.name
   let message = error.message

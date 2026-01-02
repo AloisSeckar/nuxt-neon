@@ -1,6 +1,6 @@
 import type { NeonDataType } from '../../shared/types/neon'
 import {
-  defineEventHandler, getForbiddenError, getGenericError, parseNeonClientError,
+  defineEventHandler, getForbiddenError, parseNeonError,
   readBody, useNeonServer, useRuntimeConfig,
 } from '#imports'
 
@@ -22,18 +22,9 @@ export default defineEventHandler(async (event): Promise<NeonDataType<string>> =
     }
 
     const { insert } = useNeonServer()
-    const ret = await insert({ ...body })
-
-    // successful INSERT operation returns []
-    if (ret.length === 0) {
-      return ['OK']
-    } else {
-      console.debug(ret)
-      // TODO can we extract more detailed error cause from within the driver response?
-      return await getGenericError('/api/_neon/insert', 'INSERT operation failed')
-    }
+    return await insert({ ...body })
   }
   catch (err) {
-    return await parseNeonClientError('/api/_neon/insert', err)
+    return await parseNeonError('/api/_neon/insert', err)
   }
 })

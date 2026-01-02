@@ -1,7 +1,7 @@
 import type { H3Event, EventHandlerRequest } from 'h3'
 import type { NeonDataType } from '../../shared/types/neon'
 import {
-  defineEventHandler, getForbiddenError, parseNeonClientError,
+  defineEventHandler, getForbiddenError, parseNeonError,
   readBody, useNeonServer, useRuntimeConfig,
 } from '#imports'
 
@@ -23,9 +23,9 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
     }
 
     const { raw } = useNeonServer()
-    return await raw(body.query)
+    return await raw<T>(body.query)
   }
   catch (err) {
-    return await parseNeonClientError('/api/_neon/raw', err)
+    return await parseNeonError('/api/_neon/raw', err)
   }
 })

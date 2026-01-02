@@ -1,6 +1,6 @@
 import type { NeonDataType } from '../../shared/types/neon'
 import {
-  defineEventHandler, getForbiddenError, getGenericError, parseNeonClientError,
+  defineEventHandler, getForbiddenError, parseNeonError,
   readBody, useNeonServer, useRuntimeConfig,
 } from '#imports'
 
@@ -22,17 +22,9 @@ export default defineEventHandler(async (event): Promise<NeonDataType<string>> =
     }
 
     const { update } = useNeonServer()
-    const ret = await update({ ...body })
-
-    // successful UPDATE operation returns []
-    if (ret.length === 0) {
-      return ['OK']
-    } else {
-      // TODO can we extract more detailed error cause from within the driver response?
-      return await getGenericError('/api/_neon/update', 'UPDATE operation failed')
-    }
+    return await update({ ...body })
   }
   catch (err) {
-    return await parseNeonClientError('/api/_neon/update', err)
+    return await parseNeonError('/api/_neon/update', err)
   }
 })

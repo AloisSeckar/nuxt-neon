@@ -1,6 +1,6 @@
 import type { NeonDataType } from '../../shared/types/neon'
 import {
-  defineEventHandler, getForbiddenError, getGenericError, parseNeonClientError,
+  defineEventHandler, getForbiddenError, parseNeonError,
   readBody, useNeonServer, useRuntimeConfig,
 } from '#imports'
 
@@ -22,18 +22,9 @@ export default defineEventHandler(async (event): Promise<NeonDataType<string>> =
     }
 
     const { del } = useNeonServer()
-    const ret = await del({ ...body })
-
-    // successful DELETE operation returns []
-    if (ret.length === 0) {
-      return ['OK']
-    } else {
-      console.debug(ret)
-      // TODO can we extract more detailed error cause from within the driver response?
-      return await getGenericError('/api/_neon/delete', 'DELETE operation failed')
-    }
+    return await del({ ...body })
   }
   catch (err) {
-    return await parseNeonClientError('/api/_neon/delete', err)
+    return await parseNeonError('/api/_neon/delete', err)
   }
 })

@@ -3,7 +3,13 @@ import type {
   NEON_JOIN_TYPES, NEON_SORT_DIRECTIONS,
 } from './neon-constants'
 
-import type { FullQueryResults, NeonQueryPromise, QueryRows } from '@neondatabase/serverless'
+import type { FullQueryResults, NeonQueryFunction, NeonQueryPromise, QueryRows } from '@neondatabase/serverless'
+
+/**
+ * Type for Neon driver instance
+ * @see https://neon.com/docs/serverless/serverless-driver
+ */
+export type NeonDriver = NeonQueryFunction<boolean, boolean>
 
 /**
  * Type based on Neon serverless driver's `query` method that is used to perform the DB calls

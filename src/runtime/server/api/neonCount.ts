@@ -1,6 +1,6 @@
 import type { NeonDataType } from '../../shared/types/neon'
 import {
-  defineEventHandler, getForbiddenError, parseNeonClientError,
+  defineEventHandler, getForbiddenError, parseNeonError,
   readBody, useNeonServer, useRuntimeConfig,
 } from '#imports'
 
@@ -21,15 +21,10 @@ export default defineEventHandler(async (event): Promise<NeonDataType<number>> =
       console.debug('Request body:', body)
     }
 
-    // result is returned as [ { count: 'n' } ]
     const { count } = useNeonServer()
-    const countData = await count({ ...body }) as { count: number }[]
-
-    // extract only the number
-    // or return -1 if response cannot be parsed
-    return [countData?.at(0)?.count || -1]
+    return await count({ ...body })
   }
   catch (err) {
-    return await parseNeonClientError('/api/_neon/count', err)
+    return await parseNeonError('/api/_neon/count', err)
   }
 })

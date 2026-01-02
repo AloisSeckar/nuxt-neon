@@ -1,15 +1,11 @@
-import type { NeonQueryFunction } from '@neondatabase/serverless'
 import type {
   NeonCountQuery, NeonSelectQuery, NeonInsertQuery, NeonUpdateQuery, NeonDeleteQuery,
-  NeonStatusType, NeonError, NeonDriverResult,
+  NeonStatusType, NeonDataType, NeonError, NeonDriver,
 } from '../../shared/types/neon'
 import { assertAllowedQuery, assertAllowedTable } from './helpers/assertSQL'
 import { getDeleteSQL, getInsertSQL, getSelectSQL, getUpdateSQL } from './helpers/buildSQL'
 import { debugSQLIfAllowed } from './helpers/debugSQL'
-import { formatNeonError, getForbiddenError, useRuntimeConfig, useNeonDriver } from '#imports'
-
-type NeonDriver = NeonQueryFunction<boolean, boolean>
-type NeonDriverResponse = Promise<NeonDriverResult<false, false>>
+import { formatNeonError, getForbiddenError, parseNeonError, useRuntimeConfig, useNeonDriver, getGenericError } from '#imports'
 
 function getDefaultNeonDriver(): NeonDriver {
   const { neon } = useNeonDriver()
@@ -58,98 +54,152 @@ export const useNeonServer = () => {
     return (await neonStatus(neon)).status === 'OK'
   }
 
-  // separate wrapper instead of forcing users to pass 'count(*)' as column name
-  const count = async (query: NeonCountQuery, neon: NeonDriver = getDefaultNeonDriver()): NeonDriverResponse => {
-    if (useRuntimeConfig().public.neonDebugRuntime === true) {
-      console.debug('Neon `count` server-side wrapper invoked')
-    }
+  // SELECT wrapper
+  const select = async <T>(query: NeonSelectQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataType<T>> => {
+    try {
+      if (useRuntimeConfig().public.neonDebugRuntime === true) {
+        console.debug('Neon `select` server-side wrapper invoked')
+      }
 
-    return await select({ ...query, columns: ['count(*)'] }, neon)
+      assertAllowedTable(query.from, getAllowedTables())
+      const sqlString = getSelectSQL(query)
+      await debugSQLIfAllowed(sqlString)
+
+      // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
+      const results = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+      return results as Array<T>
+    } catch (err) {
+      return await parseNeonError('useNeonServer().select', err)
+    }
   }
 
-  // SELECT wrapper
-  const select = async <T>(query: NeonSelectQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<Array<T>> => {
-    if (useRuntimeConfig().public.neonDebugRuntime === true) {
-      console.debug('Neon `select` server-side wrapper invoked')
+  // separate wrapper for COUNT instead of forcing users to pass 'count(*)' as column name in SELECT
+  const count = async (query: NeonCountQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataType<number>> => {
+    try {
+      if (useRuntimeConfig().public.neonDebugRuntime === true) {
+        console.debug('Neon `count` server-side wrapper invoked')
+      }
+
+      // count query result is always returned as [ { count: 'n' } ]
+      const countData = await select({ ...query, columns: ['count(*)'] }, neon) as { count: number }[]
+
+      // extract only the number
+      // or return -1 if response cannot be parsed
+      return [countData?.at(0)?.count || -1]
+    } catch (err) {
+      return await parseNeonError('useNeonServer().count', err)
     }
-
-    assertAllowedTable(query.from, getAllowedTables())
-    const sqlString = getSelectSQL(query)
-    await debugSQLIfAllowed(sqlString)
-
-    // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-    const results = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
-    return results as Array<T>
   }
 
   // INSERT wrapper
-  const insert = async (query: NeonInsertQuery, neon: NeonDriver = getDefaultNeonDriver()): NeonDriverResponse => {
-    if (useRuntimeConfig().public.neonDebugRuntime === true) {
-      console.debug('Neon `insert` server-side wrapper invoked')
+  const insert = async (query: NeonInsertQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataType<string>> => {
+    try {
+      if (useRuntimeConfig().public.neonDebugRuntime === true) {
+        console.debug('Neon `insert` server-side wrapper invoked')
+      }
+
+      assertAllowedTable(query.table, getAllowedTables())
+      const sqlString = getInsertSQL(query)
+      await debugSQLIfAllowed(sqlString)
+
+      // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
+      const ret = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+      // successful INSERT operation returns []
+      if (ret.length === 0) {
+        return ['OK']
+      } else {
+        console.debug(ret)
+        // TODO can we extract more detailed error cause from within the driver response?
+        return await getGenericError('useNeonServer().insert', 'INSERT operation failed')
+      }
+    } catch (err) {
+      return await parseNeonError('useNeonServer().insert', err)
     }
-
-    assertAllowedTable(query.table, getAllowedTables())
-    const sqlString = getInsertSQL(query)
-    await debugSQLIfAllowed(sqlString)
-
-    // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-    return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
   }
 
   // UPDATE wrapper
-  const update = async (query: NeonUpdateQuery, neon: NeonDriver = getDefaultNeonDriver()): NeonDriverResponse => {
-    if (useRuntimeConfig().public.neonDebugRuntime === true) {
-      console.debug('Neon `update` server-side wrapper invoked')
+  const update = async (query: NeonUpdateQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataType<string>> => {
+    try {
+      if (useRuntimeConfig().public.neonDebugRuntime === true) {
+        console.debug('Neon `update` server-side wrapper invoked')
+      }
+
+      assertAllowedTable(query.table, getAllowedTables())
+      const sqlString = getUpdateSQL(query)
+      await debugSQLIfAllowed(sqlString)
+
+      // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
+      const ret = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+
+      // successful UPDATE operation returns []
+      if (ret.length === 0) {
+        return ['OK']
+      } else {
+      // TODO can we extract more detailed error cause from within the driver response?
+        return await getGenericError('useNeonServer().update', 'UPDATE operation failed')
+      }
+    } catch (err) {
+      return await parseNeonError('useNeonServer().update', err)
     }
-
-    assertAllowedTable(query.table, getAllowedTables())
-    const sqlString = getUpdateSQL(query)
-    await debugSQLIfAllowed(sqlString)
-
-    // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-    return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
   }
 
   // DELETE wrapper
-  const del = async (query: NeonDeleteQuery, neon: NeonDriver = getDefaultNeonDriver()): NeonDriverResponse => {
-    if (useRuntimeConfig().public.neonDebugRuntime === true) {
-      console.debug('Neon `delete` server-side wrapper invoked')
+  const del = async (query: NeonDeleteQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataType<string>> => {
+    try {
+      if (useRuntimeConfig().public.neonDebugRuntime === true) {
+        console.debug('Neon `delete` server-side wrapper invoked')
+      }
+
+      assertAllowedTable(query.table, getAllowedTables())
+      const sqlString = getDeleteSQL(query)
+      await debugSQLIfAllowed(sqlString)
+
+      // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
+      const ret = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+
+      // successful DELETE operation returns []
+      if (ret.length === 0) {
+        return ['OK']
+      } else {
+        console.debug(ret)
+        // TODO can we extract more detailed error cause from within the driver response?
+        return await getGenericError('/api/_neon/delete', 'DELETE operation failed')
+      }
+    } catch (err) {
+      return await parseNeonError('useNeonServer().delete', err)
     }
-
-    assertAllowedTable(query.table, getAllowedTables())
-    const sqlString = getDeleteSQL(query)
-    await debugSQLIfAllowed(sqlString)
-
-    // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-    return await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
   }
 
   // raw SQL wrapper
-  const raw = async <T>(sqlString: string, neon: NeonDriver = getDefaultNeonDriver()): Promise<Array<T>> => {
-    if (useRuntimeConfig().public.neonDebugRuntime === true) {
-      console.debug('Neon `raw` server-side wrapper invoked')
-    }
-
-    // raw endpoint is disabled by default
-    // simple health check is always allowed
-    if (sqlString !== 'SELECT 1=1 as status') {
-      const rawEndpoint = useRuntimeConfig().public.neonExposeRawEndpoint === true
-      if (!rawEndpoint) {
-        throw getForbiddenError('/api/_neon/raw', true)
+  const raw = async <T>(sqlString: string, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataType<T>> => {
+    try {
+      if (useRuntimeConfig().public.neonDebugRuntime === true) {
+        console.debug('Neon `raw` server-side wrapper invoked')
       }
-    }
-    await debugSQLIfAllowed(sqlString)
 
-    // only allow white-listed queries
-    // simple health check is always allowed
-    if (sqlString !== 'SELECT 1=1 as status') {
-      const allowedQueries = useRuntimeConfig().neonAllowedQueries?.split(';') || []
-      assertAllowedQuery(sqlString, allowedQueries)
-    }
+      // raw endpoint is disabled by default
+      // simple health check is always allowed
+      if (sqlString !== 'SELECT 1=1 as status') {
+        const rawEndpoint = useRuntimeConfig().public.neonExposeRawEndpoint === true
+        if (!rawEndpoint) {
+          throw getForbiddenError('/api/_neon/raw', true)
+        }
+      }
+      await debugSQLIfAllowed(sqlString)
 
-    // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-    const results = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
-    return results as Array<T>
+      // only allow white-listed queries
+      // simple health check is always allowed
+      if (sqlString !== 'SELECT 1=1 as status') {
+        const allowedQueries = useRuntimeConfig().neonAllowedQueries?.split(';') || []
+        assertAllowedQuery(sqlString, allowedQueries)
+      }
+
+      // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
+      const results = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+      return results as Array<T>
+    } catch (err) {
+      return await parseNeonError('useNeonServer().raw', err)
+    }
   }
 
   return {
