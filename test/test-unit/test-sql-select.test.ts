@@ -18,6 +18,14 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
     expect(sql).toBe('SELECT "id", "name" FROM "playing_with_neon"')
   })
 
+  test('Should produce SELECT query with explicit aliased columns from array', () => {
+    const sql = getSelectSQL({
+      columns: ['id AS identifier', 'name as full_name'],
+      from: 'playing_with_neon',
+    })
+    expect(sql).toBe('SELECT "id" AS "identifier", "name" AS "full_name" FROM "playing_with_neon"')
+  })
+
   test('Should produce SELECT query with explicit column from object', () => {
     const sql = getSelectSQL({
       columns: { name: 'id' },
@@ -42,12 +50,36 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
     expect(sql).toBe('SELECT count(*) FROM "playing_with_neon"')
   })
 
+  test('Should produce basic aliased COUNT query', () => {
+    const sql = getSelectSQL({
+      columns: 'count(*) as total',
+      from: 'playing_with_neon',
+    })
+    expect(sql).toBe('SELECT count(*) AS "total" FROM "playing_with_neon"')
+  })
+
   test('Should produce COUNT query with explicit column', () => {
     const sql = getSelectSQL({
       columns: 'count(id)',
       from: 'playing_with_neon',
     })
     expect(sql).toBe('SELECT count("id") FROM "playing_with_neon"')
+  })
+
+  test('Should produce COUNT query with explicit aliased column', () => {
+    const sql = getSelectSQL({
+      columns: 'count(id) as total',
+      from: 'playing_with_neon',
+    })
+    expect(sql).toBe('SELECT count("id") AS "total" FROM "playing_with_neon"')
+  })
+
+  test('Should produce COUNT query even if upper-cased', () => {
+    const sql = getSelectSQL({
+      columns: 'COUNT(ID) AS TOTAL',
+      from: 'playing_with_neon',
+    })
+    expect(sql).toBe('SELECT count("ID") AS "TOTAL" FROM "playing_with_neon"')
   })
 
   test('Should produce * SELECT query', () => {

@@ -94,23 +94,26 @@ export function getColumnsClause(columns: NeonColumnType): string {
 }
 
 // include table alias if specified
+// handle possible column alias (`column as something`)
 function columnWithAlias(c: string | NeonColumnObject): string {
   if (typeof c === 'string') {
     // exception for '*' (all columns)
     if (c === '*') {
       return c
     }
-    // exception for 'count(*)' or 'count(column)'
-    const m = c.match(/^count\(([*|[\w]+)\)$/)
+    // exception for COUNT
+    // 'count(*)' or 'count(column)' or 'count(column) as alias'
+    const m = c.match(/^count\(([*\w]+)\)(?: as (\w+))?$/i)
     if (m && m[1]) {
       if (m[1] === '*') {
-        return c
+        return `count(*)` + (m[2] ? ` AS ${sanitizeSQLIdentifier(m[2])}` : '')
       } else {
-        return `count(${sanitizeSQLIdentifier(m[1])})`
+        return `count(${sanitizeSQLIdentifier(m[1])})` + (m[2] ? ` AS ${sanitizeSQLIdentifier(m[2])}` : '')
       }
     }
     // return sanitized value
-    return sanitizeSQLIdentifier(c)
+    const aliased = c.split(/ as /i)
+    return sanitizeSQLIdentifier(aliased[0]) + (aliased[1] ? ` AS ${sanitizeSQLIdentifier(aliased[1])}` : '')
   }
 
   if (c.alias) {
