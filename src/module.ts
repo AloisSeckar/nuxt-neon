@@ -1,5 +1,5 @@
 import {
-  addImportsDir, addPlugin, addServerHandler, addServerImportsDir,
+  addImports, addPlugin, addServerHandler, addServerImports,
   addTypeTemplate, createResolver, defineNuxtModule,
 } from '@nuxt/kit'
 import commonjs from 'vite-plugin-commonjs'
@@ -59,6 +59,7 @@ export default defineNuxtModule<ModuleOptions>({
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
+    // 1. resolve configuration
     nuxt.options.runtimeConfig.neonHost = '' // pass via .env file
     nuxt.options.runtimeConfig.neonUser = '' // pass via .env file
     nuxt.options.runtimeConfig.neonPass = '' // pass via .env file
@@ -72,6 +73,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.neonExposeEndpoints = options.neonExposeEndpoints
     nuxt.options.runtimeConfig.public.neonExposeRawEndpoint = options.neonExposeRawEndpoint
 
+    // 2. register server API endpoints
     addServerHandler({
       route: '/api/_neon/raw',
       handler: resolver.resolve('runtime/server/api/neonRaw'),
@@ -97,15 +99,59 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolver.resolve('runtime/server/api/neonDelete'),
     })
 
-    addImportsDir(resolver.resolve('runtime/composables'))
-    addImportsDir(resolver.resolve('runtime/sharded/types'))
-    addImportsDir(resolver.resolve('runtime/shared/utils'))
+    // 3. augment #imports
+    const neonClient = resolver.resolve('runtime/composables/useNeonClient')
+    const neonErrors = resolver.resolve('runtime/shared/utils/neonErrors')
+    const neonUtils = resolver.resolve('runtime/shared/utils/neonUtils')
+    const neonServer = resolver.resolve('runtime/server/utils/useNeonServer')
+    const neonServerDriver = resolver.resolve('runtime/server/utils/useNeonDriver')
+    const neonServerErrors = resolver.resolve('runtime/server/utils/neonErrors')
 
-    addServerImportsDir(resolver.resolve('runtime/server/utils'))
-    addServerImportsDir(resolver.resolve('runtime/shared/types'))
-    addServerImportsDir(resolver.resolve('runtime/shared/utils'))
+    // client-side #imports
+    addImports([
+      { name: 'useNeonClient', from: neonClient },
+    ])
+    addImports([
+      { name: 'NEON_ENDPOINTS_DISABLED', from: neonErrors },
+      { name: 'NEON_RAW_ENDPOINT_DISABLED', from: neonErrors },
+      { name: 'isNeonSuccess', from: neonErrors },
+      { name: 'isNeonError', from: neonErrors },
+      { name: 'formatNeonError', from: neonErrors },
+      { name: 'handleNeonError', from: neonErrors },
+    ])
+    addImports([
+      { name: 'encodeWhereType', from: neonUtils },
+      { name: 'encodeWhereString', from: neonUtils },
+      { name: 'decodeWhereType', from: neonUtils },
+      { name: 'decodeWhereString', from: neonUtils },
+    ])
 
-    // export types
+    // server-side #imports
+    addServerImports([
+      { name: 'useNeonServer', from: neonServer },
+    ])
+    addServerImports([
+      { name: 'useNeonDriver', from: neonServerDriver },
+    ])
+    addServerImports([
+      { name: 'getForbiddenError', from: neonServerErrors },
+      { name: 'getGenericError', from: neonServerErrors },
+      { name: 'parseNeonError', from: neonServerErrors },
+    ])
+    addServerImports([
+      { name: 'NEON_ENDPOINTS_DISABLED', from: neonErrors },
+      { name: 'NEON_RAW_ENDPOINT_DISABLED', from: neonErrors },
+      { name: 'isNeonSuccess', from: neonErrors },
+      { name: 'isNeonError', from: neonErrors },
+      { name: 'formatNeonError', from: neonErrors },
+      { name: 'handleNeonError', from: neonErrors },
+    ])
+    addServerImports([
+      { name: 'encodeWhereType', from: neonUtils },
+      { name: 'decodeWhereType', from: neonUtils },
+    ])
+
+    // 4. export types
     addTypeTemplate({
       src: resolver.resolve('runtime/types/neon.d.ts'),
       filename: 'types/neon.d.ts',
