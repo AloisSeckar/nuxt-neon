@@ -2,6 +2,12 @@
 
 Overview of the newest features in Nuxt Neon module.
 
+## v0.8.1
+
+`2026-01-03`
+
+- fix: patched fatal error in working with auto-imports preventing module to start ([#73](https://github.com/AloisSeckar/nuxt-neon/issues/73))
+
 ## v0.8.0
 
 `2026-01-02`
