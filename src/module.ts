@@ -1,5 +1,6 @@
 import {
-  addImports, addPlugin, addServerHandler, addServerImports,
+  addImports, addPlugin,
+  addServerHandler, addServerImports, addServerPlugin,
   addTypeTemplate, createResolver, defineNuxtModule,
 } from '@nuxt/kit'
 import commonjs from 'vite-plugin-commonjs'
@@ -166,7 +167,9 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.vite.optimizeDeps.include ||= []
     nuxt.options.vite.optimizeDeps.include.push('sqlstring')
 
-    // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
-    addPlugin(resolver.resolve('./runtime/plugin'))
+    // plugins
+    // do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
+    addPlugin(resolver.resolve('./runtime/plugins/check'))
+    addServerPlugin(resolver.resolve('./runtime/server/plugins/check'))
   },
 })
