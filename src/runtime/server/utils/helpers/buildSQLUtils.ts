@@ -113,7 +113,7 @@ function columnWithAlias(c: string | NeonColumnObject): string {
     }
     // return sanitized value
     const aliased = c.split(/ as /i)
-    return sanitizeSQLIdentifier(aliased[0]) + (aliased[1] ? ` AS ${sanitizeSQLIdentifier(aliased[1])}` : '')
+    return sanitizeSQLIdentifier(aliased[0] || '') + (aliased[1] ? ` AS ${sanitizeSQLIdentifier(aliased[1])}` : '')
   }
 
   if (c.alias) {
