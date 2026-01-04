@@ -2,6 +2,13 @@
 
 Overview of the newest features in Nuxt Neon module.
 
+## v0.8.2
+
+`2026-01-04`
+
+- feat: adjusted automated health-check plugin on client and add its server-side couterpart ([#75](https://github.com/AloisSeckar/nuxt-neon/issues/75))
+- fix: handle columns with `AS` aliases properly ([#76](https://github.com/AloisSeckar/nuxt-neon/issues/76))
+
 ## v0.8.1
 
 `2026-01-03`
