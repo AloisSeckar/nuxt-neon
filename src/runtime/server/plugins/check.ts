@@ -5,6 +5,6 @@ export default defineNitroPlugin(async (_nitroApp) => {
   if (useRuntimeConfig().public.neonDebugRuntime === true) {
     console.debug('Testing provided connection to Neon database - server-side')
     const { isOk } = useNeonServer()
-    console.debug(await isOk() ? 'Connection OK' : 'ERROR')
+    console.debug(await isOk() ? 'Connection OK (server side)' : 'ERROR')
   }
 })

@@ -9,6 +9,6 @@ export default defineNuxtPlugin(async (_nuxtApp) => {
   if (useRuntimeConfig().public.neonDebugRuntime === true) {
     console.debug('Testing provided connection to Neon database - client-side')
     const { isOk } = useNeonClient()
-    console.debug(await isOk() ? 'Connection OK' : 'ERROR')
+    console.debug(await isOk() ? 'Connection OK (client side)' : 'ERROR')
   }
 })
