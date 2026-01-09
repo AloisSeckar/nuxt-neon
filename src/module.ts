@@ -21,8 +21,6 @@ export interface ModuleOptions {
   neonDebugRuntime: boolean
   /** If true, API endpoints are exposed from server-side */
   neonExposeEndpoints: boolean
-  /** If true and `neonExposeEndpoints` is also true, API endpoints for `raw` SQL query is exposed from server-side */
-  neonExposeRawEndpoint: boolean
   /**
    * Comma-separated list of allowed table names for queries.
    * Empty array would result into all queries being rejected.
@@ -35,7 +33,6 @@ export interface ModuleOptions {
   /**
    * Semicolon-separated list of allowed raw SQL queries.
    * Empty array would result into all raw queries being rejected (except health-check).
-   * This option is only relevant if `neonExposeRawEndpoint` is set to `true`.
    */
   neonAllowedQueries?: string
 }
@@ -53,7 +50,6 @@ export default defineNuxtModule<ModuleOptions>({
     neonDebugSQL: false,
     neonDebugRuntime: false,
     neonExposeEndpoints: false,
-    neonExposeRawEndpoint: false,
     neonAllowedTables: 'NEON_PUBLIC',
     neonAllowedQueries: '',
   },
@@ -72,7 +68,6 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.neonDebugSQL = options.neonDebugSQL
     nuxt.options.runtimeConfig.public.neonDebugRuntime = options.neonDebugRuntime
     nuxt.options.runtimeConfig.public.neonExposeEndpoints = options.neonExposeEndpoints
-    nuxt.options.runtimeConfig.public.neonExposeRawEndpoint = options.neonExposeRawEndpoint
 
     // 2. register server API endpoints
     addServerHandler({
@@ -114,7 +109,6 @@ export default defineNuxtModule<ModuleOptions>({
     ])
     addImports([
       { name: 'NEON_ENDPOINTS_DISABLED', from: neonErrors },
-      { name: 'NEON_RAW_ENDPOINT_DISABLED', from: neonErrors },
       { name: 'isNeonSuccess', from: neonErrors },
       { name: 'isNeonError', from: neonErrors },
       { name: 'formatNeonError', from: neonErrors },
@@ -141,7 +135,6 @@ export default defineNuxtModule<ModuleOptions>({
     ])
     addServerImports([
       { name: 'NEON_ENDPOINTS_DISABLED', from: neonErrors },
-      { name: 'NEON_RAW_ENDPOINT_DISABLED', from: neonErrors },
       { name: 'isNeonSuccess', from: neonErrors },
       { name: 'isNeonError', from: neonErrors },
       { name: 'formatNeonError', from: neonErrors },

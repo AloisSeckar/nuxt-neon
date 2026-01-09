@@ -1,15 +1,12 @@
 import type { NeonError } from '../../shared/types/neon'
-import {
-  NEON_RAW_ENDPOINT_DISABLED, NEON_ENDPOINTS_DISABLED,
-  useRuntimeConfig, useStorage,
-} from '#imports'
+import { NEON_ENDPOINTS_DISABLED, useRuntimeConfig, useStorage } from '#imports'
 
-export function getForbiddenError(source: string, raw: boolean = false): NeonError {
+export function getForbiddenError(source: string): NeonError {
   return {
     name: 'NuxtNeonServerError',
     source,
     code: 403,
-    message: raw ? NEON_RAW_ENDPOINT_DISABLED : NEON_ENDPOINTS_DISABLED,
+    message: NEON_ENDPOINTS_DISABLED,
   }
 }
 

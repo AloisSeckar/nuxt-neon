@@ -248,12 +248,9 @@ If anything fails, the wrapper will construct `NeonError` object with relevant i
 This special wrapper is meant as an escape hatch for running raw SQL queries that are not currently supported by other wrappers. You are encouraged to [open a new issue](https://github.com/AloisSeckar/nuxt-neon/issues) with your needs. Using `raw` wrapper should be only temporary solution until the fix is delivered. **NEVER allow unchecked user input via `raw` handler**.
 
 > [!WARNING]
-> By default, the `raw` function is **disabled** and **will throw an error** if invoked. 
+> By default, the `raw` function doesn't accept any queries and **will throw an error** if invoked. 
 > 
-> It requires an explicit opt-in via a [module option](2-5-features-options.md#neonexposerawendpoint) to be allowed. 
-
-> [!TIP]
-> As additional security measure, you must explicitly allow queries that can be executed like this via [`neonAllowedQueries`](2-5-features-options.md#neonallowedqueries) module option. If the executed query is not on the white-list, it will be rejected with error message.
+> As an additional security measure, you must explicitly allow queries that can be executed like this via [`neonAllowedQueries`](2-5-features-options.md#neonallowedqueries) module option. If the executed query is not on the white-list, it will be rejected with error message.
 
 If the wrapper is allowed, you can execute (allowed) raw queries using:
 

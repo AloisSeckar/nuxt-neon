@@ -83,10 +83,6 @@ Semicolon-separated list of SQL queries allowed to be executed via [`raw`](2-2-f
 - `NEON_ALL` - any valid SQL query can be executed (**extra discouraged**)
 - semicolon-separated list of raw SQL queries (eg. `SELECT * FROM users;SELECT * FROM products`)
 
-**Special usage notes:**
-
-- This option is only relevant if `neonExposeRawEndpoint` is `true`. Otherwise the raw endpoint is blocked completely.
-
 > [!WARNING]
 > You should only use this as a last resort for use-cases that cannot be covered by other SQL wrappers while requesting and waiting for the fix.
 
@@ -222,36 +218,4 @@ export default defineNuxtConfig({
 
 ```sh [.env]
 NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=true
-```
-
-### `neonExposeRawEndpoint`
-
-If set to `true`, [`raw` SQL wrapper](2-2-features-server.md#raw) can be used.
-
-> [!DANGER]
-> Allowing any valid SQL query to run directly is **DANGEROUS** and highly **DISCOURAGED**.
-> 
-> See [here](2-2-features-server.md#raw) for more details.
-
-**Possible values:**
-
-- `true`
-- `false` (default)
-
-**Special usage notes:**
-
-- even if `neonExposeEndpoints` is `false`, setting this to `true` will allow `raw` queries server-side
-- even if `neonExposeEndpoints` is `true`, you still need to set this one to `true` as well to allow `raw` queries client-side
-- you still need to set allowed queries via [`neonAllowedQueries`](#neonallowedqueries) before running raw queries
-
-```ts [nuxt.config.ts]
-export default defineNuxtConfig({
-  neon: {
-    neonExposeRawEndpoint: true,
-  },
-})
-```
-
-```sh [.env]
-NUXT_PUBLIC_NEON_EXPOSE_RAW_ENDPOINT=true
 ```

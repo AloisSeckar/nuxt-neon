@@ -4,8 +4,7 @@ import type {
   NeonBodyType, NeonWhereType, NeonError,
 } from '../shared/types/neon'
 import {
-  NEON_ENDPOINTS_DISABLED, NEON_RAW_ENDPOINT_DISABLED,
-  encodeWhereType, formatNeonError, handleNeonError,
+  NEON_ENDPOINTS_DISABLED, encodeWhereType, formatNeonError, handleNeonError,
   isNeonSuccess, useRuntimeConfig,
 } from '#imports'
 
@@ -100,12 +99,6 @@ async function fetchFromNeonBackend<T>(method: string, body: NeonBodyType): Prom
     // guards
     if (!endpoints) {
       throw new Error(NEON_ENDPOINTS_DISABLED)
-    }
-    if (method === 'raw' && body.query !== 'SELECT 1=1 as status') {
-      const rawEndpoint = useRuntimeConfig().public.neonExposeRawEndpoint === true
-      if (!rawEndpoint) {
-        throw new Error(NEON_RAW_ENDPOINT_DISABLED)
-      }
     }
 
     // fix for https://github.com/AloisSeckar/nuxt-neon/issues/45

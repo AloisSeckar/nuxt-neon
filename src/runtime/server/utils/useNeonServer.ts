@@ -6,7 +6,7 @@ import type {
 import { assertAllowedQuery, assertAllowedTable } from './helpers/assertSQL'
 import { getDeleteSQL, getInsertSQL, getSelectSQL, getUpdateSQL } from './helpers/buildSQL'
 import { debugSQLIfAllowed } from './helpers/debugSQL'
-import { formatNeonError, getForbiddenError, parseNeonError, useRuntimeConfig, useNeonDriver, getGenericError } from '#imports'
+import { formatNeonError, parseNeonError, useRuntimeConfig, useNeonDriver, getGenericError } from '#imports'
 
 function getDefaultNeonDriver(): NeonDriver {
   const { neon } = useNeonDriver()
@@ -178,14 +178,6 @@ export const useNeonServer = () => {
         console.debug('Neon `raw` server-side wrapper invoked')
       }
 
-      // raw endpoint is disabled by default
-      // simple health check is always allowed
-      if (sqlString !== 'SELECT 1=1 as status') {
-        const rawEndpoint = useRuntimeConfig().public.neonExposeRawEndpoint === true
-        if (!rawEndpoint) {
-          throw getForbiddenError('/api/_neon/raw', true)
-        }
-      }
       await debugSQLIfAllowed(sqlString)
 
       // only allow white-listed queries

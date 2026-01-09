@@ -18,7 +18,6 @@ declare module '@nuxt/schema' {
     neonDebugSQL: boolean
     neonDebugRuntime: boolean
     neonExposeEndpoints: boolean
-    neonExposeRawEndpoint: boolean
   }
 }
 
