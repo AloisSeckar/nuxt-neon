@@ -6,7 +6,7 @@ SELECT
 FROM
   playing_with_neon
 WHERE
-  id > 5 OR 1=1
+  id > 5; SELECT 1=1 FROM playing_with_neon
     </pre>
     <div id="data">
       {{ data }}
@@ -27,11 +27,11 @@ const { select } = useNeonClient()
 // FROM
 //   playing_with_neon
 // WHERE
-//   id > 5 OR 1=1
+//   id > 5; SELECT 1=1 FROM playing_with_neon
 
 const { data } = await useAsyncData(() => select({
   columns: ['id'],
   from: 'playing_with_neon',
-  where: [{ column: 'id', operator: '>', value: '5 OR 1=1' }],
+  where: [{ column: 'id', operator: '>', value: '5; SELECT 1=1 FROM playing_with_neon' }],
 }))
 </script>

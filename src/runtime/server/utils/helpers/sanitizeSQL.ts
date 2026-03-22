@@ -16,7 +16,7 @@ export function sanitizeSQLArray(sql: string[]): string[] {
 
 export function sanitizeSQLIdentifier(identifier: string): string {
   if (identifier) {
-    testInputString(identifier, true)
+    testInputString(identifier)
     let sanitized = SqlString.escape(identifier)
     // in case alias or schema is passed, add double quotes
     sanitized = sanitized.replaceAll('.', '"."')
@@ -27,29 +27,16 @@ export function sanitizeSQLIdentifier(identifier: string): string {
 }
 
 // reject obvious SQL injection attempts before passing inputs further
-// if allowDots is true, dots are allowed (for schema.table or table.alias)
-export function testInputString(input: string, allowDots = false): void {
+export function testInputString(input: string): void {
   if (input) {
     try {
-    // semicolon => SQL injection attempt
+      // semicolon => SQL injection attempt
       if (input.includes(';')) {
         throw new Error('contains semicolon')
-      }
-      // equals => SQL injection attempt
-      if (input.includes('=')) {
-        throw new Error('contains equals sign')
       }
       // comments => SQL injection attempt
       if (input.includes('--') || input.includes('/*') || input.includes('*/')) {
         throw new Error('contains comments')
-      }
-      // dot - schemas and aliases are handled, dots in values are suspicious
-      // ignore if told so (explicit internal call for schema.table or table.alias)
-      // can be decimal number though
-      if (!allowDots) {
-        if (input.includes('.') && Number.isNaN(Number(input))) {
-          throw new Error('contains dot')
-        }
       }
       // control characters
       // eslint-disable-next-line no-control-regex

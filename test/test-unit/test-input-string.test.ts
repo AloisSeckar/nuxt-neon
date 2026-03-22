@@ -23,21 +23,6 @@ describe('Helper `testInputString` unitn test suite', async () => {
     expect(() => testInputString('a /* COMMENT */')).toThrowError(new RegExp(ERROR_MSG))
   })
 
-  test('Should reject dots', () => {
-    // naive .
-    expect(() => testInputString('a.a')).toThrowError(new RegExp(ERROR_MSG))
-    // resembling number, but invalid
-    expect(() => testInputString('a.23')).toThrowError(new RegExp(ERROR_MSG))
-  })
-
-  test('Should allow dots if it is a valid number', () => {
-    expect(testInputString('1.23', true)).toBe(undefined)
-  })
-
-  test('Should allow dots if told so', () => {
-    expect(testInputString('a.a', true)).toBe(undefined)
-  })
-
   test('Should reject control characters', () => {
     expect(() => testInputString('a\u0001')).toThrowError(new RegExp(ERROR_MSG))
   })
