@@ -105,7 +105,7 @@ export default defineNuxtModule<ModuleOptions>({
     const neonUtils = resolver.resolve('runtime/shared/utils/neonUtils')
     const neonServer = resolver.resolve('runtime/server/utils/useNeonServer')
     const neonServerDriver = resolver.resolve('runtime/server/utils/useNeonDriver')
-    const neonServerErrors = resolver.resolve('runtime/server/utils/neonErrors')
+    const neonServerErrors = resolver.resolve('runtime/server/utils/serverErrors')
 
     // client-side #imports
     addImports([
