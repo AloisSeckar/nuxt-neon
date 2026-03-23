@@ -120,9 +120,7 @@ export default defineNuxtModule<ModuleOptions>({
     ])
     addImports([
       { name: 'encodeWhereType', from: neonUtils },
-      { name: 'encodeWhereString', from: neonUtils },
       { name: 'decodeWhereType', from: neonUtils },
-      { name: 'decodeWhereString', from: neonUtils },
     ])
 
     // server-side #imports
