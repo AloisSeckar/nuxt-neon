@@ -2,6 +2,17 @@
 
 Overview of the newest features in Nuxt Neon module.
 
+## v0.8.3
+
+`2026-03-23`
+
+- feat: added option `neonScanQueries` to allow bypassing built-in SQL injection checks ([#79](https://github.com/AloisSeckar/nuxt-neon/issues/79))
+- fix: removed too restrictive SQL injection checks (dots and equal signs) ([#79](https://github.com/AloisSeckar/nuxt-neon/issues/79))
+- fix: adjusted server/client health-check plugin output
+- refactor: dropped actually obsolete `neonExposeRawEndpoint` config option
+- refactor: adjusted server/client util imports ([#74](https://github.com/AloisSeckar/nuxt-neon/issues/74))
+- build: bump Nuxt to `4.4.2` + update other deps (as of `2026-03-23`)
+
 ## v0.8.2
 
 `2026-01-04`
