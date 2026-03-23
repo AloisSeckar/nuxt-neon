@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     neonSSLMode: 'verify-full',
     neonDebugSQL: true,
     neonDebugRuntime: true,
+    neonScanQueries: false,
     // other module overrides
   },
   // other configuration
@@ -22,6 +23,7 @@ Or via env variables that are mapped into Nuxt [runtime config](https://nuxt.com
 NUXT_PUBLIC_NEON_SSL_MODE=verify-full
 NUXT_PUBLIC_NEON_DEBUG_SQL=true
 NUXT_PUBLIC_NEON_DEBUG_RUNTIME=true
+NUXT_PUBLIC_NEON_SCAN_QUERIES=false
 # other module overrides
 ```
 
@@ -44,6 +46,21 @@ Those values can **only be passed as env variables** and **cannot** be set via m
 ## Server-side options
 
 Following options only affect server-side behavior and the values are not exposed to client-side.
+
+### `neonScanQueries`
+
+If true (default), user inputs are pre-scanned for potential SQL injections.
+
+Currently, following is not allowed:
+
+- semicolons (`;`)
+- SQL comments (`--`, `/*`, `*/`)
+- control characters (`\x00-\x1F\x7F`)
+
+In case you legitimately need to insert some of the above, you can turn the pre-scan off by setting `neonScanQueries` to `false`.
+
+> [!WARNING]
+> Turning this off increases risk of malicious attacks.
 
 ### `neonAllowedTables`
 

@@ -36,6 +36,7 @@ const _options: ModuleOptions = {
   neonDebugSQL: false,
   neonDebugRuntime: false,
   neonExposeEndpoints: false,
+  neonScanQueries: true,
   neonAllowedTables: 'NEON_PUBLIC',
   neonAllowedQueries: undefined,
 }

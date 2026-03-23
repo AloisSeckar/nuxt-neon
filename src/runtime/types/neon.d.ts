@@ -8,6 +8,7 @@ declare module '@nuxt/schema' {
     neonUser: string
     neonPass: string
     neonDB: string
+    neonScanQueries: boolean
     neonAllowedTables: string
     neonAllowedQueries?: string
   }

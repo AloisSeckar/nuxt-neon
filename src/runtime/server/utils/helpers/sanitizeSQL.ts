@@ -1,4 +1,5 @@
 import SqlString from 'sqlstring'
+import { isNeonScanQueriesEnabled } from '../config/neonConfig'
 
 export function sanitizeSQLString(sql: string): string {
   testInputString(sql)
@@ -27,25 +28,27 @@ export function sanitizeSQLIdentifier(identifier: string): string {
 }
 
 // reject obvious SQL injection attempts before passing inputs further
-export function testInputString(input: string): void {
-  if (input) {
-    try {
-      // semicolon => SQL injection attempt
-      if (input.includes(';')) {
-        throw new Error('contains semicolon')
-      }
-      // comments => SQL injection attempt
-      if (input.includes('--') || input.includes('/*') || input.includes('*/')) {
-        throw new Error('contains comments')
-      }
-      // control characters
-      // eslint-disable-next-line no-control-regex
-      if (/[\x00-\x1F\x7F]/.test(input)) {
-        throw new Error('contains control characters')
-      }
+// user can turn this off by setting `neonScanQueries` to false
+export function testInputString(input: string, scanQueries: boolean = isNeonScanQueriesEnabled()): void {
+  if (!input || !scanQueries) {
+    return
+  }
+  try {
+    // semicolon => SQL injection attempt
+    if (input.includes(';')) {
+      throw new Error('contains semicolon')
     }
-    catch (e) {
-      throw new Error(`Value ${input} rejected as potential SQL injection (${(e as Error).message}). Report bug in Nuxt Neon module repository if this is a false positive.`)
+    // comments => SQL injection attempt
+    if (input.includes('--') || input.includes('/*') || input.includes('*/')) {
+      throw new Error('contains comments')
     }
+    // control characters
+    // eslint-disable-next-line no-control-regex
+    if (/[\x00-\x1F\x7F]/.test(input)) {
+      throw new Error('contains control characters')
+    }
+  }
+  catch (e) {
+    throw new Error(`Value ${input} rejected as potential SQL injection (${(e as Error).message}). Report bug in Nuxt Neon module repository if this is a false positive.`)
   }
 }

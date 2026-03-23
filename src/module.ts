@@ -21,6 +21,8 @@ export interface ModuleOptions {
   neonDebugRuntime: boolean
   /** If true, API endpoints are exposed from server-side */
   neonExposeEndpoints: boolean
+  /** If true (default), user inputs are pre-scanned for potential SQL injections */
+  neonScanQueries: boolean
   /**
    * Comma-separated list of allowed table names for queries.
    * Empty array would result into all queries being rejected.
@@ -50,6 +52,7 @@ export default defineNuxtModule<ModuleOptions>({
     neonDebugSQL: false,
     neonDebugRuntime: false,
     neonExposeEndpoints: false,
+    neonScanQueries: true,
     neonAllowedTables: 'NEON_PUBLIC',
     neonAllowedQueries: '',
   },
@@ -61,6 +64,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.neonUser = '' // pass via .env file
     nuxt.options.runtimeConfig.neonPass = '' // pass via .env file
     nuxt.options.runtimeConfig.neonDB = '' // pass via .env file
+    nuxt.options.runtimeConfig.neonScanQueries = options.neonScanQueries
     nuxt.options.runtimeConfig.neonAllowedTables = options.neonAllowedTables
     nuxt.options.runtimeConfig.neonAllowedQueries = options.neonAllowedQueries
     nuxt.options.runtimeConfig.public.neonDB = options.neonDB
