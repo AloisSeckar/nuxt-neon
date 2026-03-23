@@ -2,5 +2,5 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   modules: ['../src/module'],
-  compatibilityDate: '2025-12-14',
+  compatibilityDate: '2026-03-21',
 })
