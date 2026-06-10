@@ -38,23 +38,23 @@
     "test:types:client": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@neondatabase/serverless": "1.0.2",
-    "@nuxt/kit": "4.4.2",
+    "@neondatabase/serverless": "1.1.0",
+    "@nuxt/kit": "4.4.8",
     "sqlstring": "2.3.3",
     "vite-plugin-commonjs": "0.10.4"
   },
   "devDependencies": {
     "@nuxt/devtools": "3.2.4",
     "@nuxt/eslint-config": "1.15.2",
-    "@nuxt/module-builder": "1.0.2",
-    "@nuxt/schema": "4.4.2",
-    "@types/node": "25.5.0",
-    "changelogen": "0.6.2",
-    "eslint": "9.39.4",
-    "nuxt": "4.4.2",
-    "nuxt-spec": "0.1.18",
-    "typescript": "5.9.3",
-    "vue-tsc": "3.2.6"
+    "@nuxt/module-builder": "^1.0.2",
+    "@nuxt/schema": "4.4.8",
+    "@types/node": "^25.9.0",
+    "changelogen": "^0.6.2",
+    "eslint": "^9.39.4",
+    "nuxt": "4.4.8",
+    "nuxt-spec": "^0.2.3",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.3.4"
   },
   "packageManager": "pnpm@11.5.3"
 }

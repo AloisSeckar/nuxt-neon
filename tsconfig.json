@@ -1,8 +1,5 @@
 {
   "extends": "./.nuxt/tsconfig.json",
-  "compilerOptions": {
-    "typeRoots": ["./node_modules/@types", "./src/runtime/shared/types"]
-  },
   "include": [
     "./src/**/*",
     "./playground/**/*",

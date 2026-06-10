@@ -1,3 +1,8 @@
+# to allow transitive dependencies hoisting
+shamefullyHoist: true
+
+# those post-install scripts should run
+# (blocked by pnpm by default)
 allowBuilds:
   '@parcel/watcher': true
   'esbuild': true

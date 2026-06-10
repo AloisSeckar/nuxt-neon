@@ -1,7 +1,4 @@
 {
   "extends": "../../../.nuxt/tsconfig.server.json",
-  "compilerOptions": {
-    "typeRoots": ["../shared/types"]
-  },
-  "include": ["./**/*", "../shared/**/*"],
+  "files": ["../shared/types/sqlstring.d.ts"]
 }
