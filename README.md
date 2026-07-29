@@ -20,6 +20,7 @@ npx nuxi module add nuxt-neon
 ```
 
 Provide connection details to your Neon DB instance through a set of Nuxt [runtime config variables](https://nuxt.com/docs/4.x/guide/going-further/runtime-config):
+
 - `NUXT_NEON_HOST`
 - `NUXT_NEON_USER`
 - `NUXT_NEON_PASS`

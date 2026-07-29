@@ -40,16 +40,16 @@ Once enabled, you can use following client-side features via [`useNeon` composab
 
 Available health checks:
 
-  - `isOk` - simple health check
-  - `neonStatus` - detailed health check
+- `isOk` - simple health check
+- `neonStatus` - detailed health check
 
 Available client-side SQL wrappers:
 
-  - `count` - client-side COUNT wrapper
-  - `select` - client-side SELECT wrapper
-  - `insert` - client-side INSERT wrapper
-  - `update` - client-side UPDATE wrapper
-  - `del` - client-side DELETE wrapper
-  - `raw` - client-side RAW wrapper (extra discouraged)
+- `count` - client-side COUNT wrapper
+- `select` - client-side SELECT wrapper
+- `insert` - client-side INSERT wrapper
+- `update` - client-side UPDATE wrapper
+- `del` - client-side DELETE wrapper
+- `raw` - client-side RAW wrapper (extra discouraged)
 
 For full reference visit the [client-side features](./2-3-features-client.md) page.

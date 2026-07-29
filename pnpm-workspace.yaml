@@ -1,3 +1,7 @@
+packages:
+  - '.'
+  - 'docs'
+
 # to allow transitive dependencies hoisting
 shamefullyHoist: true
 

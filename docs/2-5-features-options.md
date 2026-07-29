@@ -76,7 +76,7 @@ Comma-separated list of tables allowed for querying. By default, it is allowed t
 
 - special values **can** be combined with specific table names via comma-separation (eg. `NEON_PUBLIC,pg_database,information_schema.sql_features`)
 - adding a system table will override `NEON_PUBLIC` for this particular table
-- if schema is used for a table (see [here](2-6-features-types.md#select-from)), allowed value must contain it exactly (eg. `schema.products,schema.orders`)
+- if schema is used for a table (see [type definition](2-6-features-types.md#select-from)), allowed value must contain it exactly (eg. `schema.products,schema.orders`)
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
@@ -148,7 +148,7 @@ NUXT_PUBLIC_NEON_DB='my_database'
 
 ### `neonSSLMode`
 
-Allows setting [secure connection mode](https://neon.tech/docs/connect/connect-securely) when constructing the DB connection string by adding `sslmode` parameter to 
+Allows setting [secure connection mode](https://neon.tech/docs/connect/connect-securely) when constructing the DB connection string by adding `sslmode` parameter to
 
 **Possible values:**
 
@@ -217,8 +217,8 @@ If set to `true`, Nuxt Neon can be used client-side via exposed API endpoints.
 
 > [!DANGER]
 > Exposing your connection client-side is **DANGEROUS** and highly **DISCOURAGED**.
-> 
-> See [here](2-1-features.md#client-side-features-🥶) for more details.
+>
+> Read the [full explanation](2-1-features.md#client-side-features-🥶).
 
 **Possible values:**
 

@@ -8,14 +8,13 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "oxc-minify": "^0.103.0",
-    "vitepress": "2.0.0-alpha.15",
-    "vitepress-plugin-group-icons": "^1.6.5"
+    "vitepress": "^2.0.0-alpha.18",
+    "vitepress-plugin-group-icons": "^1.7.5"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
     ]
   },
-  "packageManager": "pnpm@10.26.0"
+  "packageManager": "pnpm@11.18.0"
 }

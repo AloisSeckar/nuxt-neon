@@ -3,10 +3,12 @@
 > [!CAUTION]
 > **Exposing database connection to the client side is a serious security risk!** While Nuxt Neon technically allows accessing the Neon database quasi-directly from the client side via a set of wrapper functions and exposed API endpoints, it is advised not to use them in production.
 
+<!-- -->
+
 > [!WARNING]
-> By default, calling Neon directly from front-end via API endpoints or SQL wrappers is **disabled** and **will throw an error** if invoked. 
-> 
-> It requires an explicit opt-in via a [module option](2-5-features-options.md#neonexposeendpoints) to be allowed. 
+> By default, calling Neon directly from front-end via API endpoints or SQL wrappers is **disabled** and **will throw an error** if invoked.
+>
+> It requires an explicit opt-in via a [module option](2-5-features-options.md#neonexposeendpoints) to be allowed.
 
 Once enabled, you can use pretty much the same health checks and SQL wrappers as on the server side accessible via `useNeonClient()` composable. The only difference is that the client-side variants aren't accepting `NeonDriver` instance as parameter (the connection is only proxied via server-side API endpoints).
 
@@ -44,7 +46,7 @@ Unlike the server counter-part, it returns `useRuntimeConfig().public.neonDB` as
 
 ## SQL Wrappers
 
-#### `select()`
+### `select()`
 
 ```ts
 // async (
@@ -69,7 +71,7 @@ type NeonDataResponse<T> = Array<T> | NeonError
 
 Check [server-side `select`](2-2-features-server.md#select) for more details.
 
-#### `count()`
+### `count()`
 
 ```ts
 // async (
@@ -89,7 +91,7 @@ type NeonCountResponse = number | NeonError
 
 Check [server-side `count`](2-2-features-server.md#count) for more details.
 
-#### `insert()`
+### `insert()`
 
 ```ts
 // async (
@@ -109,7 +111,7 @@ type NeonEditResponse = 'OK' | NeonError
 
 Check [server-side `insert`](2-2-features-server.md#insert) for more details.
 
-#### `update()`
+### `update()`
 
 ```ts
 // async (
@@ -130,7 +132,7 @@ type NeonEditResponse = 'OK' | NeonError
 
 Check [server-side `update`](2-2-features-server.md#update) for more details.
 
-#### `del()`
+### `del()`
 
 ```ts
 // async (
@@ -150,7 +152,7 @@ type NeonEditResponse = 'OK' | NeonError
 
 Check [server-side `del`](2-2-features-server.md#del) for more details.
 
-#### `raw`
+### `raw`
 
 ```ts
 // async (

@@ -48,7 +48,7 @@ Please refer to the new [documentation site](https://nuxt-neon.netlify.app/) for
 - BREAKING CHANGE: dropped now obsolete `neonRawWarning` module option
 - BREAKING CHANGE: `neonStatus` health check doesn't accept options anymore and its behavior is now based on module options (check docs for details)
 - feat: tables can be (dis)allowed for querying via `neonAllowedTables` module option ([#52](https://github.com/AloisSeckar/nuxt-neon/issues/52))
-- feat: `raw` SQL wrappers were made available on server-side (still must be enabled via configuration) ([#53](https://github.com/AloisSeckar/nuxt-neon/issues/53)) 
+- feat: `raw` SQL wrappers were made available on server-side (still must be enabled via configuration) ([#53](https://github.com/AloisSeckar/nuxt-neon/issues/53))
 - feat: `isOk` and `neonStatus` health checks were made available on server-side ([#54](https://github.com/AloisSeckar/nuxt-neon/issues/54))
 - feat: SQL sanitization was improved to prevent more SQL injections ([#8](https://github.com/AloisSeckar/nuxt-neon/issues/8))
 - feat: added more runtime checks to reject SQL injection attempts ([#60](https://github.com/AloisSeckar/nuxt-neon/issues/60))

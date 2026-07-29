@@ -9,6 +9,7 @@ Nuxt module allowing smooth integration with Neon database
 Install the module to your Nuxt application via [Nuxt DevTools](https://devtools.nuxt.com/guide/features#modules) or manually with command:
 
 ::: code-group
+
 ```sh [pnpm]
 pnpx nuxi module add nuxt-neon
 ```
@@ -22,12 +23,13 @@ yarn dlx nuxi module add nuxt-neon
 ```
 
 ```sh [bun]
-$ bunx nuxi module add nuxt-neon
+bunx nuxi module add nuxt-neon
 ```
 
 ```sh [deno]
-$ deno run --allow-run npm:npx nuxi module add nuxt-neon
+deno run --allow-run npm:npx nuxi module add nuxt-neon
 ```
+
 :::
 
 Provide connection details via env variables:

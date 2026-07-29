@@ -175,7 +175,7 @@ type NeonInsertQuery = {
   table: NeonTableType
   values: NeonInsertType
 }
-``` 
+```
 
 ### `table`{#insert-table}
 
@@ -217,7 +217,7 @@ See [`table`](#insert-table)
 
 For `UPDATE` statements, `alias` **can** be used.
 
-### `values`{#update-values}    
+### `values`{#update-values}
 
 Property `values` represent the key-value pairs to be inserted into the database table.
 

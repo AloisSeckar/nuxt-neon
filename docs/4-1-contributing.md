@@ -2,12 +2,13 @@
 
 Contributions welcome! Let's make this module better together.
 
- Contact https://github.com/AloisSeckar for more info.
+ Contact <https://github.com/AloisSeckar> for more info.
 
  The module is being developed using `pnpm` package manager.
 
  Neon DB instance is required - then you have to setup `.env` files with connection info.
 
+<!-- markdownlint-disable MD033 -->
 <details>
   <summary>Local development</summary>
   
@@ -36,8 +37,9 @@ Contributions welcome! Let's make this module better together.
   ```
 
 </details>
+<!-- markdownlint-enable MD033 -->
 
-# Running Tests
+## Running Tests
 
 We are using [Nuxt Spec](https://github.com/AloisSeckar/nuxt-spec) package that provides a Vitest-based layer for testing Nuxt modules and applications united under single dependency. The stack includes:
 
@@ -49,6 +51,7 @@ We are using [Nuxt Spec](https://github.com/AloisSeckar/nuxt-spec) package that 
 - [@nuxt/test-utils](https://www.npmjs.com/package/@nuxt/test-utils) for testing Nuxt stuff
 
 Tests are divided into two suites:
+
 - Simple isolated unit tests in `test/test-unit` folder
 - Advanced E2E tests in `test/test-e2e` folder
 

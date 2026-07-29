@@ -5,7 +5,7 @@
 
 ## Neon serverless driver
 
-Nuxt Neon is connecting into your Neon database using the [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver). 
+Nuxt Neon is connecting into your Neon database using the [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver).
 
 The connection is configured via a set of Nuxt private [runtime config variables](https://nuxt.com/docs/4.x/guide/going-further/runtime-config):
 
@@ -42,7 +42,7 @@ Nuxt Neon provides two health check utilities to monitor the status of your Neon
 
 ### `isOk`
 
-Status of the connection can be quickly checked with `isOk`: 
+Status of the connection can be quickly checked with `isOk`:
 
 ```ts
 // async (
@@ -79,6 +79,7 @@ type NeonStatusResponse = {
 The test is performed by firing a `SELECT 1=1` query to the current Neon database.
 
 Value returned is a `NeonStatusResponse` promise:
+
 - `database: string` - name of the Neon database - `useRuntimeConfig().neonDB` value
 - `status: 'OK' | 'ERR'` - `OK` if connection works, `ERR` if error occured
 - `debug?: string` - the error message returned from unsuccessful query attempt
@@ -117,7 +118,7 @@ type NeonSelectQuery = {
 type NeonDataResponse<T> = Array<T> | NeonError
 ```
 
-The function returns an array of objects extracted from the database based on the SQL `SELECT` query constructed from the passed `query` object. The type signature allows generic parameter `T` to be passed in according to your needs. 
+The function returns an array of objects extracted from the database based on the SQL `SELECT` query constructed from the passed `query` object. The type signature allows generic parameter `T` to be passed in according to your needs.
 
 For type definition of `NeonSelectQuery` refer to [type definition page](2-6-features-types.md#neonselectquery).
 
@@ -175,7 +176,7 @@ type NeonEditResponse = 'OK' | NeonError
 
 Currently, `INSERT` is limited to one row at the time.
 
-Successful `INSERT` query only returns `[]` (an empty array) as response which is translated into `'OK'` result. 
+Successful `INSERT` query only returns `[]` (an empty array) as response which is translated into `'OK'` result.
 
 For type definition of `NeonInsertQuery` refer to [type definition page](2-6-features-types.md#neoninsertquery).
 
@@ -204,7 +205,7 @@ type NeonUpdateQuery = {
 type NeonEditResponse = 'OK' | NeonError
 ```
 
-Successful `UPDATE` query only returns `[]` (an empty array) as response which is translated into `'OK'` result. 
+Successful `UPDATE` query only returns `[]` (an empty array) as response which is translated into `'OK'` result.
 
 For type definition of `NeonUpdateQuery` refer to [type definition page](2-6-features-types.md#neonupdatequery).
 
@@ -216,7 +217,7 @@ If anything fails, the wrapper will construct `NeonError` object with relevant i
 
 For invoking `DELETE` queries you can use:
 
-```ts   
+```ts
 // async (
 //   query: NeonDeleteQuery,
 //   neon: NeonDriver = getDefaultNeonDriver()
@@ -234,7 +235,7 @@ type NeonDeleteQuery = {
 type NeonEditResponse = 'OK' | NeonError
 ```
 
-Successful `DELETE` query only returns `[]` (an empty array) as response which is translated into `'OK'` result. 
+Successful `DELETE` query only returns `[]` (an empty array) as response which is translated into `'OK'` result.
 
 For type definition of `NeonDeleteQuery` refer to [type definition page](2-6-features-types.md#neondeletequery).
 
@@ -248,8 +249,8 @@ If anything fails, the wrapper will construct `NeonError` object with relevant i
 This special wrapper is meant as an escape hatch for running raw SQL queries that are not currently supported by other wrappers. You are encouraged to [open a new issue](https://github.com/AloisSeckar/nuxt-neon/issues) with your needs. Using `raw` wrapper should be only temporary solution until the fix is delivered. **NEVER allow unchecked user input via `raw` handler**.
 
 > [!WARNING]
-> By default, the `raw` function doesn't accept any queries and **will throw an error** if invoked. 
-> 
+> By default, the `raw` function doesn't accept any queries and **will throw an error** if invoked.
+>
 > As an additional security measure, you must explicitly allow queries that can be executed like this via [`neonAllowedQueries`](2-5-features-options.md#neonallowedqueries) module option. If the executed query is not on the white-list, it will be rejected with error message.
 
 If the wrapper is allowed, you can execute (allowed) raw queries using:
@@ -267,6 +268,6 @@ const result: NeonDataResponse<T> = await raw<T>('SELECT * FROM users')
 type NeonDataResponse<T> = Array<T> | NeonError
 ```
 
-The result is returned as an array of objects, which is the standard response of the serverless driver. The type signature allows generic parameter `T` to be passed in according to your needs. 
+The result is returned as an array of objects, which is the standard response of the serverless driver. The type signature allows generic parameter `T` to be passed in according to your needs.
 
 If anything fails, the wrapper will construct `NeonError` object with relevant info.
