@@ -7,7 +7,7 @@ describe('Unit tests for `getInsertSQL` SQL builder', async () => {
       table: 'playing_with_neon',
       values: { id: '1' },
     })
-    expect(sql).toBe('INSERT INTO "playing_with_neon" ("id") VALUES (\'1\')')
+    expect(sql).toEqual({ query: 'INSERT INTO "playing_with_neon" ("id") VALUES ($1)', params: ['1'] })
   })
 
   test('Should produce INSERT query into table as object', () => {
@@ -15,7 +15,7 @@ describe('Unit tests for `getInsertSQL` SQL builder', async () => {
       table: { table: 'playing_with_neon' },
       values: { id: '1' },
     })
-    expect(sql).toBe('INSERT INTO "playing_with_neon" ("id") VALUES (\'1\')')
+    expect(sql).toEqual({ query: 'INSERT INTO "playing_with_neon" ("id") VALUES ($1)', params: ['1'] })
   })
 
   test('Should produce INSERT query into table as object with schema', () => {
@@ -23,7 +23,7 @@ describe('Unit tests for `getInsertSQL` SQL builder', async () => {
       table: { schema: 'neon2', table: 'playing_with_neon' },
       values: { id: '1' },
     })
-    expect(sql).toBe('INSERT INTO "neon2"."playing_with_neon" ("id") VALUES (\'1\')')
+    expect(sql).toEqual({ query: 'INSERT INTO "neon2"."playing_with_neon" ("id") VALUES ($1)', params: ['1'] })
   })
 
   test('Should reject INSERT query into table as object with alias', () => {
@@ -38,7 +38,7 @@ describe('Unit tests for `getInsertSQL` SQL builder', async () => {
       table: 'playing_with_neon',
       values: { id: '1', name: 'test' },
     })
-    expect(sql).toBe('INSERT INTO "playing_with_neon" ("id", "name") VALUES (\'1\', \'test\')')
+    expect(sql).toEqual({ query: 'INSERT INTO "playing_with_neon" ("id", "name") VALUES ($1, $2)', params: ['1', 'test'] })
   })
 
   test('Should produce INSERT query with multiple rows', () => {
@@ -49,7 +49,7 @@ describe('Unit tests for `getInsertSQL` SQL builder', async () => {
         { id: '2', name: 'test2' },
       ],
     })
-    expect(sql).toBe('INSERT INTO "playing_with_neon" ("id", "name") VALUES (\'1\', \'test1\'), (\'2\', \'test2\')')
+    expect(sql).toEqual({ query: 'INSERT INTO "playing_with_neon" ("id", "name") VALUES ($1, $2), ($3, $4)', params: ['1', 'test1', '2', 'test2'] })
   })
 
   /*

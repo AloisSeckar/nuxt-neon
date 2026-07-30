@@ -49,6 +49,6 @@ export function testInputString(input: string, scanQueries: boolean = isNeonScan
     }
   }
   catch (e) {
-    throw new Error(`Value ${input} rejected as potential SQL injection (${(e as Error).message}). Report bug in Nuxt Neon module repository if this is a false positive.`)
+    throw new Error(`Value ${input} rejected as potential SQL injection (${(e as Error).message}). Report bug in Nuxt Neon module repository if this is a false positive.`, { cause: e })
   }
 }

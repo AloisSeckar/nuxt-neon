@@ -88,8 +88,10 @@ Value returned is a `NeonStatusResponse` promise:
 
 There are currently six SQL wrapper functions provided by Nuxt Neon to simplify common database operations. They can be unwrapped from `useNeonServer()` composable-like function. With exeception of the `raw` wrapper which takes raw SQL query strings, all other use custom object-like API for constructing desired queries.
 
+Under the hood, these wrappers build parametrized SQL queries (with `$1`, `$2`, etc. placeholders) and pass them to Neon serverless driver instance along with the array of values to be interpolated during execution. In addition, all values are pre-scanned and rejected, if potentially harmful inputs are detected, before the SQL even reaches the driver.
+
 > [!TIP]
-> As additional security measure, you can explicitly allow tables that can be queried via [`neonAllowedTables`](2-5-features-options.md#neonallowedtables) module option.
+> As additional security measure, you can explicitly allow tables that can be queried via [`neonAllowedTables`](2-5-features-options.md#neonallowedtables) module option. All others will be rejected.
 
 ### `select`
 

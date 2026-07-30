@@ -7,7 +7,7 @@ describe('Unit tests for `getUpdateSQL` SQL builder', async () => {
       table: 'playing_with_neon',
       values: { id: '1' },
     })
-    expect(sql).toBe('UPDATE "playing_with_neon" SET "id" = \'1\'')
+    expect(sql).toEqual({ query: 'UPDATE "playing_with_neon" SET "id" = $1', params: ['1'] })
   })
 
   test('Should produce UPDATE query into table as object', () => {
@@ -15,7 +15,7 @@ describe('Unit tests for `getUpdateSQL` SQL builder', async () => {
       table: { table: 'playing_with_neon' },
       values: { id: '1' },
     })
-    expect(sql).toBe('UPDATE "playing_with_neon" SET "id" = \'1\'')
+    expect(sql).toEqual({ query: 'UPDATE "playing_with_neon" SET "id" = $1', params: ['1'] })
   })
 
   test('Should produce UPDATE query into table as object with schema', () => {
@@ -23,7 +23,7 @@ describe('Unit tests for `getUpdateSQL` SQL builder', async () => {
       table: { schema: 'neon2', table: 'playing_with_neon' },
       values: { id: '1' },
     })
-    expect(sql).toBe('UPDATE "neon2"."playing_with_neon" SET "id" = \'1\'')
+    expect(sql).toEqual({ query: 'UPDATE "neon2"."playing_with_neon" SET "id" = $1', params: ['1'] })
   })
 
   test('Should produce UPDATE query into table as object with alias', () => {
@@ -31,7 +31,7 @@ describe('Unit tests for `getUpdateSQL` SQL builder', async () => {
       table: { schema: 'neon2', table: 'playing_with_neon', alias: 'p' },
       values: { id: '1' },
     })
-    expect(sql).toBe('UPDATE "neon2"."playing_with_neon" AS "p" SET "id" = \'1\'')
+    expect(sql).toEqual({ query: 'UPDATE "neon2"."playing_with_neon" AS "p" SET "id" = $1', params: ['1'] })
   })
 
   test('Should produce UPDATE query with multiple values', () => {
@@ -39,7 +39,7 @@ describe('Unit tests for `getUpdateSQL` SQL builder', async () => {
       table: 'playing_with_neon',
       values: { id: '1', name: 'test' },
     })
-    expect(sql).toBe('UPDATE "playing_with_neon" SET "id" = \'1\', "name" = \'test\'')
+    expect(sql).toEqual({ query: 'UPDATE "playing_with_neon" SET "id" = $1, "name" = $2', params: ['1', 'test'] })
   })
 
   test('Should produce UPDATE query with single WHERE condition', () => {
@@ -48,7 +48,7 @@ describe('Unit tests for `getUpdateSQL` SQL builder', async () => {
       values: { id: '2' },
       where: { column: 'id', operator: '=', value: '1' },
     })
-    expect(sql).toBe('UPDATE "playing_with_neon" SET "id" = \'2\' WHERE "id" = \'1\'')
+    expect(sql).toEqual({ query: 'UPDATE "playing_with_neon" SET "id" = $1 WHERE "id" = $2', params: ['2', '1'] })
   })
 
   test('Should produce UPDATE query with array of WHERE condition', () => {
@@ -60,7 +60,7 @@ describe('Unit tests for `getUpdateSQL` SQL builder', async () => {
         { column: 'value', operator: '>', value: '0.5', relation: 'AND' },
       ],
     })
-    expect(sql).toBe('UPDATE "playing_with_neon" SET "id" = \'2\' WHERE "id" = \'1\' AND "value" > \'0.5\'')
+    expect(sql).toEqual({ query: 'UPDATE "playing_with_neon" SET "id" = $1 WHERE "id" = $2 AND "value" > $3', params: ['2', '1', '0.5'] })
   })
 
   test('Should produce UPDATE query and ignore empty WHERE condition', () => {
@@ -69,6 +69,6 @@ describe('Unit tests for `getUpdateSQL` SQL builder', async () => {
       values: { id: '1' },
       where: [],
     })
-    expect(sql).toBe('UPDATE "playing_with_neon" SET "id" = \'1\'')
+    expect(sql).toEqual({ query: 'UPDATE "playing_with_neon" SET "id" = $1', params: ['1'] })
   })
 })

@@ -11,8 +11,9 @@ import {
   assertNeonJoinType, assertNeonSortDirection,
 } from './assertSQL'
 import {
-  sanitizeSQLIdentifier, sanitizeSQLString,
+  sanitizeSQLIdentifier,
 } from './sanitizeSQL'
+import type { SQLBinder } from './bindSQL'
 
 export function getTableName(table: NeonTableType): string {
   if (typeof table === 'string') {
@@ -123,7 +124,7 @@ function columnWithAlias(c: string | NeonColumnObject): string {
   return sanitizeSQLIdentifier(c.name)
 }
 
-export function getWhereClause(where?: NeonWhereType): string {
+export function getWhereClause(where: NeonWhereType | undefined, binder: SQLBinder): string {
   let sqlString = ''
 
   // fix for https://github.com/AloisSeckar/nuxt-neon/issues/45
@@ -135,15 +136,15 @@ export function getWhereClause(where?: NeonWhereType): string {
         let clauses = ''
         where.forEach((w) => {
           if (clauses) {
-            clauses += formatWhereObject(w, true)
+            clauses += formatWhereObject(w, binder, true)
           } else {
-            clauses = formatWhereObject(w)
+            clauses = formatWhereObject(w, binder)
           }
         })
         sqlString += clauses
       }
     } else {
-      sqlString += formatWhereObject(where)
+      sqlString += formatWhereObject(where, binder)
     }
   }
 
@@ -153,7 +154,7 @@ export function getWhereClause(where?: NeonWhereType): string {
   return sqlString
 }
 
-function formatWhereObject(w: NeonWhereObject, includeRelation: boolean = false) {
+function formatWhereObject(w: NeonWhereObject, binder: SQLBinder, includeRelation: boolean = false) {
   let whereSQL = ''
 
   if (includeRelation) {
@@ -169,31 +170,29 @@ function formatWhereObject(w: NeonWhereObject, includeRelation: boolean = false)
   if (w.operator.includes('IN')) {
     // values separated by comma must be passed
     const inValues = w.value.toString().split(',')
-    whereSQL += `('`
-    whereSQL += inValues.join(`', '`)
-    whereSQL += `')`
+    whereSQL += `(${inValues.map(v => binder.bind(v)).join(', ')})`
   }
   else if (w.operator === 'BETWEEN') {
     // exactly two values separated by comma must be passed
     const betweenValues = w.value.toString().split(',')
-    whereSQL += `${formatWhereValue(betweenValues[0]!)} AND ${formatWhereValue(betweenValues[1]!)}`
+    whereSQL += `${formatWhereValue(betweenValues[0]!, binder)} AND ${formatWhereValue(betweenValues[1]!, binder)}`
   } else {
     // no special processing for other operators
-    whereSQL += formatWhereValue(w.value)
+    whereSQL += formatWhereValue(w.value, binder)
   }
 
   return whereSQL
 }
 
-function formatWhereValue(v: string | NeonColumnObject) {
+function formatWhereValue(v: string | NeonColumnObject, binder: SQLBinder) {
   // plain value from current table
   if (typeof v === 'string') {
     // remove surrounding quotes if present (to avoid double-escaping)
     if (v.startsWith('\'') && v.endsWith('\'')) {
       v = v.slice(1, -1)
     }
-    // sanitize rest
-    return sanitizeSQLString(v)
+    // bind as parameter
+    return binder.bind(v)
   }
   // column from another table
   return columnWithAlias(v)
@@ -245,7 +244,7 @@ export function getGroupByClause(group?: NeonColumnType): string {
   return sqlString
 }
 
-export function getHavingClause(having?: NeonWhereType): string {
+export function getHavingClause(having: NeonWhereType | undefined, binder: SQLBinder): string {
   let sqlString = ''
 
   // fix for https://github.com/AloisSeckar/nuxt-neon/issues/45
@@ -257,15 +256,15 @@ export function getHavingClause(having?: NeonWhereType): string {
         let clauses = ''
         having.forEach((h) => {
           if (clauses) {
-            clauses += formatWhereObject(h, true)
+            clauses += formatWhereObject(h, binder, true)
           } else {
-            clauses = formatWhereObject(h)
+            clauses = formatWhereObject(h, binder)
           }
         })
         sqlString += clauses
       }
     } else {
-      sqlString += formatWhereObject(having)
+      sqlString += formatWhereObject(having, binder)
     }
   }
 

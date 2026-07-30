@@ -6,28 +6,28 @@ describe('Unit tests for `getDeleteSQL` SQL builder', async () => {
     const sql = getDeleteSQL({
       table: 'playing_with_neon',
     })
-    expect(sql).toBe('DELETE FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'DELETE FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce DELETE query from table as object', () => {
     const sql = getDeleteSQL({
       table: { table: 'playing_with_neon' },
     })
-    expect(sql).toBe('DELETE FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'DELETE FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce DELETE query from table as object with schema', () => {
     const sql = getDeleteSQL({
       table: { schema: 'neon2', table: 'playing_with_neon' },
     })
-    expect(sql).toBe('DELETE FROM "neon2"."playing_with_neon"')
+    expect(sql).toEqual({ query: 'DELETE FROM "neon2"."playing_with_neon"', params: [] })
   })
 
   test('Should produce DELETE query from table as object with schema and alias', () => {
     const sql = getDeleteSQL({
       table: { schema: 'neon2', table: 'playing_with_neon', alias: 'p' },
     })
-    expect(sql).toBe('DELETE FROM "neon2"."playing_with_neon" "p"')
+    expect(sql).toEqual({ query: 'DELETE FROM "neon2"."playing_with_neon" "p"', params: [] })
   })
 
   test('Should produce DELETE query with single WHERE condition', () => {
@@ -35,7 +35,7 @@ describe('Unit tests for `getDeleteSQL` SQL builder', async () => {
       table: 'playing_with_neon',
       where: { column: 'id', operator: '=', value: '1' },
     })
-    expect(sql).toBe('DELETE FROM "playing_with_neon" WHERE "id" = \'1\'')
+    expect(sql).toEqual({ query: 'DELETE FROM "playing_with_neon" WHERE "id" = $1', params: ['1'] })
   })
 
   test('Should produce DELETE query with array of WHERE condition', () => {
@@ -46,7 +46,7 @@ describe('Unit tests for `getDeleteSQL` SQL builder', async () => {
         { column: 'value', operator: '>', value: '0.5', relation: 'AND' },
       ],
     })
-    expect(sql).toBe('DELETE FROM "playing_with_neon" WHERE "id" = \'1\' AND "value" > \'0.5\'')
+    expect(sql).toEqual({ query: 'DELETE FROM "playing_with_neon" WHERE "id" = $1 AND "value" > $2', params: ['1', '0.5'] })
   })
 
   test('Should produce DELETE query and ignore empty WHERE condition', () => {
@@ -54,6 +54,6 @@ describe('Unit tests for `getDeleteSQL` SQL builder', async () => {
       table: 'playing_with_neon',
       where: [],
     })
-    expect(sql).toBe('DELETE FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'DELETE FROM "playing_with_neon"', params: [] })
   })
 })

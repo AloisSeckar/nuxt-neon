@@ -63,11 +63,10 @@ export const useNeonServer = () => {
       }
 
       assertAllowedTable(query.from, getAllowedTables())
-      const sqlString = getSelectSQL(query)
+      const { query: sqlString, params } = getSelectSQL(query)
       await debugSQLIfAllowed(sqlString)
 
-      // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-      const results = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+      const results = await neon.query(sqlString, params, { arrayMode: false, fullResults: false })
       return results as Array<T>
     } catch (err) {
       return await parseNeonError('useNeonServer().select', err)
@@ -100,11 +99,10 @@ export const useNeonServer = () => {
       }
 
       assertAllowedTable(query.table, getAllowedTables())
-      const sqlString = getInsertSQL(query)
+      const { query: sqlString, params } = getInsertSQL(query)
       await debugSQLIfAllowed(sqlString)
 
-      // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-      const ret = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+      const ret = await neon.query(sqlString, params, { arrayMode: false, fullResults: false })
       // successful INSERT operation returns []
       if (ret.length === 0) {
         return 'OK'
@@ -126,11 +124,10 @@ export const useNeonServer = () => {
       }
 
       assertAllowedTable(query.table, getAllowedTables())
-      const sqlString = getUpdateSQL(query)
+      const { query: sqlString, params } = getUpdateSQL(query)
       await debugSQLIfAllowed(sqlString)
 
-      // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-      const ret = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+      const ret = await neon.query(sqlString, params, { arrayMode: false, fullResults: false })
 
       // successful UPDATE operation returns []
       if (ret.length === 0) {
@@ -152,11 +149,10 @@ export const useNeonServer = () => {
       }
 
       assertAllowedTable(query.table, getAllowedTables())
-      const sqlString = getDeleteSQL(query)
+      const { query: sqlString, params } = getDeleteSQL(query)
       await debugSQLIfAllowed(sqlString)
 
-      // passing in "queryOpts" (matching with defaults) to fullfill TypeScript requirements
-      const ret = await neon.query(sqlString, undefined, { arrayMode: false, fullResults: false })
+      const ret = await neon.query(sqlString, params, { arrayMode: false, fullResults: false })
 
       // successful DELETE operation returns []
       if (ret.length === 0) {

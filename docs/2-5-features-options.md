@@ -51,7 +51,7 @@ Following options only affect server-side behavior and the values are not expose
 
 If true (default), user inputs are pre-scanned for potential SQL injections.
 
-Currently, following is not allowed:
+Currently, following input is not allowed:
 
 - semicolons (`;`)
 - SQL comments (`--`, `/*`, `*/`)
@@ -61,6 +61,8 @@ In case you legitimately need to insert some of the above, you can turn the pre-
 
 > [!WARNING]
 > Turning this off increases risk of malicious attacks.
+
+**NOTE:** In addition to that, values handled by the [SQL wrappers](./2-2-features-server.md#sql-wrappers) are **ALWAYS** turned into parametrized queries.
 
 ### `neonAllowedTables`
 

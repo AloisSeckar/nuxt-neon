@@ -7,7 +7,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: 'id',
       from: 'playing_with_neon',
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce SELECT query with explicit columns from array', () => {
@@ -15,7 +15,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: ['id', 'name'],
       from: 'playing_with_neon',
     })
-    expect(sql).toBe('SELECT "id", "name" FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT "id", "name" FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce SELECT query with explicit aliased columns from array', () => {
@@ -23,7 +23,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: ['id AS identifier', 'name as full_name'],
       from: 'playing_with_neon',
     })
-    expect(sql).toBe('SELECT "id" AS "identifier", "name" AS "full_name" FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT "id" AS "identifier", "name" AS "full_name" FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce SELECT query with explicit column from object', () => {
@@ -31,7 +31,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: { name: 'id' },
       from: 'playing_with_neon',
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce SELECT query with explicit columns from object array', () => {
@@ -39,7 +39,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: [{ name: 'id' }, { name: 'name' }],
       from: 'playing_with_neon',
     })
-    expect(sql).toBe('SELECT "id", "name" FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT "id", "name" FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce basic COUNT query', () => {
@@ -47,7 +47,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: 'count(*)',
       from: 'playing_with_neon',
     })
-    expect(sql).toBe('SELECT count(*) FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT count(*) FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce basic aliased COUNT query', () => {
@@ -55,7 +55,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: 'count(*) as total',
       from: 'playing_with_neon',
     })
-    expect(sql).toBe('SELECT count(*) AS "total" FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT count(*) AS "total" FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce COUNT query with explicit column', () => {
@@ -63,7 +63,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: 'count(id)',
       from: 'playing_with_neon',
     })
-    expect(sql).toBe('SELECT count("id") FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT count("id") FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce COUNT query with explicit aliased column', () => {
@@ -71,7 +71,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: 'count(id) as total',
       from: 'playing_with_neon',
     })
-    expect(sql).toBe('SELECT count("id") AS "total" FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT count("id") AS "total" FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce COUNT query even if upper-cased', () => {
@@ -79,7 +79,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: 'COUNT(ID) AS TOTAL',
       from: 'playing_with_neon',
     })
-    expect(sql).toBe('SELECT count("ID") AS "TOTAL" FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT count("ID") AS "TOTAL" FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce * SELECT query', () => {
@@ -87,7 +87,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: '*',
       from: 'playing_with_neon',
     })
-    expect(sql).toBe('SELECT * FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT * FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce SELECT from table object', () => {
@@ -95,7 +95,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: 'id',
       from: { table: 'playing_with_neon' },
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce SELECT from table object array', () => {
@@ -103,7 +103,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: 'id',
       from: [{ table: 'playing_with_neon' }],
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon"', params: [] })
   })
 
   test('Should produce SELECT from multiple tables', () => {
@@ -111,7 +111,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: 'id',
       from: [{ table: 'playing_with_neon' }, { table: 'playing_with_neon_2' }],
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon", "playing_with_neon_2"')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon", "playing_with_neon_2"', params: [] })
   })
 
   test('Should produce SELECT from aliased table', () => {
@@ -119,7 +119,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: 'p.id',
       from: { table: 'playing_with_neon', alias: 'p' },
     })
-    expect(sql).toBe('SELECT "p"."id" FROM "playing_with_neon" "p"')
+    expect(sql).toEqual({ query: 'SELECT "p"."id" FROM "playing_with_neon" "p"', params: [] })
   })
 
   test('Should produce SELECT from aliased table with schema', () => {
@@ -127,7 +127,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       columns: 'p.id',
       from: { table: 'playing_with_neon', alias: 'p', schema: 'neon2' },
     })
-    expect(sql).toBe('SELECT "p"."id" FROM "neon2"."playing_with_neon" "p"')
+    expect(sql).toEqual({ query: 'SELECT "p"."id" FROM "neon2"."playing_with_neon" "p"', params: [] })
   })
 
   test('Should produce single WHERE clause', () => {
@@ -136,7 +136,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       from: 'playing_with_neon',
       where: { column: 'id', operator: '=', value: '1', relation: 'AND' }, // relation should be ignored here
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon" WHERE "id" = \'1\'')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon" WHERE "id" = $1', params: ['1'] })
   })
 
   test('Should produce multiple WHERE clause', () => {
@@ -148,7 +148,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
         { column: 'id', operator: '<', value: '3', relation: 'AND' },
       ],
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon" WHERE "id" > \'1\' AND "id" < \'3\'')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon" WHERE "id" > $1 AND "id" < $2', params: ['1', '3'] })
   })
 
   test('Should replace GT(E)/LT(E) correctly', () => {
@@ -162,7 +162,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
         { column: 'id', operator: 'LTE', value: '3', relation: 'AND' },
       ],
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon" WHERE "id" > \'1\' AND "id" >= \'1\' AND "id" < \'3\' AND "id" <= \'3\'')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon" WHERE "id" > $1 AND "id" >= $2 AND "id" < $3 AND "id" <= $4', params: ['1', '1', '3', '3'] })
   })
 
   test('Should treat IN operator correctly', () => {
@@ -171,7 +171,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       from: 'playing_with_neon',
       where: { column: 'id', operator: 'IN', value: '1,2,3' },
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon" WHERE "id" IN (\'1\', \'2\', \'3\')')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon" WHERE "id" IN ($1, $2, $3)', params: ['1', '2', '3'] })
   })
 
   test('Should treat BETWEEN operator correctly', () => {
@@ -180,7 +180,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       from: 'playing_with_neon',
       where: { column: 'id', operator: 'BETWEEN', value: '1,3' },
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon" WHERE "id" BETWEEN \'1\' AND \'3\'')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon" WHERE "id" BETWEEN $1 AND $2', params: ['1', '3'] })
   })
 
   test('Should produce aliased WHERE clause', () => {
@@ -189,7 +189,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       from: { table: 'playing_with_neon', alias: 'p' },
       where: { column: { name: 'id', alias: 'p' }, operator: '=', value: '1' },
     })
-    expect(sql).toBe('SELECT "p"."id" FROM "playing_with_neon" "p" WHERE "p"."id" = \'1\'')
+    expect(sql).toEqual({ query: 'SELECT "p"."id" FROM "playing_with_neon" "p" WHERE "p"."id" = $1', params: ['1'] })
   })
 
   test('Should produce aliased WHERE clause comparing two tables', () => {
@@ -201,7 +201,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       ],
       where: { column: { name: 'id', alias: 'p' }, operator: '=', value: { name: 'id', alias: 'p2' } },
     })
-    expect(sql).toBe('SELECT "p"."id" FROM "playing_with_neon" "p", "playing_with_neon_2" "p2" WHERE "p"."id" = "p2"."id"')
+    expect(sql).toEqual({ query: 'SELECT "p"."id" FROM "playing_with_neon" "p", "playing_with_neon_2" "p2" WHERE "p"."id" = "p2"."id"', params: [] })
   })
 
   test('Should produce SELECT query with ORDER BY clause', () => {
@@ -210,7 +210,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       from: 'playing_with_neon',
       order: { column: 'id' },
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon" ORDER BY "id" ASC') // ASC will be addeed, if nothing specified
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon" ORDER BY "id" ASC', params: [] }) // ASC will be addeed, if nothing specified
   })
 
   test('Should produce SELECT query with aliased ORDER BY clause', () => {
@@ -219,7 +219,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       from: { table: 'playing_with_neon', alias: 'p' },
       order: { column: { name: 'id', alias: 'p' } },
     })
-    expect(sql).toBe('SELECT "p"."id" FROM "playing_with_neon" "p" ORDER BY "p"."id" ASC')
+    expect(sql).toEqual({ query: 'SELECT "p"."id" FROM "playing_with_neon" "p" ORDER BY "p"."id" ASC', params: [] })
   })
 
   test('Should produce SELECT query with multiple ORDER BY clauses', () => {
@@ -228,7 +228,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       from: 'playing_with_neon',
       order: [{ column: 'id' }, { column: 'name', direction: 'DESC' }],
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon" ORDER BY "id" ASC, "name" DESC')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon" ORDER BY "id" ASC, "name" DESC', params: [] })
   })
 
   test('Should produce SELECT query with GROUP BY clause', () => {
@@ -237,7 +237,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       from: 'playing_with_neon',
       group: { name: 'id' },
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon" GROUP BY "id"')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon" GROUP BY "id"', params: [] })
   })
 
   test('Should produce SELECT query with GROUP BY clause with count', () => {
@@ -246,7 +246,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       from: 'playing_with_neon',
       group: { name: 'id' },
     })
-    expect(sql).toBe('SELECT "id", count("id") FROM "playing_with_neon" GROUP BY "id"')
+    expect(sql).toEqual({ query: 'SELECT "id", count("id") FROM "playing_with_neon" GROUP BY "id"', params: [] })
   })
 
   test('Should produce SELECT query with GROUP BY and HAVING clause', () => {
@@ -256,7 +256,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       group: [{ name: 'id' }, { name: 'value' }],
       having: { column: 'value', operator: '>', value: '0.5' },
     })
-    expect(sql).toBe('SELECT "id", "value" FROM "playing_with_neon" GROUP BY "id", "value" HAVING "value" > \'0.5\'')
+    expect(sql).toEqual({ query: 'SELECT "id", "value" FROM "playing_with_neon" GROUP BY "id", "value" HAVING "value" > $1', params: ['0.5'] })
   })
 
   test('Should produce SELECT query with LIMIT clause', () => {
@@ -265,7 +265,7 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       from: 'playing_with_neon',
       limit: 5,
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon" LIMIT 5')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon" LIMIT 5', params: [] })
   })
 
   test('Should ignore empty clause arrays', () => {
@@ -277,6 +277,6 @@ describe('Unit tests for `getSelectSQL` SQL builder', async () => {
       group: [],
       having: [],
     })
-    expect(sql).toBe('SELECT "id" FROM "playing_with_neon"')
+    expect(sql).toEqual({ query: 'SELECT "id" FROM "playing_with_neon"', params: [] })
   })
 })

@@ -114,6 +114,14 @@ export type NeonCountResponse = number | NeonError
 export type NeonEditResponse = 'OK' | NeonError
 export type NeonStatusResponse = NeonStatusResult
 
+/** Object for passing parameterized SQL queries to Neon driver. */
+export type NeonParametrizedQuery = {
+  /** SQL string with parameter placeholders (`$1`, `$2`, ...) */
+  query: string
+  /** Array of values that will be interpolated by Neon driver */
+  params: string[]
+}
+
 export type NeonColumnType = string | string[] | NeonColumnObject | NeonColumnObject[]
 export type NeonTableType = string | NeonTableObject
 export type NeonFromType = string | NeonTableObject | NeonTableObject[]
