@@ -69,7 +69,7 @@ Because we generally want `unit` test to run (and fail if necessary) before `e2e
 
 To run tests, you need minimal `/test/neon-test-app/.env` file with Neon connection settings:
 
-```env
+```sh [.env]
 NUXT_NEON_HOST=<your-neon-host>
 NUXT_NEON_USER=<your-neon-username>
 NUXT_NEON_PASS=<your-neon-password>
