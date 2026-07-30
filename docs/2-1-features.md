@@ -25,7 +25,7 @@ Or to one of the available server-side SQL wrappers:
 - `del` - server-side DELETE wrapper
 - `raw` - server-side function for RAW SQL (discouraged)
 
-For full reference visit the [server-side features](./2-2-features-server.md) page.
+For full reference visit the [server-side features](2-2-features-server.html) page.
 
 ## Client-side features 🥶
 
@@ -52,4 +52,4 @@ Available client-side SQL wrappers:
 - `del` - client-side DELETE wrapper
 - `raw` - client-side RAW wrapper (extra discouraged)
 
-For full reference visit the [client-side features](./2-3-features-client.md) page.
+For full reference visit the [client-side features](2-3-features-client.html) page.

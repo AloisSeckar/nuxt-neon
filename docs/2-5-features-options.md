@@ -62,7 +62,7 @@ In case you legitimately need to insert some of the above, you can turn the pre-
 > [!WARNING]
 > Turning this off increases risk of malicious attacks.
 
-**NOTE:** In addition to that, values handled by the [SQL wrappers](./2-2-features-server.md#sql-wrappers) are **ALWAYS** turned into parametrized queries.
+**NOTE:** In addition to that, values handled by the [SQL wrappers](2-2-features-server.html#sql-wrappers) are **ALWAYS** turned into parametrized queries.
 
 ### `neonAllowedTables`
 
@@ -78,7 +78,7 @@ Comma-separated list of tables allowed for querying. By default, it is allowed t
 
 - special values **can** be combined with specific table names via comma-separation (eg. `NEON_PUBLIC,pg_database,information_schema.sql_features`)
 - adding a system table will override `NEON_PUBLIC` for this particular table
-- if schema is used for a table (see [type definition](2-6-features-types.md#select-from)), allowed value must contain it exactly (eg. `schema.products,schema.orders`)
+- if schema is used for a table (see [type definition](2-6-features-types.html#select-from)), allowed value must contain it exactly (eg. `schema.products,schema.orders`)
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
@@ -94,7 +94,7 @@ NUXT_NEON_ALLOWED_TABLES='products,orders'
 
 ### `neonAllowedQueries`
 
-Semicolon-separated list of SQL queries allowed to be executed via [`raw`](2-2-features-server.md#raw) SQL wrapper.
+Semicolon-separated list of SQL queries allowed to be executed via [`raw`](2-2-features-server.html#raw) SQL wrapper.
 
 **Possible values:**
 
@@ -132,7 +132,7 @@ Neon database name (your database name) which **WILL BE** exposed to client-side
 **Special usage notes:**
 
 - this will allow to disclose your database name on client side, which you might or might not want to do
-- it will appear in result of [`neonStatus`](2-2-features-server.md#neonStatus) once set
+- it will appear in result of [`neonStatus`](2-2-features-server.html#neonStatus) once set
 - when building DB connection string, module uses `NUXT_NEON_DB` env value and **NOT** this
 - the value may differ from the actual `NUXT_NEON_DB` env value
 
@@ -220,7 +220,7 @@ If set to `true`, Nuxt Neon can be used client-side via exposed API endpoints.
 > [!DANGER]
 > Exposing your connection client-side is **DANGEROUS** and highly **DISCOURAGED**.
 >
-> Read the [full explanation](2-1-features.md#client-side-features-🥶).
+> Read the [full explanation](2-1-features.html#client-side-features-🥶).
 
 **Possible values:**
 

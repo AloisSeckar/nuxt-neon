@@ -91,7 +91,7 @@ There are currently six SQL wrapper functions provided by Nuxt Neon to simplify 
 Under the hood, these wrappers build parametrized SQL queries (with `$1`, `$2`, etc. placeholders) and pass them to Neon serverless driver instance along with the array of values to be interpolated during execution. In addition, all values are pre-scanned and rejected, if potentially harmful inputs are detected, before the SQL even reaches the driver.
 
 > [!TIP]
-> As additional security measure, you can explicitly allow tables that can be queried via [`neonAllowedTables`](2-5-features-options.md#neonallowedtables) module option. All others will be rejected.
+> As additional security measure, you can explicitly allow tables that can be queried via [`neonAllowedTables`](2-5-features-options.html#neonallowedtables) module option. All others will be rejected.
 
 ### `select`
 
@@ -122,7 +122,7 @@ type NeonDataResponse<T> = Array<T> | NeonError
 
 The function returns an array of objects extracted from the database based on the SQL `SELECT` query constructed from the passed `query` object. The type signature allows generic parameter `T` to be passed in according to your needs.
 
-For type definition of `NeonSelectQuery` refer to [type definition page](2-6-features-types.md#neonselectquery).
+For type definition of `NeonSelectQuery` refer to [type definition page](2-6-features-types.html#neonselectquery).
 
 If anything fails, the wrapper will construct `NeonError` object with relevant info.
 
@@ -150,7 +150,7 @@ type NeonCountResponse = number | NeonError
 
 This just calls the `select()` wrapper function under the hood, but abstracts users from having to pass `columns = ['count(*)']` and automatically extracts the count value from the response. This wrapper exists solely for convenience for the most straightforward use-case. For more complex scenarios, please use the `select` wrapper with more flexible API directly.
 
-For type definition of `NeonCountQuery` refer to [type definition page](2-6-features-types.md#neoncountquery).
+For type definition of `NeonCountQuery` refer to [type definition page](2-6-features-types.html#neoncountquery).
 
 If anything fails, the wrapper will construct `NeonError` object with relevant info.
 
@@ -180,7 +180,7 @@ Currently, `INSERT` is limited to one row at the time.
 
 Successful `INSERT` query only returns `[]` (an empty array) as response which is translated into `'OK'` result.
 
-For type definition of `NeonInsertQuery` refer to [type definition page](2-6-features-types.md#neoninsertquery).
+For type definition of `NeonInsertQuery` refer to [type definition page](2-6-features-types.html#neoninsertquery).
 
 If anything fails, the wrapper will construct `NeonError` object with relevant info.
 
@@ -209,7 +209,7 @@ type NeonEditResponse = 'OK' | NeonError
 
 Successful `UPDATE` query only returns `[]` (an empty array) as response which is translated into `'OK'` result.
 
-For type definition of `NeonUpdateQuery` refer to [type definition page](2-6-features-types.md#neonupdatequery).
+For type definition of `NeonUpdateQuery` refer to [type definition page](2-6-features-types.html#neonupdatequery).
 
 If anything fails, the wrapper will construct `NeonError` object with relevant info.
 
@@ -239,7 +239,7 @@ type NeonEditResponse = 'OK' | NeonError
 
 Successful `DELETE` query only returns `[]` (an empty array) as response which is translated into `'OK'` result.
 
-For type definition of `NeonDeleteQuery` refer to [type definition page](2-6-features-types.md#neondeletequery).
+For type definition of `NeonDeleteQuery` refer to [type definition page](2-6-features-types.html#neondeletequery).
 
 If anything fails, the wrapper will construct `NeonError` object with relevant info.
 
@@ -253,7 +253,7 @@ This special wrapper is meant as an escape hatch for running raw SQL queries tha
 > [!WARNING]
 > By default, the `raw` function doesn't accept any queries and **will throw an error** if invoked.
 >
-> As an additional security measure, you must explicitly allow queries that can be executed like this via [`neonAllowedQueries`](2-5-features-options.md#neonallowedqueries) module option. If the executed query is not on the white-list, it will be rejected with error message.
+> As an additional security measure, you must explicitly allow queries that can be executed like this via [`neonAllowedQueries`](2-5-features-options.html#neonallowedqueries) module option. If the executed query is not on the white-list, it will be rejected with error message.
 
 If the wrapper is allowed, you can execute (allowed) raw queries using:
 
