@@ -42,14 +42,20 @@ export function assertNeonSortDirection(direction?: string): void {
 }
 
 export function assertAllowedTable(table: NeonFromType, allowedTables: string[]): void {
+  // NEON_ALL = everything is allowed (unsafe)
+  if (allowedTables.includes('NEON_ALL')) {
+    return
+  }
+
+  // map input to testable string
   let tableName: string
-  if (typeof table === 'string') {
-    // string - test as-is
-    tableName = table
-  } else if (Array.isArray(table)) {
+  if (Array.isArray(table)) {
     // array of table objects - check each one recursively
     table.forEach(t => assertAllowedTable(t, allowedTables))
     return
+  } else if (typeof table === 'string') {
+    // string - test as-is
+    tableName = table
   } else {
     // table object - test with or without schema
     if (table.schema) {
@@ -59,12 +65,7 @@ export function assertAllowedTable(table: NeonFromType, allowedTables: string[])
     }
   }
 
-  // ALL = everything is allowed (unsafe)
-  if (allowedTables.includes('NEON_ALL')) {
-    return
-  }
-
-  // PUBLIC = all user-defined tables
+  // NEON_PUBLIC = all user-defined tables are allowed
   // filter out:
   // - tables with "pg_" prefix
   // - tables within "information_schema"
