@@ -13,17 +13,17 @@ describe('Helper `testInputString` unitn test suite', async () => {
 
   test('Should reject semicolons', () => {
     // naive semicolon
-    expect(() => testInputString('a; DROP TABLE users', true)).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => testInputString('a; DROP TABLE users', true)).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should reject comments', () => {
     // naive -- comment
-    expect(() => testInputString('a -- COMMENT', true)).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => testInputString('a -- COMMENT', true)).toThrow(new RegExp(ERROR_MSG))
     // naive /* */ comment
-    expect(() => testInputString('a /* COMMENT */', true)).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => testInputString('a /* COMMENT */', true)).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should reject control characters', () => {
-    expect(() => testInputString('a\u0001', true)).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => testInputString('a\u0001', true)).toThrow(new RegExp(ERROR_MSG))
   })
 })

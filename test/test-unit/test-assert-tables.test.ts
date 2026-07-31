@@ -19,12 +19,12 @@ const T_MULTIPLE = [
 
 describe('Unit tests for `assertAllowedTable` guard', async () => {
   test('Should reject anything if nothing is allowed', () => {
-    expect(() => assertAllowedTable('custom', [])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedTable('pg_database', [])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedTable(T_SIMPLE, [])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedTable(T_ALIAS, [])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedTable(T_SCHEMA, [])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedTable(T_SCHEMA_ALIAS, [])).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable('custom', [])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable('pg_database', [])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable(T_SIMPLE, [])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable(T_ALIAS, [])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable(T_SCHEMA, [])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable(T_SCHEMA_ALIAS, [])).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should allow anything if NEON_ALL is allowed', () => {
@@ -48,10 +48,10 @@ describe('Unit tests for `assertAllowedTable` guard', async () => {
   })
 
   test('Should reject system table if only NEON_PUBLIC is allowed', () => {
-    expect(() => assertAllowedTable('pg_database', ['NEON_PUBLIC'])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedTable('information_schema.sql_features', ['NEON_PUBLIC'])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedTable(T_SYSTEM, ['NEON_PUBLIC'])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedTable(T_INFO, ['NEON_PUBLIC'])).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable('pg_database', ['NEON_PUBLIC'])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable('information_schema.sql_features', ['NEON_PUBLIC'])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable(T_SYSTEM, ['NEON_PUBLIC'])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable(T_INFO, ['NEON_PUBLIC'])).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should allow explicitly allowed user tables', () => {
@@ -63,9 +63,9 @@ describe('Unit tests for `assertAllowedTable` guard', async () => {
   })
 
   test('Should reject table with schema prefix if not set correctly', () => {
-    expect(() => assertAllowedTable('schema.custom', ['custom'])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedTable(T_SCHEMA, ['custom'])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedTable(T_SCHEMA_ALIAS, ['custom'])).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable('schema.custom', ['custom'])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable(T_SCHEMA, ['custom'])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable(T_SCHEMA_ALIAS, ['custom'])).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should allow table with schema prefix if set correctly', () => {
@@ -97,12 +97,12 @@ describe('Unit tests for `assertAllowedTable` guard', async () => {
   })
 
   test('Should reject not allowed user tables', () => {
-    expect(() => assertAllowedTable('custom1', ['custom'])).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable('custom1', ['custom'])).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should reject system table masked with prefix', () => {
-    expect(() => assertAllowedTable('schema.pg_database', ['NEON_PUBLIC'])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedTable(T_SYSTEM_SCHEMA, ['NEON_PUBLIC'])).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable('schema.pg_database', ['NEON_PUBLIC'])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable(T_SYSTEM_SCHEMA, ['NEON_PUBLIC'])).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should allow multiple allowed tables', () => {
@@ -112,7 +112,7 @@ describe('Unit tests for `assertAllowedTable` guard', async () => {
   })
 
   test('Should reject not allowed among multiple tables', () => {
-    expect(() => assertAllowedTable(T_MULTIPLE, ['custom'])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedTable(T_MULTIPLE, ['custom1', 'custom2', 'custom3'])).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable(T_MULTIPLE, ['custom'])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedTable(T_MULTIPLE, ['custom1', 'custom2', 'custom3'])).toThrow(new RegExp(ERROR_MSG))
   })
 })

@@ -9,8 +9,8 @@ const RAW_QUERY_3 = 'SELECT * FROM custom_table WHERE id = 3'
 
 describe('Unit tests for `assertAllowedQuery` guard', async () => {
   test('Should reject query if nothing is allowed', () => {
-    expect(() => assertAllowedQuery(RAW_QUERY_1, [])).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertAllowedQuery(RAW_QUERY_2, [])).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedQuery(RAW_QUERY_1, [])).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedQuery(RAW_QUERY_2, [])).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should allow query if NEON_ALL is allowed', () => {
@@ -26,12 +26,12 @@ describe('Unit tests for `assertAllowedQuery` guard', async () => {
   })
 
   test('Should reject not allowed raw query', () => {
-    expect(() => assertAllowedQuery(RAW_QUERY_2, [RAW_QUERY_1])).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedQuery(RAW_QUERY_2, [RAW_QUERY_1])).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should work correctly with multiple allowed queries', () => {
     expect(assertAllowedQuery(RAW_QUERY_1, [RAW_QUERY_1, RAW_QUERY_2])).toBe(undefined)
     expect(assertAllowedQuery(RAW_QUERY_2, [RAW_QUERY_1, RAW_QUERY_2])).toBe(undefined)
-    expect(() => assertAllowedQuery(RAW_QUERY_3, [RAW_QUERY_1, RAW_QUERY_2])).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertAllowedQuery(RAW_QUERY_3, [RAW_QUERY_1, RAW_QUERY_2])).toThrow(new RegExp(ERROR_MSG))
   })
 })

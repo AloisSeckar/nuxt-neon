@@ -30,7 +30,7 @@ describe('Unit tests for `getInsertSQL` SQL builder', async () => {
     expect(() => getInsertSQL({
       table: { table: 'playing_with_neon', alias: 'p' },
       values: { id: '1' },
-    })).toThrowError('Table alias is not allowed for INSERT statement')
+    })).toThrow('Table alias is not allowed for INSERT statement')
   })
 
   test('Should produce INSERT query with multiple values', () => {

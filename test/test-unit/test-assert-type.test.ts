@@ -18,10 +18,10 @@ describe('Unit tests for `assertNeonWhereOperator` and `assertNeonWhereRelation`
   })
 
   test('Should reject any other invalid WHERE operator attempts', () => {
-    expect(() => assertNeonWhereOperator('OTHER')).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertNeonWhereOperator('OR 1=1')).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertNeonWhereOperator('> 5 OR 1=')).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertNeonWhereOperator('; DROP DATABASE')).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertNeonWhereOperator('OTHER')).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertNeonWhereOperator('OR 1=1')).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertNeonWhereOperator('> 5 OR 1=')).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertNeonWhereOperator('; DROP DATABASE')).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should allow valid WHERE relations', () => {
@@ -31,10 +31,10 @@ describe('Unit tests for `assertNeonWhereOperator` and `assertNeonWhereRelation`
   })
 
   test('Should reject any other invalid WHERE relation attempts', () => {
-    expect(() => assertNeonWhereRelation('OTHER')).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertNeonWhereRelation('OR 1=1')).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertNeonWhereRelation('> 5 OR 1=')).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertNeonWhereRelation('; DROP DATABASE')).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertNeonWhereRelation('OTHER')).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertNeonWhereRelation('OR 1=1')).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertNeonWhereRelation('> 5 OR 1=')).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertNeonWhereRelation('; DROP DATABASE')).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should allow valid JOIN types', () => {
@@ -44,10 +44,10 @@ describe('Unit tests for `assertNeonWhereOperator` and `assertNeonWhereRelation`
   })
 
   test('Should reject any other invalid JOIN type attempts', () => {
-    expect(() => assertNeonJoinType('OTHER')).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertNeonJoinType('OR 1=1')).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertNeonJoinType('> 5 OR 1=')).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertNeonJoinType('; DROP DATABASE')).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertNeonJoinType('OTHER')).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertNeonJoinType('OR 1=1')).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertNeonJoinType('> 5 OR 1=')).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertNeonJoinType('; DROP DATABASE')).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should allow valid SORT directions', () => {
@@ -57,10 +57,10 @@ describe('Unit tests for `assertNeonWhereOperator` and `assertNeonWhereRelation`
   })
 
   test('Should reject any other invalid SORT direction attempts', () => {
-    expect(() => assertNeonSortDirection('OTHER')).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertNeonSortDirection('OR 1=1')).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertNeonSortDirection('> 5 OR 1=')).toThrowError(new RegExp(ERROR_MSG))
-    expect(() => assertNeonSortDirection('; DROP DATABASE')).toThrowError(new RegExp(ERROR_MSG))
+    expect(() => assertNeonSortDirection('OTHER')).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertNeonSortDirection('OR 1=1')).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertNeonSortDirection('> 5 OR 1=')).toThrow(new RegExp(ERROR_MSG))
+    expect(() => assertNeonSortDirection('; DROP DATABASE')).toThrow(new RegExp(ERROR_MSG))
   })
 
   test('Should allow undefined/empty values without throwing errors', () => {
