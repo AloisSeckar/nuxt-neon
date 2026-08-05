@@ -11,9 +11,3 @@ allowBuilds:
   '@parcel/watcher': true
   'esbuild': true
   'unrs-resolver': true
-
-minimumReleaseAgeExclude:
-  - '@nuxt/devtools-kit@3.4.0'
-  - '@nuxt/devtools-wizard@3.4.0'
-  - '@nuxt/devtools@3.4.0'
-  - structured-clone-es@2.0.1
