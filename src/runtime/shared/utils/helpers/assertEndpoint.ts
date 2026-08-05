@@ -11,7 +11,3 @@ export function isNeonEndpointAllowed(endpoint: NeonEndpointName, allowedEndpoin
   }
   return allowedEndpoints.includes(endpoint)
 }
-
-export function isAnyNeonEndpointAllowed(allowedEndpoints: string[]): boolean {
-  return allowedEndpoints.length > 0 && !allowedEndpoints.includes('NONE')
-}

@@ -34,7 +34,10 @@ For full reference visit the [server-side features](2-2-features-server.html) pa
 
 Client-side counterparts of the server-side features mentioned above are also available. However, since the service API endpoints are exposed to anyone who can reach the server (effectively anyone for the public applications), this opens a wide surface for potential attacks. We are trying to mitigate risks by additional security measures (like whitelisted tables or adding authentication for the calls), but remember that this is an open-source project and any possible flaws can be found and exploited by malicious actors.
 
-To ensure everyone knows what they are doing, using Nuxt Neon client-side is **disabled by default**. Or more precisely, using the methods will produce just errors. If you are 100% your application cannot be compromised (i.e. it is running in a trusted and shielded intranet environment) or it is just a tech demo or something expendable, you can enable client-side features by setting module option `neonExposeEndpoints: 'ALL'` (or a more granular subset like `neonExposeEndpoints: ['SELECT', 'COUNT']`) or environment variable `NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=ALL`.
+To ensure everyone knows what they are doing, using Nuxt Neon client-side is **disabled by default**. Or more precisely, using the SQL wrapper methods will produce just errors. If you are 100% your application cannot be compromised (i.e. it is running in a trusted and shielded intranet environment) or it is just a tech demo or something expendable, you can enable client-side features by setting module option `neonExposeEndpoints: 'ALL'` (or a more granular subset like `neonExposeEndpoints: ['SELECT', 'COUNT']`) or environment variable `NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=ALL`.
+
+> [!NOTE]
+> Health checks (`isOk`/`neonStatus`) are the only exception as they are served from a dedicated, always-reachable `/api/_neon/status` endpoint that exposes no data and is not affected by `neonExposeEndpoints`.
 
 Once enabled, you can use following client-side features via [`useNeon` composable](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/composables/useNeon.ts).
 

@@ -1,20 +1,9 @@
 # Client-side features 🥶
 
-> [!CAUTION]
-> **Exposing database connection to the client side is a serious security risk!** While Nuxt Neon technically allows accessing the Neon database quasi-directly from the client side via a set of wrapper functions and exposed API endpoints, it is advised not to use them in production.
-
-<!-- -->
-
-> [!WARNING]
-> By default, calling Neon directly from front-end via API endpoints or SQL wrappers is **disabled** and **will throw an error** if invoked.
->
-> It requires an explicit opt-in via a [module option](2-5-features-options.html#neonexposeendpoints) to be allowed, either for all endpoints or just a selected subset.
-
-Once enabled, you can use pretty much the same health checks and SQL wrappers as on the server side accessible via `useNeonClient()` composable. The only difference is that the client-side variants aren't accepting `NeonDriver` instance as parameter (the connection is only proxied via server-side API endpoints).
-
-You cannot obtain direct access to `useNeonDriver()` and `useNeonServer()` on client side as those functions will throw an error if called from the client side.
-
 ## Health checks
+
+> [!NOTE]
+> Unlike the SQL wrappers below, health checks are served from a dedicated, always-reachable `/api/_neon/status` server endpoint. They work all the time since they expose no data - only connectivity status.
 
 ### `isOk`
 
@@ -45,6 +34,22 @@ Check [server-side `neonStatus`](2-2-features-server.html#isok) for more details
 Unlike the server counter-part, it returns `useRuntimeConfig().public.neonDB` as `database` value (which may be empty or set to something else than the actual DB name used for connection at server-side). Also, `debugInfo` is only populated when `useRuntimeConfig().public.neonDebugRuntime` is set to `true` to avoid accidental leakage of implementation detail. It is advised only to use this option during development and debugging.
 
 ## SQL Wrappers
+
+> [!CAUTION]
+> **Exposing database connection to the client side is a serious security risk!** While Nuxt Neon technically allows accessing the Neon database quasi-directly from the client side via a set of wrapper functions and exposed API endpoints, it is advised not to use them in production.
+
+<!-- -->
+
+> [!WARNING]
+> By default, calling Neon directly from front-end via API endpoints or SQL wrappers is **disabled** and **will throw an error** if invoked.
+>
+> It requires an explicit opt-in via a [module option](2-5-features-options.html#neonexposeendpoints) to be allowed, either for all endpoints or just a selected subset.
+>
+> Health checks (`isOk`/`neonStatus`) mentioned above are an exception and they are always reachable regardless of `neonExposeEndpoints`, since they are served from a dedicated endpoint that exposes no data.
+
+Once enabled, you can use pretty much the same SQL wrappers as on the server side accessible via `useNeonClient()` composable. The only difference is that the client-side variants aren't accepting `NeonDriver` instance as parameter (the connection is only proxied via server-side API endpoints).
+
+You cannot obtain direct access to `useNeonDriver()` and `useNeonServer()` on client side as those functions will throw an error if called from the client side.
 
 ### `select()`
 

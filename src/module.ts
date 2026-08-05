@@ -84,6 +84,10 @@ export default defineNuxtModule<ModuleOptions>({
 
     // 2. register server API endpoints
     addServerHandler({
+      route: '/api/_neon/status',
+      handler: resolver.resolve('runtime/server/api/neonStatus'),
+    })
+    addServerHandler({
       route: '/api/_neon/raw',
       handler: resolver.resolve('runtime/server/api/neonRaw'),
     })
@@ -134,7 +138,6 @@ export default defineNuxtModule<ModuleOptions>({
     ])
     addImports([
       { name: 'isNeonEndpointAllowed', from: neonEndpoints },
-      { name: 'isAnyNeonEndpointAllowed', from: neonEndpoints },
     ])
 
     // server-side #imports
@@ -162,7 +165,6 @@ export default defineNuxtModule<ModuleOptions>({
     ])
     addServerImports([
       { name: 'isNeonEndpointAllowed', from: neonEndpoints },
-      { name: 'isAnyNeonEndpointAllowed', from: neonEndpoints },
     ])
 
     // 4. export types

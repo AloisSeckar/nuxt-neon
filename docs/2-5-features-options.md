@@ -232,6 +232,7 @@ Controls which server API endpoints are exposed so Nuxt Neon can be used client-
 **Special usage notes:**
 
 - if combined, `NONE` beats `ALL` and explicit values, and `ALL` beats explicit values (eg. `['NONE', 'ALL']` results in nothing being exposed)
+- client-side health checks (`isOk`/`neonStatus`) are not affected by this option as they are always reachable via a dedicated `/api/_neon/status` endpoint that exposes no data
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({

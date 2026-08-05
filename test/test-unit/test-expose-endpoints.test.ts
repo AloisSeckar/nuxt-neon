@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { isNeonEndpointAllowed, isAnyNeonEndpointAllowed } from '../../src/runtime/shared/utils/helpers/assertEndpoint'
+import { isNeonEndpointAllowed } from '../../src/runtime/shared/utils/helpers/assertEndpoint'
 
 describe('Unit tests for `isNeonEndpointAllowed` guard', () => {
   test('Should reject everything if nothing is allowed', () => {
@@ -53,29 +53,5 @@ describe('Unit tests for `isNeonEndpointAllowed` guard', () => {
 
   test('ALL should take precedence over explicit values', () => {
     expect(isNeonEndpointAllowed('DELETE', ['ALL', 'SELECT'])).toBe(true)
-  })
-})
-
-describe('Unit tests for `isAnyNeonEndpointAllowed` guard', () => {
-  test('Should return false if nothing is allowed', () => {
-    expect(isAnyNeonEndpointAllowed([])).toBe(false)
-  })
-
-  test('Should return false if NONE is allowed', () => {
-    expect(isAnyNeonEndpointAllowed(['NONE'])).toBe(false)
-  })
-
-  test('Should return false if NONE is combined with other values', () => {
-    expect(isAnyNeonEndpointAllowed(['NONE', 'ALL'])).toBe(false)
-    expect(isAnyNeonEndpointAllowed(['NONE', 'SELECT'])).toBe(false)
-  })
-
-  test('Should return true if ALL is allowed', () => {
-    expect(isAnyNeonEndpointAllowed(['ALL'])).toBe(true)
-  })
-
-  test('Should return true if at least one explicit value is allowed', () => {
-    expect(isAnyNeonEndpointAllowed(['SELECT'])).toBe(true)
-    expect(isAnyNeonEndpointAllowed(['SELECT', 'INSERT'])).toBe(true)
   })
 })

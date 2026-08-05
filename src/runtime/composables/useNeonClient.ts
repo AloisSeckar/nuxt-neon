@@ -4,30 +4,25 @@ import type {
   NeonBodyType, NeonWhereType, NeonError, NeonEndpointName,
 } from '../shared/types/neon'
 import {
-  NEON_ENDPOINTS_DISABLED, encodeWhereType, formatNeonError, handleNeonError,
+  NEON_ENDPOINTS_DISABLED, encodeWhereType, handleNeonError,
   isNeonEndpointAllowed, isNeonSuccess, useRuntimeConfig,
 } from '#imports'
 
 export const useNeonClient = () => {
   const neonStatus = async (): Promise<NeonStatusResponse> => {
-    const dbName = useRuntimeConfig().public.neonDB as string
-    const debug = useRuntimeConfig().public.neonDebugRuntime as boolean
-
-    let error = ''
+    const debug = useRuntimeConfig().public.neonDebugRuntime === true
     try {
-      const ret = await raw<{ status: boolean }>('SELECT 1=1 as status')
-      if (!Array.isArray(ret)) {
-        error = formatNeonError(ret as NeonError)
-      }
+      return await $fetch<NeonStatusResponse>('/api/_neon/status')
     }
     catch (err) {
-      error = (err as Error).message
-    }
-
-    return {
-      database: dbName,
-      status: error ? 'ERR' : 'OK',
-      debugInfo: debug ? error : '',
+      if (debug) {
+        console.warn('Neon `status` API endpoint failed')
+      }
+      return {
+        database: useRuntimeConfig().public.neonDB,
+        status: 'ERR',
+        debugInfo: debug ? (err as Error).message : '',
+      }
     }
   }
 
