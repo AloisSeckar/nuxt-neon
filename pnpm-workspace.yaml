@@ -5,9 +5,17 @@ packages:
 # to allow transitive dependencies hoisting
 shamefullyHoist: true
 
-# those post-install scripts should run
-# (blocked by pnpm by default)
+# https://pnpm.io/settings/build#allowbuilds
 allowBuilds:
-  '@parcel/watcher': true
-  'esbuild': true
+  # provides fallback repair of platform-specific Rust native engine
   'unrs-resolver': true
+  # allows node-gyp build of associated native binaries from local sources
+  # disabled because it would require an explicit opt-in
+  '@parcel/watcher': false
+  # optimization for CLI usage of 'esbuild'
+  # disabled because its runtime resolves native binaries itself
+  'esbuild': false
+
+# https://pnpm.io/settings/dependency-resolution#minimumreleaseageexclude
+minimumReleaseAgeExclude:
+  # in case some overrides are necessary...
