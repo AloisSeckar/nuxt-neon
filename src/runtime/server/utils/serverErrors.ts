@@ -20,6 +20,15 @@ export async function getGenericError(source: string, message: string): Promise<
   }
 }
 
+export function getValidationError(source: string, message: string): NeonError {
+  return {
+    name: 'NuxtNeonServerError',
+    source,
+    code: 400,
+    message: `Request body does not match expected structure: ${message}`,
+  }
+}
+
 export async function parseNeonError(source: string, err: unknown): Promise<NeonError> {
   const error = err as Error
   const name = error.name

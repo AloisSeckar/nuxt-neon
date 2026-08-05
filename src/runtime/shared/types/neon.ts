@@ -1,10 +1,11 @@
-import type {
+import {
   NEON_WHERE_OPERATORS, NEON_WHERE_RELATIONS,
   NEON_JOIN_TYPES, NEON_SORT_DIRECTIONS,
-  NEON_ENDPOINT_NAMES, NEON_EXPOSE_ENDPOINTS_OPTIONS,
+  type NEON_ENDPOINT_NAMES, type NEON_EXPOSE_ENDPOINTS_OPTIONS,
 } from './neon-constants'
 
 import type { FullQueryResults, NeonQueryFunction, NeonQueryPromise, QueryRows } from '@neondatabase/serverless'
+import * as v from 'valibot'
 
 /**
  * Type for Neon driver instance
@@ -62,32 +63,38 @@ export type NeonStatusResult = {
   debugInfo?: string
 }
 
-/** Object for defining column with a table alias */
-export type NeonColumnObject = {
+/** Valibot schema for object defining a column with a table alias. */
+export const NeonColumnObjectSchema = v.object({
   /** Alias used for table */
-  alias?: string
+  alias: v.optional(v.string()),
   /** Column name */
-  name: string
-}
+  name: v.string(),
+})
 
-/** Object for defining 2+ tables for JOIN in SELECT. */
-export type NeonTableObject = {
-  /** Schema name */
-  schema?: string
-  /** Table name */
-  table: string
-  /** Alias used for table */
-  alias?: string
-  /** Left column (may include alias) for JOIN (ignored for 1st table in array) */
-  joinColumn1?: string | NeonColumnObject
-  /** Right column (may include alias) for JOIN (ignored for 1st table in array) */
-  joinColumn2?: string | NeonColumnObject
-  /** Type for JOIN (ignored for 1st table in array) */
-  joinType?: NeonJoinType
-}
+/** Object for defining column with a table alias */
+export type NeonColumnObject = v.InferOutput<typeof NeonColumnObjectSchema>
 
 /** Enum-like type to define JOIN type */
 export type NeonJoinType = typeof NEON_JOIN_TYPES[number]
+
+/** Valibot schema for object defining 2+ tables for JOIN in SELECT. */
+export const NeonTableObjectSchema = v.object({
+  /** Schema name */
+  schema: v.optional(v.string()),
+  /** Table name */
+  table: v.string(),
+  /** Alias used for table */
+  alias: v.optional(v.string()),
+  /** Left column (may include alias) for JOIN (ignored for 1st table in array) */
+  joinColumn1: v.optional(v.union([v.string(), NeonColumnObjectSchema])),
+  /** Right column (may include alias) for JOIN (ignored for 1st table in array) */
+  joinColumn2: v.optional(v.union([v.string(), NeonColumnObjectSchema])),
+  /** Type for JOIN (ignored for 1st table in array) */
+  joinType: v.optional(v.picklist(NEON_JOIN_TYPES)),
+})
+
+/** Object for defining 2+ tables for JOIN in SELECT. */
+export type NeonTableObject = v.InferOutput<typeof NeonTableObjectSchema>
 
 /** Enum-like type to define operation for column-value pair in WHERE clause */
 export type NeonWhereOperator = typeof NEON_WHERE_OPERATORS[number]
@@ -95,28 +102,34 @@ export type NeonWhereOperator = typeof NEON_WHERE_OPERATORS[number]
 /** Enum-like type to define logical relations between more WHERE clauses */
 export type NeonWhereRelation = typeof NEON_WHERE_RELATIONS[number]
 
-/** Object for defining a WHERE clause. */
-export type NeonWhereObject = {
+/** Valibot schema for object defining a WHERE clause. */
+export const NeonWhereObjectSchema = v.object({
   /** Column definition */
-  column: string | NeonColumnObject
+  column: v.union([v.string(), NeonColumnObjectSchema]),
   /** Operation type */
-  operator: NeonWhereOperator
+  operator: v.picklist(NEON_WHERE_OPERATORS),
   /** String value to be used for filtering or column from other table */
-  value: string | NeonColumnObject
+  value: v.union([v.string(), NeonColumnObjectSchema]),
   /** Relation with other clauses (ignored for 1st clause) */
-  relation?: NeonWhereRelation
-}
+  relation: v.optional(v.picklist(NEON_WHERE_RELATIONS)),
+})
+
+/** Object for defining a WHERE clause. */
+export type NeonWhereObject = v.InferOutput<typeof NeonWhereObjectSchema>
 
 /** Enum-like type to define `ascending` or `descending` sorting */
 export type NeonSortDirection = typeof NEON_SORT_DIRECTIONS[number]
 
-/** Object for defining an ORDER BY clause. */
-export type NeonOrderObject = {
+/** Valibot schema for object defining an ORDER BY clause. */
+export const NeonOrderObjectSchema = v.object({
   /** Column definition */
-  column: string | NeonColumnObject
+  column: v.union([v.string(), NeonColumnObjectSchema]),
   /** Sort direction (`ASC` if not specified) */
-  direction?: NeonSortDirection
-}
+  direction: v.optional(v.picklist(NEON_SORT_DIRECTIONS)),
+})
+
+/** Object for defining an ORDER BY clause. */
+export type NeonOrderObject = v.InferOutput<typeof NeonOrderObjectSchema>
 
 // consolidated types
 
@@ -133,44 +146,68 @@ export type NeonParametrizedQuery = {
   params: string[]
 }
 
-export type NeonColumnType = string | string[] | NeonColumnObject | NeonColumnObject[]
-export type NeonTableType = string | NeonTableObject
-export type NeonFromType = string | NeonTableObject | NeonTableObject[]
-export type NeonWhereType = NeonWhereObject | NeonWhereObject[]
-export type NeonOrderType = NeonOrderObject | NeonOrderObject[]
-export type NeonInsertType = Record<string, string> | Record<string, string>[]
-export type NeonUpdateType = Record<string, string>
+export const NeonColumnTypeSchema = v.union([v.string(), v.array(v.string()), NeonColumnObjectSchema, v.array(NeonColumnObjectSchema)])
+export type NeonColumnType = v.InferOutput<typeof NeonColumnTypeSchema>
+
+export const NeonTableTypeSchema = v.union([v.string(), NeonTableObjectSchema])
+export type NeonTableType = v.InferOutput<typeof NeonTableTypeSchema>
+
+export const NeonFromTypeSchema = v.union([v.string(), NeonTableObjectSchema, v.array(NeonTableObjectSchema)])
+export type NeonFromType = v.InferOutput<typeof NeonFromTypeSchema>
+
+export const NeonWhereTypeSchema = v.union([NeonWhereObjectSchema, v.array(NeonWhereObjectSchema)])
+export type NeonWhereType = v.InferOutput<typeof NeonWhereTypeSchema>
+
+export const NeonOrderTypeSchema = v.union([NeonOrderObjectSchema, v.array(NeonOrderObjectSchema)])
+export type NeonOrderType = v.InferOutput<typeof NeonOrderTypeSchema>
+
+export const NeonInsertTypeSchema = v.union([v.record(v.string(), v.string()), v.array(v.record(v.string(), v.string()))])
+export type NeonInsertType = v.InferOutput<typeof NeonInsertTypeSchema>
+
+export const NeonUpdateTypeSchema = v.record(v.string(), v.string())
+export type NeonUpdateType = v.InferOutput<typeof NeonUpdateTypeSchema>
+
 export type NeonBodyType = Record<string, unknown>
 
 // query objects for SQL wrappers
 
-export type NeonCountQuery = {
-  from: NeonFromType
-  where?: NeonWhereType
-}
+export const NeonCountQuerySchema = v.object({
+  from: NeonFromTypeSchema,
+  where: v.optional(NeonWhereTypeSchema),
+})
+export type NeonCountQuery = v.InferOutput<typeof NeonCountQuerySchema>
 
-export type NeonSelectQuery = {
-  columns: NeonColumnType
-  from: NeonFromType
-  where?: NeonWhereType
-  order?: NeonOrderType
-  limit?: number
-  group?: NeonColumnType
-  having?: NeonWhereType
-}
+export const NeonSelectQuerySchema = v.object({
+  columns: NeonColumnTypeSchema,
+  from: NeonFromTypeSchema,
+  where: v.optional(NeonWhereTypeSchema),
+  order: v.optional(NeonOrderTypeSchema),
+  limit: v.optional(v.number()),
+  group: v.optional(NeonColumnTypeSchema),
+  having: v.optional(NeonWhereTypeSchema),
+})
+export type NeonSelectQuery = v.InferOutput<typeof NeonSelectQuerySchema>
 
-export type NeonInsertQuery = {
-  table: NeonTableType
-  values: NeonInsertType
-}
+export const NeonInsertQuerySchema = v.object({
+  table: NeonTableTypeSchema,
+  values: NeonInsertTypeSchema,
+})
+export type NeonInsertQuery = v.InferOutput<typeof NeonInsertQuerySchema>
 
-export type NeonUpdateQuery = {
-  table: NeonTableType
-  values: NeonUpdateType
-  where?: NeonWhereType
-}
+export const NeonUpdateQuerySchema = v.object({
+  table: NeonTableTypeSchema,
+  values: NeonUpdateTypeSchema,
+  where: v.optional(NeonWhereTypeSchema),
+})
+export type NeonUpdateQuery = v.InferOutput<typeof NeonUpdateQuerySchema>
 
-export type NeonDeleteQuery = {
-  table: NeonTableType
-  where?: NeonWhereType
-}
+export const NeonDeleteQuerySchema = v.object({
+  table: NeonTableTypeSchema,
+  where: v.optional(NeonWhereTypeSchema),
+})
+export type NeonDeleteQuery = v.InferOutput<typeof NeonDeleteQuerySchema>
+
+export const NeonRawQuerySchema = v.object({
+  query: v.string(),
+})
+export type NeonRawQuery = v.InferOutput<typeof NeonRawQuerySchema>

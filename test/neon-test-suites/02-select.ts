@@ -139,8 +139,10 @@ describe('nuxt-neon SELECT test suite', () => {
 
   test('SELECT - detect SQL injection in WHERE operator', async ({ expect }) => {
     // NOTE: error in console is expected here - server-side throws error if injection attempt is detected
+    // 2026-08-05 - since the operator is invalid, it is not caught earlier by Valibot (#25)
     const dataHtml = await getDataHtml('TestSelectInjection2')
-    expect(dataHtml).toContain('rejected as potential SQL injection')
+    // expect(dataHtml).toContain('rejected as potential SQL injection')
+    expect(dataHtml).toContain('Request body does not match expected structure')
     expect(countIds(dataHtml)).toBe(0)
   })
 

@@ -150,6 +150,7 @@ export default defineNuxtModule<ModuleOptions>({
     addServerImports([
       { name: 'getForbiddenError', from: neonServerErrors },
       { name: 'getGenericError', from: neonServerErrors },
+      { name: 'getValidationError', from: neonServerErrors },
       { name: 'parseNeonError', from: neonServerErrors },
     ])
     addServerImports([

@@ -1,7 +1,8 @@
 import type { H3Event, EventHandlerRequest } from 'h3'
-import type { NeonDataResponse } from '../../shared/types/neon'
+import * as v from 'valibot'
+import { NeonRawQuerySchema, type NeonDataResponse } from '../../shared/types/neon'
 import {
-  defineEventHandler, getForbiddenError, isNeonEndpointAllowed, parseNeonError,
+  defineEventHandler, getForbiddenError, getValidationError, isNeonEndpointAllowed, parseNeonError,
   readBody, useNeonServer, useRuntimeConfig,
 } from '#imports'
 
@@ -21,8 +22,13 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
       console.debug('Request body:', body)
     }
 
+    const checkedBody = v.safeParse(NeonRawQuerySchema, body)
+    if (!checkedBody.success) {
+      return getValidationError('/api/_neon/raw', v.summarize(checkedBody.issues))
+    }
+
     const { raw } = useNeonServer()
-    return await raw<T>(body.query)
+    return await raw<T>(checkedBody.output.query)
   }
   catch (err) {
     return await parseNeonError('/api/_neon/raw', err)
