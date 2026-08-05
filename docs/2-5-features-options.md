@@ -215,7 +215,7 @@ NUXT_PUBLIC_NEON_DEBUG_RUNTIME=true
 
 ### `neonExposeEndpoints`
 
-If set to `true`, Nuxt Neon can be used client-side via exposed API endpoints.
+Controls which server API endpoints are exposed so Nuxt Neon can be used client-side. A single value or an array of values can be provided to allow combinations.
 
 > [!DANGER]
 > Exposing your connection client-side is **DANGEROUS** and highly **DISCOURAGED**.
@@ -224,17 +224,27 @@ If set to `true`, Nuxt Neon can be used client-side via exposed API endpoints.
 
 **Possible values:**
 
-- `true`
-- `false` (default)
+- `NONE` - no endpoints are exposed (default)
+- `ALL` - all endpoints are exposed (unsafe)
+- `SELECT`, `COUNT`, `INSERT`, `UPDATE`, `DELETE`, `RAW` - explicit allowance for a single endpoint
+- an array of any of the above (eg. `['SELECT', 'COUNT']`) to allow a combination of endpoints
+
+**Special usage notes:**
+
+- if combined, `NONE` beats `ALL` and explicit values, and `ALL` beats explicit values (eg. `['NONE', 'ALL']` results in nothing being exposed)
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
   neon: {
-    neonExposeEndpoints: true,
+    // expose everything
+    neonExposeEndpoints: 'ALL',
+    // or only a specific subset
+    neonExposeEndpoints: ['SELECT', 'COUNT'],
   },
 })
 ```
 
 ```sh [.env]
-NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=true
+NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=ALL
+NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS='SELECT,COUNT'
 ```

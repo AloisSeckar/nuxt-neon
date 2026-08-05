@@ -8,7 +8,7 @@
 > [!WARNING]
 > By default, calling Neon directly from front-end via API endpoints or SQL wrappers is **disabled** and **will throw an error** if invoked.
 >
-> It requires an explicit opt-in via a [module option](2-5-features-options.html#neonexposeendpoints) to be allowed.
+> It requires an explicit opt-in via a [module option](2-5-features-options.html#neonexposeendpoints) to be allowed, either for all endpoints or just a selected subset.
 
 Once enabled, you can use pretty much the same health checks and SQL wrappers as on the server side accessible via `useNeonClient()` composable. The only difference is that the client-side variants aren't accepting `NeonDriver` instance as parameter (the connection is only proxied via server-side API endpoints).
 

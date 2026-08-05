@@ -1,6 +1,7 @@
 import type {
   NEON_WHERE_OPERATORS, NEON_WHERE_RELATIONS,
   NEON_JOIN_TYPES, NEON_SORT_DIRECTIONS,
+  NEON_ENDPOINT_NAMES, NEON_EXPOSE_ENDPOINTS_OPTIONS,
 } from './neon-constants'
 
 import type { FullQueryResults, NeonQueryFunction, NeonQueryPromise, QueryRows } from '@neondatabase/serverless'
@@ -22,6 +23,16 @@ export type NeonDriverResult<ArrayMode extends boolean, FullQuery extends boolea
  * @see https://neon.tech/docs/connect/connect-securely#connection-modes
  */
 export type NeonSSLModeOption = 'require' | 'verify-ca' | 'verify-full' | 'none'
+
+/** Enum-like type to define a single exposable server API endpoint */
+export type NeonEndpointName = typeof NEON_ENDPOINT_NAMES[number]
+
+/**
+ * Possible options for `neonExposeEndpoints` module option.
+ * `NONE` disables all endpoints, `ALL` enables all of them.
+ * Otherwise, specific endpoint names can be listed (single value or array) to enable only those.
+ */
+export type NeonExposeEndpointsOption = typeof NEON_EXPOSE_ENDPOINTS_OPTIONS[number]
 
 /** Custom error object to be passed when something goes wrong */
 export type NeonError = {

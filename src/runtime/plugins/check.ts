@@ -1,8 +1,8 @@
-import { defineNuxtPlugin, useNeonClient, useRuntimeConfig } from '#imports'
+import { defineNuxtPlugin, isAnyNeonEndpointAllowed, useNeonClient, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin(async (_nuxtApp) => {
   // only relevant, if db is exposed to client-side
-  if (useRuntimeConfig().public.neonExposeEndpoints !== true) {
+  if (!isAnyNeonEndpointAllowed()) {
     return
   }
   // perform a test connection to the database if requested

@@ -1,6 +1,6 @@
 import type { NeonCountResponse } from '../../shared/types/neon'
 import {
-  defineEventHandler, getForbiddenError, parseNeonError,
+  defineEventHandler, getForbiddenError, isNeonEndpointAllowed, parseNeonError,
   readBody, useNeonServer, useRuntimeConfig,
 } from '#imports'
 
@@ -11,8 +11,7 @@ export default defineEventHandler(async (event): Promise<NeonCountResponse> => {
       console.debug('Neon `count` API endpoint invoked')
     }
 
-    const endpoints = useRuntimeConfig().public.neonExposeEndpoints === true
-    if (!endpoints) {
+    if (!isNeonEndpointAllowed('COUNT')) {
       return getForbiddenError('/api/_neon/count')
     }
 

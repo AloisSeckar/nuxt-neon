@@ -4,7 +4,7 @@ import {
   addTypeTemplate, createResolver, defineNuxtModule,
 } from '@nuxt/kit'
 import commonjs from 'vite-plugin-commonjs'
-import type { NeonSSLModeOption } from './runtime/shared/types/neon'
+import type { NeonSSLModeOption, NeonExposeEndpointsOption } from './runtime/shared/types/neon'
 
 // re-export types
 export type * from './runtime/shared/types/neon'
@@ -19,8 +19,15 @@ export interface ModuleOptions {
   neonDebugSQL: boolean
   /** If true, extra runtime information is captured and logged */
   neonDebugRuntime: boolean
-  /** If true, API endpoints are exposed from server-side */
-  neonExposeEndpoints: boolean
+  /**
+   * Which API endpoints are exposed from server-side to be called client-side.
+   * Allows combination of more values.
+   * Special values:
+   * - `NONE` = no endpoints are exposed (default) - has top precedence over all other
+   * - `ALL` = all endpoints are exposed (unsafe) - has precedence over explicit values
+   * - `SELECT`, `COUNT`, `INSERT`, `UPDATE`, `DELETE`, `RAW` = explicit allowance for an endpoint
+   */
+  neonExposeEndpoints: NeonExposeEndpointsOption | NeonExposeEndpointsOption[]
   /** If true (default), user inputs are pre-scanned for potential SQL injections */
   neonScanQueries: boolean
   /**
@@ -51,7 +58,7 @@ export default defineNuxtModule<ModuleOptions>({
     neonSSLMode: 'require',
     neonDebugSQL: false,
     neonDebugRuntime: false,
-    neonExposeEndpoints: false,
+    neonExposeEndpoints: 'NONE',
     neonScanQueries: true,
     neonAllowedTables: 'NEON_PUBLIC',
     neonAllowedQueries: '',
@@ -71,7 +78,9 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.neonSSLMode = options.neonSSLMode
     nuxt.options.runtimeConfig.public.neonDebugSQL = options.neonDebugSQL
     nuxt.options.runtimeConfig.public.neonDebugRuntime = options.neonDebugRuntime
-    nuxt.options.runtimeConfig.public.neonExposeEndpoints = options.neonExposeEndpoints
+    nuxt.options.runtimeConfig.public.neonExposeEndpoints = Array.isArray(options.neonExposeEndpoints)
+      ? options.neonExposeEndpoints.join(',')
+      : options.neonExposeEndpoints
 
     // 2. register server API endpoints
     addServerHandler({
@@ -103,6 +112,7 @@ export default defineNuxtModule<ModuleOptions>({
     const neonClient = resolver.resolve('runtime/composables/useNeonClient')
     const neonErrors = resolver.resolve('runtime/shared/utils/neonErrors')
     const neonUtils = resolver.resolve('runtime/shared/utils/neonUtils')
+    const neonEndpoints = resolver.resolve('runtime/shared/utils/neonEndpoints')
     const neonServer = resolver.resolve('runtime/server/utils/useNeonServer')
     const neonServerDriver = resolver.resolve('runtime/server/utils/useNeonDriver')
     const neonServerErrors = resolver.resolve('runtime/server/utils/serverErrors')
@@ -121,6 +131,10 @@ export default defineNuxtModule<ModuleOptions>({
     addImports([
       { name: 'encodeWhereType', from: neonUtils },
       { name: 'decodeWhereType', from: neonUtils },
+    ])
+    addImports([
+      { name: 'isNeonEndpointAllowed', from: neonEndpoints },
+      { name: 'isAnyNeonEndpointAllowed', from: neonEndpoints },
     ])
 
     // server-side #imports
@@ -145,6 +159,10 @@ export default defineNuxtModule<ModuleOptions>({
     addServerImports([
       { name: 'encodeWhereType', from: neonUtils },
       { name: 'decodeWhereType', from: neonUtils },
+    ])
+    addServerImports([
+      { name: 'isNeonEndpointAllowed', from: neonEndpoints },
+      { name: 'isAnyNeonEndpointAllowed', from: neonEndpoints },
     ])
 
     // 4. export types

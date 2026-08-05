@@ -1,11 +1,11 @@
 import type {
   NeonSelectQuery, NeonCountQuery, NeonInsertQuery, NeonUpdateQuery, NeonDeleteQuery,
   NeonCountResponse, NeonDataResponse, NeonEditResponse, NeonStatusResponse,
-  NeonBodyType, NeonWhereType, NeonError,
+  NeonBodyType, NeonWhereType, NeonError, NeonEndpointName,
 } from '../shared/types/neon'
 import {
   NEON_ENDPOINTS_DISABLED, encodeWhereType, formatNeonError, handleNeonError,
-  isNeonSuccess, useRuntimeConfig,
+  isNeonEndpointAllowed, isNeonSuccess, useRuntimeConfig,
 } from '#imports'
 
 export const useNeonClient = () => {
@@ -94,10 +94,9 @@ type NeonResponse<T> = NeonDataResponse<T> | NeonCountResponse | NeonEditRespons
 // backend returns either an array of results or an error object
 async function fetchFromNeonBackend<T>(method: string, body: NeonBodyType): Promise<NeonResponse<T>> {
   const debug = useRuntimeConfig().public.neonDebugRuntime === true
-  const endpoints = useRuntimeConfig().public.neonExposeEndpoints === true
   try {
     // guards
-    if (!endpoints) {
+    if (!isNeonEndpointAllowed(method.toUpperCase() as NeonEndpointName)) {
       throw new Error(NEON_ENDPOINTS_DISABLED)
     }
 

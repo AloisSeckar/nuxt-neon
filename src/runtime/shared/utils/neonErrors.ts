@@ -3,7 +3,7 @@ import type { NeonError } from '../types/neon'
 /**
  * By default, API endpoints are disabled for security reasons.
  */
-export const NEON_ENDPOINTS_DISABLED = 'API endpoints are disabled for security reasons. It is advised to handle all DB operations at the server side. If you are 100% sure, you can expose them by setting `neon.neonExposeEndpoints: true` or `NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=true`'
+export const NEON_ENDPOINTS_DISABLED = 'API endpoint is disabled for security reasons. It is advised to handle all DB operations at the server side. If you are 100% sure, you can expose it by setting `neon.neonExposeEndpoints` to `ALL` or a specific endpoint name (eg. `SELECT`) or via `NUXT_PUBLIC_NEON_EXPOSE_ENDPOINTS=ALL`'
 
 /**
  * Helper to verify result of nuxt-neon methods.

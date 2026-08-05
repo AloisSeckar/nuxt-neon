@@ -14,3 +14,11 @@ export const NEON_JOIN_TYPES = [
 export const NEON_SORT_DIRECTIONS = [
   'ASC', 'asc', 'DESC', 'desc',
 ] as const
+
+export const NEON_ENDPOINT_NAMES = [
+  'SELECT', 'COUNT', 'INSERT', 'UPDATE', 'DELETE', 'RAW',
+] as const
+
+export const NEON_EXPOSE_ENDPOINTS_OPTIONS = [
+  'NONE', 'ALL', ...NEON_ENDPOINT_NAMES,
+] as const

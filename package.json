@@ -33,7 +33,7 @@
     "test:unit": "vitest run test/test-unit",
     "test:e2e": "vitest run test/test-e2e",
     "test:types": "pnpm test:types:server && pnpm test:types:client && pnpm test:types:module",
-    "test:types:module": "tsc --noEmit --module esnext --moduleResolution bundler --skipLibCheck test/neon-types/test-types.ts",
+    "test:types:module": "tsc --noEmit --ignoreConfig --module esnext --moduleResolution bundler --skipLibCheck test/neon-types/test-types.ts",
     "test:types:server": "cd src/runtime/server && vue-tsc --noEmit",
     "test:types:client": "vue-tsc --noEmit"
   },

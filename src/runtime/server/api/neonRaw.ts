@@ -1,7 +1,7 @@
 import type { H3Event, EventHandlerRequest } from 'h3'
 import type { NeonDataResponse } from '../../shared/types/neon'
 import {
-  defineEventHandler, getForbiddenError, parseNeonError,
+  defineEventHandler, getForbiddenError, isNeonEndpointAllowed, parseNeonError,
   readBody, useNeonServer, useRuntimeConfig,
 } from '#imports'
 
@@ -12,8 +12,7 @@ export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>
       console.debug('Neon `raw` API endpoint invoked')
     }
 
-    const endpoints = useRuntimeConfig().public.neonExposeEndpoints === true
-    if (!endpoints) {
+    if (!isNeonEndpointAllowed('RAW')) {
       return getForbiddenError('/api/_neon/raw')
     }
 

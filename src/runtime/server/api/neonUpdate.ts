@@ -1,6 +1,6 @@
 import type { NeonEditResponse } from '../../shared/types/neon'
 import {
-  defineEventHandler, getForbiddenError, parseNeonError,
+  defineEventHandler, getForbiddenError, isNeonEndpointAllowed, parseNeonError,
   readBody, useNeonServer, useRuntimeConfig,
 } from '#imports'
 
@@ -11,8 +11,7 @@ export default defineEventHandler(async (event): Promise<NeonEditResponse> => {
       console.debug('Neon `update` API endpoint invoked')
     }
 
-    const endpoints = useRuntimeConfig().public.neonExposeEndpoints === true
-    if (!endpoints) {
+    if (!isNeonEndpointAllowed('UPDATE')) {
       return getForbiddenError('/api/_neon/update')
     }
 
