@@ -40,9 +40,7 @@
   "dependencies": {
     "@neondatabase/serverless": "1.1.0",
     "@nuxt/kit": "4.5.1",
-    "sqlstring": "2.3.3",
-    "valibot": "1.4.2",
-    "vite-plugin-commonjs": "0.10.4"
+    "valibot": "1.4.2"
   },
   "devDependencies": {
     "@nuxt/devtools": "^3.4.0",

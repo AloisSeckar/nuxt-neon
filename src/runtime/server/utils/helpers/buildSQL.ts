@@ -8,7 +8,7 @@ import {
   getWhereClause, getOrderClause, getGroupByClause, getHavingClause, getLimitClause,
 } from './buildSQLUtils'
 import { createSQLBinder } from './bindSQL'
-import { sanitizeSQLString } from './sanitizeSQL'
+import { sanitizeSQLIdentifier } from './sanitizeSQL'
 
 export function getSelectSQL(query: NeonSelectQuery): NeonParametrizedQuery {
   const binder = createSQLBinder()
@@ -40,7 +40,7 @@ export function getInsertSQL(query: NeonInsertQuery): NeonParametrizedQuery {
   // definition of columns for the insert statement
   // columns in insert must be double-quoted
   const columns = Object.keys(rows[0]!)
-  const sqlColumns = columns.map(col => `"${sanitizeSQLString(col).slice(1, -1)}"`).join(', ')
+  const sqlColumns = columns.map(col => sanitizeSQLIdentifier(col)).join(', ')
 
   // definition of values for the insert statement
   // values are bound as parameters ($1, $2, ...)
@@ -67,7 +67,7 @@ export function getUpdateSQL(query: NeonUpdateQuery): NeonParametrizedQuery {
   sqlString += ' SET '
   Object.entries(query.values).forEach(([key, value]) => {
     // columns in update must be double-quoted, values are bound as parameters
-    sqlString += `"${sanitizeSQLString(key).slice(1, -1)}" = ${binder.bind(value)}, `
+    sqlString += `${sanitizeSQLIdentifier(key)} = ${binder.bind(value)}, `
   })
   sqlString = sqlString.slice(0, -2) // remove last comma and space
 

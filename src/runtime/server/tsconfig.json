@@ -1,4 +1,3 @@
 {
-  "extends": "../../../.nuxt/tsconfig.server.json",
-  "files": ["../shared/types/sqlstring.d.ts"]
+  "extends": "../../../.nuxt/tsconfig.server.json"
 }
