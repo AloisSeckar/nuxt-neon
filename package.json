@@ -39,18 +39,18 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "1.1.0",
-    "@nuxt/kit": "4.5.1",
+    "@nuxt/kit": "4.5.2",
     "valibot": "1.4.2"
   },
   "devDependencies": {
     "@nuxt/devtools": "^3.4.1",
-    "@nuxt/eslint-config": "^1.16.0",
+    "@nuxt/eslint-config": "^1.17.0",
     "@nuxt/module-builder": "^1.0.3",
-    "@nuxt/schema": "4.5.1",
+    "@nuxt/schema": "4.5.2",
     "@types/node": "^26.1.0",
     "changelogen": "^0.6.0",
     "eslint": "^10.8.0",
-    "nuxt": "4.5.1",
+    "nuxt": "4.5.2",
     "nuxt-spec": "^0.3.0",
     "typescript": "^6.0.3",
     "vue-tsc": "^3.3.9"
