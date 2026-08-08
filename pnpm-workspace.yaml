@@ -19,3 +19,13 @@ allowBuilds:
 # https://pnpm.io/settings/dependency-resolution#minimumreleaseageexclude
 minimumReleaseAgeExclude:
   # in case some overrides are necessary...
+
+# https://pnpm.io/settings/dependency-resolution#overrides
+# mostly security bumps
+overrides:
+  'esbuild': '^0.28.1'
+  'tar': '^7.5.22'
+  'js-yaml': '^4.3.1'
+  'svgo': '^4.0.2'
+  'brace-expansion@2': '^2.1.4'
+  'brace-expansion@5': '^5.0.9'
