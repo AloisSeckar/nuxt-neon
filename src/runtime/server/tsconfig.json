@@ -1,3 +1,11 @@
 {
-  "extends": "../../../.nuxt/tsconfig.server.json"
+  "extends": "../../../.nuxt/tsconfig.server.json",
+  // TODO: this seems to be an upstream bug in Nuxt
+  // Nitro imports are not resolved properly and cause type-issue
+  // Should be reported and once it is fixed, this workaround can be removed
+  "include": [
+    "./**/*",
+    "../../../.nuxt/types/nitro-nuxt.d.ts",
+    "../../../.nuxt/types/nitro.d.ts"
+  ]
 }
