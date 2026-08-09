@@ -1,6 +1,7 @@
+import type { NitroAppPlugin } from 'nitropack'
 import { defineNitroPlugin, useNeonServer, useRuntimeConfig } from '#imports'
 
-export default defineNitroPlugin(async (_nitroApp) => {
+const plugin: NitroAppPlugin = defineNitroPlugin(async (_nitroApp) => {
   // perform a test connection to the database if requested
   if (useRuntimeConfig().public.neonDebugRuntime === true) {
     console.debug('Testing provided connection to Neon database - server-side')
@@ -8,3 +9,5 @@ export default defineNitroPlugin(async (_nitroApp) => {
     console.debug(await isOk() ? 'Connection OK (server side)' : 'ERROR')
   }
 })
+
+export default plugin
