@@ -2,6 +2,19 @@
 
 Overview of the newest features in Nuxt Neon module.
 
+## v0.9.0-alpha.1
+
+`2026-08-09`
+
+- BREAKING CHANGE: more granular control of exposing server-side SQL wrappers to client via `neonExposeEndpoints` module option ([#78](https://github.com/AloisSeckar/nuxt-neon/issues/78))
+- feat: expose health checks to client regardless `neonExposeEndpoints` setting ([#80](https://github.com/AloisSeckar/nuxt-neon/issues/80))
+- feat: use parametrized queries for constructing SQL statements for better security ([#71](https://github.com/AloisSeckar/nuxt-neon/issues/71))
+- feat: added `valibot` for server-side runtime input validation ([#25](https://github.com/AloisSeckar/nuxt-neon/issues/25))
+- refactor: dropped useless sanitizing by `sqlstring` ([#72](https://github.com/AloisSeckar/nuxt-neon/issues/72))
+- docs: updated docs to reflect latest changes + some minor tweaks and fixes
+- test: updated tests to reflect latest changes + update deprecated Vitest method
+- build: bump Nuxt to `4.5.2` + update other deps (as of `2026-08-08`)
+
 ## v0.8.3
 
 `2026-03-23`

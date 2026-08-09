@@ -48,7 +48,7 @@ export interface ModuleOptions {
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'nuxt-neon',
-    version: '0.8.3',
+    version: '0.9.0-alpha.1',
     configKey: 'neon',
   },
   // Default configuration options of the Nuxt module
