@@ -2,9 +2,9 @@
 
 Overview of the newest features in Nuxt Neon module.
 
-## v0.9.0-alpha.1
+## v0.9.0
 
-`2026-08-09`
+`2026-08-10`
 
 - BREAKING CHANGE: more granular control of exposing server-side SQL wrappers to client via `neonExposeEndpoints` module option ([#78](https://github.com/AloisSeckar/nuxt-neon/issues/78))
 - feat: expose health checks to client regardless `neonExposeEndpoints` setting ([#80](https://github.com/AloisSeckar/nuxt-neon/issues/80))
@@ -14,6 +14,12 @@ Overview of the newest features in Nuxt Neon module.
 - docs: updated docs to reflect latest changes + some minor tweaks and fixes
 - test: updated tests to reflect latest changes + update deprecated Vitest method
 - build: bump Nuxt to `4.5.2` + update other deps (as of `2026-08-08`)
+
+## v0.9.0-alpha.1
+
+`2026-08-09`
+
+- see `0.9.0`
 
 ## v0.8.3
 
