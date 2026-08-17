@@ -28,3 +28,12 @@
   text-decoration-color: var(--vp-c-brand-2);
 }
 
+.VPFooter a {
+  color: var(--vp-c-brand-1);
+  text-decoration-color: transparent;
+}
+
+.VPFooter a:hover {
+  color: var(--vp-c-brand-2)!important;
+  text-decoration-color: var(--vp-c-brand-2);
+}
