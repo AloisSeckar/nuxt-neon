@@ -12,3 +12,19 @@
   --vp-code-block-bg: #2f2f2f;
 }
 
+/* make links inside the home page hero tagline and feature cards stand out */
+.VPHero .tagline a,
+.VPFeature .details a {
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.25s, color 0.25s;
+}
+
+.VPHero .tagline a:hover,
+.VPFeature .details a:hover {
+  color: var(--vp-c-brand-2);
+  text-decoration-color: var(--vp-c-brand-2);
+}
+
