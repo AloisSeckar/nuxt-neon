@@ -2,6 +2,15 @@
 
 Overview of the newest features in Nuxt Neon module.
 
+## v0.9.1
+
+`2026-10-29`
+
+- fix: add runtime type guard in `getAllowedEndpoints` helper to avoid potential issues
+- test: speed execution up with `isolation: false` Vitest option
+- docs: add links on landing page
+- build: bump Nuxt to `4.6.3` + update other deps (as of `2026-10-29`)
+
 ## v0.9.0
 
 `2026-08-10`
