@@ -8,13 +8,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "vitepress": "^2.0.0-alpha.19",
-    "vitepress-plugin-group-icons": "^1.7.6"
+    "vitepress": "^2.0.0-alpha.21",
+    "vitepress-plugin-group-icons": "^1.8.1"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
-  },
-  "packageManager": "pnpm@11.20.0"
+  "packageManager": "pnpm@12.16.1"
 }

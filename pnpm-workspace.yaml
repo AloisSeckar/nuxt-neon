@@ -17,23 +17,11 @@ allowBuilds:
   'esbuild': false
 
 # https://pnpm.io/settings/dependency-resolution#minimumreleaseageexclude
+# in case some overrides are necessary...
 minimumReleaseAgeExclude:
-  # in case some overrides are necessary...
+  # build 2026-10-29
+  - nuxt-spec@0.4.1
 
 # https://pnpm.io/settings/dependency-resolution#overrides
 # mostly security bumps
-overrides:
-  'esbuild': '^0.28.1'
-  'tar': '^7.5.22'
-  'js-yaml': '^4.3.1'
-  'svgo': '^4.0.2'
-  'brace-expansion@2': '^2.1.4'
-  'brace-expansion@5': '^5.0.9'
-  'minimatch@5': '^5.1.9'
-  'minimatch@9': '^9.0.9'
-  'minimatch@10': '^10.2.6'
-  'picomatch@2': '^2.3.2'
-  'lodash': '^4.18.1'
-  'js-cookie': '^3.0.8'
-  'serialize-javascript': '^7.0.7'
-  '@babel/core': '^7.29.7'
+# overrides:

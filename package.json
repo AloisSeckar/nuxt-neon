@@ -38,22 +38,22 @@
     "test:types:client": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@neondatabase/serverless": "1.1.0",
-    "@nuxt/kit": "4.5.2",
-    "valibot": "1.4.2"
+    "@neondatabase/serverless": "1.2.0",
+    "@nuxt/kit": "4.6.3",
+    "valibot": "1.5.0"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^3.4.1",
+    "@nuxt/devtools": "^4.0.0",
     "@nuxt/eslint-config": "^1.17.0",
     "@nuxt/module-builder": "^1.0.3",
-    "@nuxt/schema": "4.5.2",
-    "@types/node": "^26.1.0",
-    "changelogen": "^0.6.0",
-    "eslint": "^10.8.0",
-    "nuxt": "4.5.2",
-    "nuxt-spec": "^0.3.0",
+    "@nuxt/schema": "4.6.3",
+    "@types/node": "^26.6.0",
+    "changelogen": "^0.6.2",
+    "eslint": "^10.13.0",
+    "nuxt": "4.6.3",
+    "nuxt-spec": "^0.4.1",
     "typescript": "^6.0.3",
-    "vue-tsc": "^3.3.9"
+    "vue-tsc": "^3.3.13"
   },
-  "packageManager": "pnpm@11.20.0"
+  "packageManager": "pnpm@12.16.1"
 }
