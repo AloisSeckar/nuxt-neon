@@ -3,7 +3,13 @@ import { isNeonEndpointAllowed as isEndpointAllowed } from './helpers/assertEndp
 import { useRuntimeConfig } from '#imports'
 
 function getAllowedEndpoints(): string[] {
-  return useRuntimeConfig().public.neonExposeEndpoints?.split(',') || []
+  const exposeEndpoints = useRuntimeConfig().public.neonExposeEndpoints
+
+  if (typeof exposeEndpoints !== 'string') {
+    return []
+  }
+
+  return exposeEndpoints?.split(',') || []
 }
 
 export function isNeonEndpointAllowed(endpoint: NeonEndpointName): boolean {
