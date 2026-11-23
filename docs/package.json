@@ -11,5 +11,5 @@
     "vitepress": "^2.0.0-alpha.21",
     "vitepress-plugin-group-icons": "^1.8.1"
   },
-  "packageManager": "pnpm@12.16.1"
+  "packageManager": "pnpm@12.21.0"
 }

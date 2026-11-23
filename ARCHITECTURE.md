@@ -21,7 +21,7 @@ Nuxt Neon (`nuxt-neon`) is a Nuxt v4 module that connects a Nuxt app to a Neon P
 | Linting          | ESLint 10 with `@nuxt/eslint-config` (stylistic rules on)   |
 | Testing          | Vitest via `nuxt-spec`, `vue-tsc` and `tsc` for type checks |
 | Documentation    | VitePress (`docs/` workspace)                               |
-| Package manager  | pnpm 11 (workspaces `.` and `docs`)                         |
+| Package manager  | pnpm 12 (workspaces `.` and `docs`)                         |
 | CI               | GitHub Actions (`.github/workflows/ci.yml`)                 |
 
 ## Architecture
