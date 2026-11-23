@@ -29,7 +29,7 @@ Provide connection details to your Neon DB instance through a set of Nuxt [runti
 Nuxt Neon will construct a PostgreSQL connection string based on given values:
 
 ```ts
-`postgresql://${NUXT_NEON_USER}:${NUXT_NEON_PASS}@${NUXT_NEON_HOST}.neon.tech/${NUXT[_PUBLIC]NEON_DB}`
+`postgresql://${NUXT_NEON_USER}:${NUXT_NEON_PASS}@${NUXT_NEON_HOST}.neon.tech/${NUXT_NEON_DB}`
 ```
 
 Settings are used to initialize the [Neon serverless driver](https://neon.tech/docs/serverless/serverless-driver) object initialized on the Nuxt server.

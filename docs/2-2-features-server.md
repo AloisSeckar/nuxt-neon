@@ -19,7 +19,7 @@ NUXT_NEON_DB=your-neon-database
 Nuxt Neon uses them to construct a PostgreSQL connection string:
 
 ```ts
-`postgresql://${NUXT_NEON_USER}:${NUXT_NEON_PASS}@${NUXT_NEON_HOST}.neon.tech/${NUXT[_PUBLIC]NEON_DB}`
+`postgresql://${NUXT_NEON_USER}:${NUXT_NEON_PASS}@${NUXT_NEON_HOST}.neon.tech/${NUXT_NEON_DB}`
 ```
 
 And instantiates the Neon serverless driver on the Nuxt server with it inside [simple utility class](https://github.com/AloisSeckar/nuxt-neon/blob/master/src/runtime/server/utils/useNeonDriver.ts). The result is a function that underlying Neon driver uses to establish the connection into the serverless PostgreSQL database. Like that, sensitive connection data are sealed within the Nuxt server. On the other hand, this means **you cannot use Nuxt Neon in static builds** and deploy without JS runtime.
