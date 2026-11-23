@@ -50,7 +50,7 @@
     "@types/node": "^26.6.0",
     "changelogen": "^0.6.2",
     "eslint": "^10.13.0",
-    "nuxt": "4.6.3",
+    "nuxt": "4.6.4",
     "nuxt-spec": "^0.4.1",
     "typescript": "^6.0.3",
     "vue-tsc": "^3.3.13"
