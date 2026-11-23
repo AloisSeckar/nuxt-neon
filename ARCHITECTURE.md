@@ -15,8 +15,8 @@ Nuxt Neon (`nuxt-neon`) is a Nuxt v4 module that connects a Nuxt app to a Neon P
 | Category         | Technology                                                  |
 | ---------------- | ----------------------------------------------------------- |
 | Language         | TypeScript                                                  |
-| Framework        | Nuxt 4.5.1, `@nuxt/kit`, built with `@nuxt/module-builder`  |
-| Database driver  | `@neondatabase/serverless` 1.1.0 (PostgreSQL)               |
+| Framework        | Nuxt 4.6.3, `@nuxt/kit`, built with `@nuxt/module-builder`  |
+| Database driver  | `@neondatabase/serverless` 1.2.0 (PostgreSQL)               |
 | Validation       | `valibot` dependency                                        |
 | Linting          | ESLint 10 with `@nuxt/eslint-config` (stylistic rules on)   |
 | Testing          | Vitest via `nuxt-spec`, `vue-tsc` and `tsc` for type checks |
