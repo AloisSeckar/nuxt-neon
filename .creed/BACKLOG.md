@@ -9,5 +9,5 @@ This file holds pending tasks only, as a numbered list. Resolved items are delet
 <!-- ↑↑↑ agentcreed ↑↑↑ -->
 
 1. `src/module.ts` hardcodes `version: '0.8.3'` in `meta`, duplicating `package.json`. Read the version from `package.json` so the two cannot drift.
-2. `.github/workflows/ci.yml` runs `npm run` (lines 26, 42, 45), but `package.json` declares `packageManager: pnpm@11.20.0`. Switch CI to pnpm.
-3. `pnpm test:types:client` (root `vue-tsc --noEmit`) fails with 42 errors in `src/runtime/server/api/*.ts`. The root `tsconfig.json` excludes `src/runtime/server/**`, but the errors still appear, and the server API files import server-only names (`defineEventHandler`, `useNeonServer`, ...) from `#imports`, which the client context does not export. Exclude server files from the client check or split the client check config.
+2. `pnpm test:types:client` (root `vue-tsc --noEmit`) fails with 42 errors in `src/runtime/server/api/*.ts`. The root `tsconfig.json` excludes `src/runtime/server/**`, but the errors still appear, and the server API files import server-only names (`defineEventHandler`, `useNeonServer`, ...) from `#imports`, which the client context does not export. Exclude server files from the client check or split the client check config.
+3. `ARCHITECTURE.md` states `Package manager | pnpm 11`, but `package.json` declares `packageManager: pnpm@12.16.1`. Update the passage to pnpm 12.
