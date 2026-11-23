@@ -1,9 +1,9 @@
 import type { NeonStatusResponse } from '../../shared/types/neon'
-import { defineEventHandler, useNeonServer, useRuntimeConfig } from '#imports'
+import { defineEventHandler, isDebugEnabled, useNeonServer, useRuntimeConfig } from '#imports'
 
 // always reachable regardless of `neonExposeEndpoints`, since it exposes no data, just a connectivity probe
 export default defineEventHandler(async (): Promise<NeonStatusResponse> => {
-  const debug = useRuntimeConfig().public.neonDebugRuntime === true
+  const debug = isDebugEnabled()
   if (debug) {
     console.debug('Neon `status` API endpoint invoked')
   }

@@ -119,6 +119,7 @@ export default defineNuxtModule<ModuleOptions>({
     const neonServer = resolver.resolve('runtime/server/utils/useNeonServer')
     const neonServerDriver = resolver.resolve('runtime/server/utils/useNeonDriver')
     const neonServerErrors = resolver.resolve('runtime/server/utils/serverErrors')
+    const neonLogUtils = resolver.resolve('runtime/shared/utils/logUtils')
 
     // client-side #imports
     addImports([
@@ -137,6 +138,9 @@ export default defineNuxtModule<ModuleOptions>({
     ])
     addImports([
       { name: 'isNeonEndpointAllowed', from: neonEndpoints },
+    ])
+    addImports([
+      { name: 'isDebugEnabled', from: neonLogUtils },
     ])
 
     // server-side #imports
@@ -165,6 +169,9 @@ export default defineNuxtModule<ModuleOptions>({
     ])
     addServerImports([
       { name: 'isNeonEndpointAllowed', from: neonEndpoints },
+    ])
+    addServerImports([
+      { name: 'isDebugEnabled', from: neonLogUtils },
     ])
 
     // 4. export types

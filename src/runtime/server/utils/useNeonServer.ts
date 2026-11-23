@@ -6,7 +6,7 @@ import type {
 import { assertAllowedQuery, assertAllowedTable } from './helpers/assertSQL'
 import { getDeleteSQL, getInsertSQL, getSelectSQL, getUpdateSQL } from './helpers/buildSQL'
 import { debugSQLIfAllowed } from './helpers/debugSQL'
-import { formatNeonError, parseNeonError, useRuntimeConfig, useNeonDriver, getGenericError } from '#imports'
+import { formatNeonError, isDebugEnabled, parseNeonError, useRuntimeConfig, useNeonDriver, getGenericError } from '#imports'
 
 function getDefaultNeonDriver(): NeonDriver {
   const { neon } = useNeonDriver()
@@ -24,7 +24,7 @@ export const useNeonServer = () => {
 
   // health check probe
   const neonStatus = async (neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonStatusResponse> => {
-    if (useRuntimeConfig().public.neonDebugRuntime === true) {
+    if (isDebugEnabled()) {
       console.debug('Neon `neonStatus` server-side health check invoked')
     }
 
@@ -48,7 +48,7 @@ export const useNeonServer = () => {
 
   // simple true/false health check
   const isOk = async (neon: NeonDriver = getDefaultNeonDriver()): Promise<boolean> => {
-    if (useRuntimeConfig().public.neonDebugRuntime === true) {
+    if (isDebugEnabled()) {
       console.debug('Neon `isOk` server-side health check invoked')
     }
 
@@ -58,7 +58,7 @@ export const useNeonServer = () => {
   // SELECT wrapper
   const select = async <T>(query: NeonSelectQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataResponse<T>> => {
     try {
-      if (useRuntimeConfig().public.neonDebugRuntime === true) {
+      if (isDebugEnabled()) {
         console.debug('Neon `select` server-side wrapper invoked')
       }
 
@@ -76,7 +76,7 @@ export const useNeonServer = () => {
   // separate wrapper for COUNT instead of forcing users to pass 'count(*)' as column name in SELECT
   const count = async (query: NeonCountQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonCountResponse> => {
     try {
-      if (useRuntimeConfig().public.neonDebugRuntime === true) {
+      if (isDebugEnabled()) {
         console.debug('Neon `count` server-side wrapper invoked')
       }
 
@@ -94,7 +94,7 @@ export const useNeonServer = () => {
   // INSERT wrapper
   const insert = async (query: NeonInsertQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonEditResponse> => {
     try {
-      if (useRuntimeConfig().public.neonDebugRuntime === true) {
+      if (isDebugEnabled()) {
         console.debug('Neon `insert` server-side wrapper invoked')
       }
 
@@ -119,7 +119,7 @@ export const useNeonServer = () => {
   // UPDATE wrapper
   const update = async (query: NeonUpdateQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonEditResponse> => {
     try {
-      if (useRuntimeConfig().public.neonDebugRuntime === true) {
+      if (isDebugEnabled()) {
         console.debug('Neon `update` server-side wrapper invoked')
       }
 
@@ -144,7 +144,7 @@ export const useNeonServer = () => {
   // DELETE wrapper
   const del = async (query: NeonDeleteQuery, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonEditResponse> => {
     try {
-      if (useRuntimeConfig().public.neonDebugRuntime === true) {
+      if (isDebugEnabled()) {
         console.debug('Neon `delete` server-side wrapper invoked')
       }
 
@@ -170,7 +170,7 @@ export const useNeonServer = () => {
   // raw SQL wrapper
   const raw = async <T>(sqlString: string, neon: NeonDriver = getDefaultNeonDriver()): Promise<NeonDataResponse<T>> => {
     try {
-      if (useRuntimeConfig().public.neonDebugRuntime === true) {
+      if (isDebugEnabled()) {
         console.debug('Neon `raw` server-side wrapper invoked')
       }
 

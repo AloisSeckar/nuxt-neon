@@ -2,12 +2,12 @@ import * as v from 'valibot'
 import { NeonInsertQuerySchema, type NeonEditResponse } from '../../shared/types/neon'
 import {
   defineEventHandler, getForbiddenError, getValidationError, isNeonEndpointAllowed, parseNeonError,
-  readBody, useNeonServer, useRuntimeConfig,
+  isDebugEnabled, readBody, useNeonServer,
 } from '#imports'
 
 export default defineEventHandler(async (event): Promise<NeonEditResponse> => {
   try {
-    const debug = useRuntimeConfig().public.neonDebugRuntime === true
+    const debug = isDebugEnabled()
     if (debug) {
       console.debug('Neon `insert` API endpoint invoked')
     }

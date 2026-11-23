@@ -5,12 +5,12 @@ import type {
 } from '../shared/types/neon'
 import {
   NEON_ENDPOINTS_DISABLED, encodeWhereType, handleNeonError,
-  isNeonEndpointAllowed, isNeonSuccess, useRuntimeConfig,
+  isDebugEnabled, isNeonEndpointAllowed, isNeonSuccess, useRuntimeConfig,
 } from '#imports'
 
 export const useNeonClient = () => {
   const neonStatus = async (): Promise<NeonStatusResponse> => {
-    const debug = useRuntimeConfig().public.neonDebugRuntime === true
+    const debug = isDebugEnabled()
     try {
       return await $fetch<NeonStatusResponse>('/api/_neon/status')
     }
@@ -88,7 +88,7 @@ type NeonResponse<T> = NeonDataResponse<T> | NeonCountResponse | NeonEditRespons
 // this is the actual call for server-side endpoints
 // backend returns either an array of results or an error object
 async function fetchFromNeonBackend<T>(method: string, body: NeonBodyType): Promise<NeonResponse<T>> {
-  const debug = useRuntimeConfig().public.neonDebugRuntime === true
+  const debug = isDebugEnabled()
   try {
     // guards
     if (!isNeonEndpointAllowed(method.toUpperCase() as NeonEndpointName)) {

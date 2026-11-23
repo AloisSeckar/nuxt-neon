@@ -1,9 +1,9 @@
-import { useRuntimeConfig, useStorage } from '#imports'
+import { isDebugEnabled, useRuntimeConfig, useStorage } from '#imports'
 
 export async function debugSQLIfAllowed(sqlString: string) {
   if (useRuntimeConfig().public.neonDebugSQL === true) {
     await useStorage().setItem('neonSQLQuery', sqlString)
-    if (useRuntimeConfig().public.neonDebugRuntime === true) {
+    if (isDebugEnabled()) {
       console.debug('Generated SQL:', sqlString)
     }
   }

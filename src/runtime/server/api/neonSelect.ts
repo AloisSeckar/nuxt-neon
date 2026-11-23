@@ -3,12 +3,12 @@ import * as v from 'valibot'
 import { NeonSelectQuerySchema, type NeonDataResponse } from '../../shared/types/neon'
 import {
   defineEventHandler, getForbiddenError, getValidationError, isNeonEndpointAllowed, parseNeonError,
-  readBody, useNeonServer, useRuntimeConfig,
+  isDebugEnabled, readBody, useNeonServer,
 } from '#imports'
 
 export default defineEventHandler(async <T> (event: H3Event<EventHandlerRequest>): Promise<NeonDataResponse<T>> => {
   try {
-    const debug = useRuntimeConfig().public.neonDebugRuntime === true
+    const debug = isDebugEnabled()
     if (debug) {
       console.debug('Neon `select` API endpoint invoked')
     }

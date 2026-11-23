@@ -1,5 +1,5 @@
 import { neon, type NeonQueryFunction } from '@neondatabase/serverless'
-import { useRuntimeConfig } from '#imports'
+import { isDebugEnabled, useRuntimeConfig } from '#imports'
 
 export const useNeonDriver = () => {
   if (import.meta.client) {
@@ -8,7 +8,7 @@ export const useNeonDriver = () => {
 
   let neonClient: NeonQueryFunction<boolean, boolean> | null = null
   if (neonClient === null) {
-    if (useRuntimeConfig().public.neonDebugRuntime === true) {
+    if (isDebugEnabled()) {
       console.debug('Creating new Neon client instance')
     }
     const neonConnectionString = buildNeonConnectionString()

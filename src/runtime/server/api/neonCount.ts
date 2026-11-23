@@ -3,12 +3,12 @@ import { NeonCountQuerySchema, type NeonCountResponse } from '../../shared/types
 
 import {
   defineEventHandler, getForbiddenError, getValidationError, isNeonEndpointAllowed, parseNeonError,
-  readBody, useNeonServer, useRuntimeConfig,
+  isDebugEnabled, readBody, useNeonServer,
 } from '#imports'
 
 export default defineEventHandler(async (event): Promise<NeonCountResponse> => {
   try {
-    const debug = useRuntimeConfig().public.neonDebugRuntime === true
+    const debug = isDebugEnabled()
     if (debug) {
       console.debug('Neon `count` API endpoint invoked')
     }
